@@ -5,6 +5,7 @@ This project is done for [Advanced Software Engineering Techniques](https://prof
 - [Tasks](https://docs.google.com/document/d/1bJmPpIYV2hopaFNLbNVE2fENTN-3CqJLhOjUI7_ayYs/edit#heading=h.98ibuv5xh786)
 - [State of the art](https://docs.google.com/document/d/1mEsqO5sSPORfZqgE9qFCyTFXUMeDh0L_j7NiWWXlLAA/edit?usp=sharing)
 - [Trello Board](https://trello.com/b/HcLIIuT6)
+- [Requirements](https://docs.google.com/document/d/1lAsE5mVDQusDkmSFsGU7FP6S6FCjtHQH_reb62fKUa0/edit?usp=sharing)
 #### Relevant links:
 - https://core.ac.uk/download/pdf/230028433.pdf
 - https://iopscience.iop.org/article/10.1088/1742-6596/1387/1/012035/pdf 
