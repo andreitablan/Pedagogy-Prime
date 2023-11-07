@@ -5,7 +5,6 @@ namespace PedagogyPrime.Core.Entities
 {    
     public class Assignment: BaseEntity
     {
-        public Guid Id { get; set; }
         public Guid CourseId { get; set; }
         public DateTime Deadline { get; set; }
         public string Description { get; set; }
