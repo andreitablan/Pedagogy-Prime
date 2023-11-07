@@ -11,6 +11,7 @@ namespace PedagogyPrime.Persistence.Context
 		}
 
 		public DbSet<User> Users => Set<User>();
+		public DbSet<Course> Courses => Set<Course>();
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
