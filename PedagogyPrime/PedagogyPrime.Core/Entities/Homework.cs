@@ -13,7 +13,8 @@ namespace PedagogyPrime.Core.Entities
         Seven,
         Eight,
         Nine,
-        Ten
+        Ten,
+        Solution
     };
     public class Homework : BaseEntity
     {
