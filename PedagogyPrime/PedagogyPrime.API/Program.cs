@@ -1,3 +1,5 @@
+using PedagogyPrime.API;
+using PedagogyPrime.Infrastructure;
 using PedagogyPrime.Persistence;
 using PedagogyPrime.Persistence.Context;
 
@@ -11,6 +13,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDatabase(builder.Configuration);
+
+builder.Services.AddInfrastructureServices();
+builder.Services.AddAPIServices();
 
 var app = builder.Build();
 

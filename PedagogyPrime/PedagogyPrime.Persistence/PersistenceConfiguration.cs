@@ -6,6 +6,9 @@ using System.Reflection;
 
 namespace PedagogyPrime.Persistence
 {
+	using Core.IRepositories;
+	using Repositories;
+
 	public static class PersistenceConfiguration
 	{
 		public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
@@ -17,6 +20,8 @@ namespace PedagogyPrime.Persistence
 				sql.MigrationsAssembly(migrationsAssembly);
 				sql.MigrationsHistoryTable("__EFMigrationHistory");
 			}));
+
+			services.AddScoped<IUserRepository, UserRepository>();
 		}
 	}
 }
