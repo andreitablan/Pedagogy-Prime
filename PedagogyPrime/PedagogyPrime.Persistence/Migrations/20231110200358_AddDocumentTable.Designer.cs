@@ -12,8 +12,8 @@ using PedagogyPrime.Persistence.Context;
 namespace PedagogyPrime.Persistence.Migrations
 {
     [DbContext(typeof(PedagogyPrimeDbContext))]
-    [Migration("20231108171457_MigrationName")]
-    partial class MigrationName
+    [Migration("20231110200358_AddDocumentTable")]
+    partial class AddDocumentTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,36 @@ namespace PedagogyPrime.Persistence.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("PedagogyPrime.Core.Entities.Document", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirebaseLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Documents");
+                });
+
             modelBuilder.Entity("PedagogyPrime.Core.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -87,6 +117,20 @@ namespace PedagogyPrime.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("PedagogyPrime.Core.Entities.Document", b =>
+                {
+                    b.HasOne("PedagogyPrime.Core.Entities.User", null)
+                        .WithMany("Documents")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PedagogyPrime.Core.Entities.User", b =>
+                {
+                    b.Navigation("Documents");
                 });
 #pragma warning restore 612, 618
         }

@@ -32,3 +32,5 @@ public class User : BaseEntity
 - run command `dotnet ef --startup-project '../PedagogyPrime.API' migrations add "MigrationName"`. If this command fails, run `dotnet tool install --global dotnet-ef` to install the **dotnet-ef** tool globally. If the command runs successfully a new migration with the name "yyyyMMddhhmmss_MigrationName". There you will be able to see all changes that will be executed over the database when the update command will run. Please verify if the changes are correct in order to not broke the database.
 
 - run update command `dotnet ef --startup-project '../PedagogyPrime.API' database update`. If the command runs successfully the database should be updated with the changes from the migration file.
+
+- a tutorial on how to manage migrations in .NET [Link](https://www.youtube.com/watch?v=sWhAk2kIBtk&ab_channel=OpariucRaresIoan)

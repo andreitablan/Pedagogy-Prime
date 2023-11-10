@@ -22,6 +22,9 @@ namespace PedagogyPrime.Persistence
 			}));
 
 			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<ICourseRepository, CourseRepository>();
+			services.AddScoped<IDocumentRepository, DocumentRepository>();
+
 		}
 	}
 }

@@ -36,14 +36,14 @@
 			};
 		}
 
-		public static BaseResponse<T> NotFound(string resource)
+		public static BaseResponse<T> NotFound()
 		{
 			return new BaseResponse<T>
 			{
 				StatusCode = StatusCodes.NotFound,
 				Errors = new List<string>
 				{
-					$"{resource} not found"
+					$"{typeof(T).Name} not found"
 				}
 			};
 		}

@@ -7,7 +7,6 @@ namespace PedagogyPrime.API.Controllers
 	using Infrastructure.Queries.Users.GetAll;
 	using MediatR;
 
-	[ApiVersion("1.0")]
 	public class UsersController : BaseController
 	{
 		public UsersController(
