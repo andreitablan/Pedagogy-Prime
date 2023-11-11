@@ -5,42 +5,40 @@ using PedagogyPrime.Core.IRepositories;
 
 namespace PedagogyPrime.Infrastructure.Commands.Documents.Create
 {
-    public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, BaseResponse<bool>>
-    {
-        private readonly IDocumentRepository documentRepository;
+	public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, BaseResponse<bool>>
+	{
+		private readonly IDocumentRepository documentRepository;
 
-        public CreateDocumentCommandHandler(IDocumentRepository documentRepository)
-        {
-            this.documentRepository = documentRepository;
-        }
-        public async Task<BaseResponse<bool>> Handle(
-            CreateDocumentCommand request,
-            CancellationToken cancellationToken
-        )
-        {
-            try
-            {
-                var document = new Document
-                {
-                    Id = Guid.NewGuid(),
-                    Content = request.Content,
-                    State = request.State,
-                    Type = request.Type,
-                    FirebaseLink = request.FirebaseLink,
-                };
+		public CreateDocumentCommandHandler(IDocumentRepository documentRepository)
+		{
+			this.documentRepository = documentRepository;
+		}
 
-                await documentRepository.Add(document);
-                await documentRepository.SaveChanges();
+		public async Task<BaseResponse<bool>> Handle(
+			CreateDocumentCommand request,
+			CancellationToken cancellationToken
+		)
+		{
+			try
+			{
+				var document = new Document
+				{
+					Id = Guid.NewGuid(),
+					Content = request.Content,
+					State = request.State,
+					Type = request.Type,
+					FirebaseLink = request.FirebaseLink,
+				};
 
-                return BaseResponse<bool>.Created();
-            }
-            catch (Exception e)
-            {
-                return BaseResponse<bool>.BadRequest(new List<string>
-                {
-                    e.Message
-                });
-            }
-        }
-    }
+				await documentRepository.Add(document);
+				await documentRepository.SaveChanges();
+
+				return BaseResponse<bool>.Created();
+			}
+			catch
+			{
+				return BaseResponse<bool>.InternalServerError();
+			}
+		}
+	}
 }

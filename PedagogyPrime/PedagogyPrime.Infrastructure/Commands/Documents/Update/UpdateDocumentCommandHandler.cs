@@ -7,51 +7,46 @@ using PedagogyPrime.Infrastructure.Models.Document;
 
 namespace PedagogyPrime.Infrastructure.Commands.Documents.Update
 {
-    public class UpdateDocumentCommandHandler : IRequestHandler<UpdateDocumentCommand, BaseResponse<DocumentDetails>>
-    {
-        private readonly IDocumentRepository documentRepository;
+	public class UpdateDocumentCommandHandler : IRequestHandler<UpdateDocumentCommand, BaseResponse<DocumentDetails>>
+	{
+		private readonly IDocumentRepository documentRepository;
 
-        public UpdateDocumentCommandHandler(IDocumentRepository documentRepository)
-        {
-            this.documentRepository = documentRepository;
-        }
-        public async Task<BaseResponse<DocumentDetails>> Handle(
-            UpdateDocumentCommand request,
-            CancellationToken cancellationToken
-       )
-        {
-            try
-            {
-                var oldDocument = await documentRepository.GetById(request.Id);
-                if (oldDocument == null)
-                {
-                    return BaseResponse<DocumentDetails>.NotFound();
-                }
+		public UpdateDocumentCommandHandler(IDocumentRepository documentRepository)
+		{
+			this.documentRepository = documentRepository;
+		}
 
-                var updatedDocument = new Document
-                {
-                    Id = oldDocument.Id,
-                    UserId = request.UserId,
-                    Content = request.Content,
-                    State = request.State,
-                    Type = request.Type,
-                    FirebaseLink = request.FirebaseLink
-                };
+		public async Task<BaseResponse<DocumentDetails>> Handle(
+			UpdateDocumentCommand request,
+			CancellationToken cancellationToken
+	   )
+		{
+			try
+			{
+				var document = await documentRepository.GetById(request.Id);
 
-                documentRepository.Update(updatedDocument);
-                await documentRepository.SaveChanges();
+				if(document == null)
+				{
+					return BaseResponse<DocumentDetails>.NotFound("Document");
+				}
 
-                var documentDetails = GenericMapper<Document, DocumentDetails>.Map(updatedDocument);
+				document.Id = document.Id;
+				document.UserId = request.UserId;
+				document.Content = request.Content;
+				document.State = request.State;
+				document.Type = request.Type;
+				document.FirebaseLink = request.FirebaseLink;
 
-                return BaseResponse<DocumentDetails>.Ok(documentDetails);
-            }
-            catch (Exception e)
-            {
-                return BaseResponse<DocumentDetails>.BadRequest(new List<string>
-                {
-                    e.Message
-                });
-            }
-        }
-    }
+				await documentRepository.SaveChanges();
+
+				var documentDetails = GenericMapper<Document, DocumentDetails>.Map(document);
+
+				return BaseResponse<DocumentDetails>.Ok(documentDetails);
+			}
+			catch
+			{
+				return BaseResponse<DocumentDetails>.InternalServerError();
+			}
+		}
+	}
 }
