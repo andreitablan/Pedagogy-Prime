@@ -3,6 +3,9 @@ The architecture of an online tool for the analysis of academic curricular mater
 This project is done for [Advanced Software Engineering Techniques](https://profs.info.uaic.ro/~adiftene/Scoala/2024/ASET/index.htm?fbclid=IwAR10FNcD2G9hsoqALrrjuGcjkoKXhdoUwgk-fGPCgT3QaS9hAjPy35rcDas) course at the [Faculty of Computer Science Iasi](https://www.info.uaic.ro/).
 - [Trello Board](https://trello.com/b/HcLIIuT6)
 - [Tasks](https://docs.google.com/document/d/1bJmPpIYV2hopaFNLbNVE2fENTN-3CqJLhOjUI7_ayYs/edit#heading=h.98ibuv5xh786)
+
+Naming convention for branches is **/feature/lab[n]-v[m]/name_person**, where **n** is the number of the laboratory, **m** is the version of the branch (this helps to create multiple branches for separate purposes). 
+
 ## Laboratory 3
 - [Requirement analysis](https://docs.google.com/document/d/1lAsE5mVDQusDkmSFsGU7FP6S6FCjtHQH_reb62fKUa0/edit?usp=sharing)
 - [UML Diagrams](https://drive.google.com/drive/folders/1an3M8JxSFjJzNQUVav8LHmsHyzchS7dm?usp=drive_link)

@@ -1,19 +1,10 @@
-﻿namespace PedagogyPrime.Core.Entities
-{
-    public enum State
-    {
-        Approved, 
-        Pending,
-        Denied
-    }
-    public enum DocumentType
-    {
-        Public,
-        Private
-    }
+﻿using PedagogyPrime.Core.Entities;
 
-    public class Document : BaseEntity
+namespace PedagogyPrime.Infrastructure.Models.Document
+{
+    public class DocumentDetails
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public string Content { get; set; } = String.Empty;
         public State State { get; set; }
