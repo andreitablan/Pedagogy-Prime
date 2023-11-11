@@ -58,7 +58,10 @@ namespace PedagogyPrime.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> Delete(Guid id)
         {
-            var command = new DeleteDocumentCommand { UserId = id };
+            var command = new DeleteDocumentCommand 
+            { 
+                Id = id 
+            };
             return HandleResponse(await _mediator.Send(command));
         }
     }

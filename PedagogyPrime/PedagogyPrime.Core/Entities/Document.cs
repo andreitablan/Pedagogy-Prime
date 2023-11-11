@@ -6,7 +6,7 @@
         Pending,
         Denied
     }
-    public enum TypeDoc
+    public enum DocumentType
     {
         Public,
         Private
@@ -17,7 +17,7 @@
         public Guid UserId { get; set; }
         public string Content { get; set; } = String.Empty;
         public State State { get; set; }
-        public TypeDoc Type { get; set; } = TypeDoc.Public;
+        public DocumentType Type { get; set; } = DocumentType.Public;
         public String FirebaseLink { get; set; } = String.Empty;
     }
 }

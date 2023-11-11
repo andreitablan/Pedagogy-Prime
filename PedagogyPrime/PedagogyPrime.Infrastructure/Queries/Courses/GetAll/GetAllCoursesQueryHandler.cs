@@ -15,9 +15,9 @@ namespace PedagogyPrime.Infrastructure.Queries.Courses.GetAll
             this.courseRepository = courseRepository;
         }
         public async Task<BaseResponse<List<CourseDetails>>> Handle(
-           GetAllCoursesQuery request,
-        CancellationToken cancellationToken
-       )
+            GetAllCoursesQuery request,
+            CancellationToken cancellationToken
+        )
         {
             try
             {

@@ -10,8 +10,6 @@
 		public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
 		{
 			services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(CreateUserCommand).Assembly); });
-			services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(typeof(CreateDocumentCommand).Assembly); });
-			services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(typeof(CreateCourseCommand).Assembly); });
 			return services;
 		}
 	}

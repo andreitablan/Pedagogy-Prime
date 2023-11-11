@@ -15,9 +15,9 @@ namespace PedagogyPrime.Infrastructure.Queries.Documents.GetById
             this.documentRepository = documentRepository;
         }
         public async Task<BaseResponse<DocumentDetails>> Handle(
-          GetDocumentByIdQuery request,
-       CancellationToken cancellationToken
-      )
+            GetDocumentByIdQuery request,
+            CancellationToken cancellationToken
+        )
         {
             try
             {

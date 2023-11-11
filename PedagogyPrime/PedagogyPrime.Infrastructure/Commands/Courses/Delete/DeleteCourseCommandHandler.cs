@@ -19,13 +19,13 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Delete
         {
             try
             {
-                var course = await courseRepository.GetById(request.UserId);
+                var course = await courseRepository.GetById(request.Id);
                 if (course == null)
                 {
                     return BaseResponse<bool>.NotFound();
                 }
 
-                await courseRepository.Delete(request.UserId);
+                await courseRepository.Delete(request.Id);
                 await courseRepository.SaveChanges();
                 return BaseResponse<bool>.Ok(); 
             }

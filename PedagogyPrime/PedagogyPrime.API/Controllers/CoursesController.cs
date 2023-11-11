@@ -53,7 +53,7 @@ namespace PedagogyPrime.API.Controllers
         {
             var command = new DeleteCourseCommand
             {
-                UserId = id
+                Id = id
             };
             return HandleResponse(await _mediator.Send(command));
         }

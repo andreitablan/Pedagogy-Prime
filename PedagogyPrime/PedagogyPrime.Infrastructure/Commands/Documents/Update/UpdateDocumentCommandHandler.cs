@@ -16,8 +16,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Documents.Update
             this.documentRepository = documentRepository;
         }
         public async Task<BaseResponse<DocumentDetails>> Handle(
-           UpdateDocumentCommand request,
-        CancellationToken cancellationToken
+            UpdateDocumentCommand request,
+            CancellationToken cancellationToken
        )
         {
             try
