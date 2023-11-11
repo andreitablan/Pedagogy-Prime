@@ -8,7 +8,8 @@
 		BadRequest,
 		NotFound,
 		Forbidden,
-		Created
+		Created,
+		InternalServerError
 	}
 
 	public class BaseResponse<T>
@@ -36,14 +37,14 @@
 			};
 		}
 
-		public static BaseResponse<T> NotFound()
+		public static BaseResponse<T> NotFound(string resource)
 		{
 			return new BaseResponse<T>
 			{
 				StatusCode = StatusCodes.NotFound,
 				Errors = new List<string>
 				{
-					$"{typeof(T).Name} not found"
+					$"resource not found"
 				}
 			};
 		}
@@ -54,6 +55,14 @@
 			{
 				StatusCode = StatusCodes.BadRequest,
 				Errors = message
+			};
+		}
+
+		public static BaseResponse<T> InternalServerError()
+		{
+			return new BaseResponse<T>
+			{
+				StatusCode = StatusCodes.InternalServerError
 			};
 		}
 

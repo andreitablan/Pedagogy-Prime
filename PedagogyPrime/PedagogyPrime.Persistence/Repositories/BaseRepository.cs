@@ -32,7 +32,6 @@
 		{
 			return await _context
 				.Set<TEntity>()
-				.AsNoTracking()
 				.FirstOrDefaultAsync(e => e.Id == id);
 		}
 
@@ -54,20 +53,13 @@
 				.Update(entity);
 		}
 
-		public virtual async Task Delete(
+		public virtual async Task<int> Delete(
 			Guid id
 		)
 		{
-			var entity = await GetById(id);
-
-			if(entity == null)
-			{
-				throw new Exception("No entity found with specified id");
-			}
-
-			_context
+			return await _context
 				.Set<TEntity>()
-				.Remove(entity);
+				.DeleteByKeyAsync(id);
 		}
 
 		public async Task<int> SaveChanges()

@@ -36,7 +36,8 @@
 				CustomStatusCodes.NotFound => NotFound(),
 				CustomStatusCodes.BadRequest => BadRequest(response),
 				CustomStatusCodes.Forbidden => Forbid(),
-				CustomStatusCodes.Created => StatusCode(StatusCodes.Status201Created)
+				CustomStatusCodes.Created => StatusCode(StatusCodes.Status201Created),
+				CustomStatusCodes.InternalServerError => StatusCode(StatusCodes.Status500InternalServerError)
 			};
 		}
 	}
