@@ -66,7 +66,8 @@
 		{
 			var claims = new[]
 			{
-				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+				new Claim(ClaimTypes.Role, user.Role.ToString()),
 			};
 
 			var key = new SymmetricSecurityKey(
