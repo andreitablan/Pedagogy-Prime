@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 namespace PedagogyPrime.API
 {
 	using MediatR;
-	using Microsoft.AspNetCore.Authentication.JwtBearer;
-	using Microsoft.IdentityModel.Tokens;
 	using Microsoft.OpenApi.Models;
-	using System.Text;
+	using Security;
 
 	public static class APIServices
 	{
@@ -58,19 +56,10 @@ namespace PedagogyPrime.API
 					new MediaTypeApiVersionReader("ver"));
 			});
 
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer(options =>
-				{
-					options.TokenValidationParameters = new TokenValidationParameters
-					{
-						ValidateIssuerSigningKey = true,
-						IssuerSigningKey =
-							new SymmetricSecurityKey(
-								Encoding.UTF8.GetBytes(configuration.GetSection("Token").Value!)),
-						ValidateIssuer = false,
-						ValidateAudience = false
-					};
-				});
+
+			services.AddAPIAuthentication(configuration);
+
+			services.AddAPIAuthorization();
 
 			//TODO: add "AllowedCorsHosts": "http://localhost:port" to applicationsettings.Development when connecting with frontend
 			string[] allowedCorsHosts = null ?? new[] { "*" };

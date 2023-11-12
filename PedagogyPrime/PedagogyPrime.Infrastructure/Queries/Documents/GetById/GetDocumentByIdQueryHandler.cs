@@ -1,5 +1,4 @@
-﻿using MediatR;
-using PedagogyPrime.Core.Common;
+﻿using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
@@ -7,16 +6,18 @@ using PedagogyPrime.Infrastructure.Models.Document;
 
 namespace PedagogyPrime.Infrastructure.Queries.Documents.GetById
 {
-	public class GetDocumentByIdQueryHandler : IRequestHandler<GetDocumentByIdQuery, BaseResponse<DocumentDetails>>
+	using IAuthorization;
+
+	public class GetDocumentByIdQueryHandler : BaseRequestHandler<GetDocumentByIdQuery, BaseResponse<DocumentDetails>>
 	{
 		private readonly IDocumentRepository documentRepository;
 
-		public GetDocumentByIdQueryHandler(IDocumentRepository documentRepository)
+		public GetDocumentByIdQueryHandler(IDocumentRepository documentRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.documentRepository = documentRepository;
 		}
 
-		public async Task<BaseResponse<DocumentDetails>> Handle(
+		public override async Task<BaseResponse<DocumentDetails>> Handle(
 			GetDocumentByIdQuery request,
 			CancellationToken cancellationToken
 		)
@@ -28,6 +29,11 @@ namespace PedagogyPrime.Infrastructure.Queries.Documents.GetById
 				if(document == null)
 				{
 					return BaseResponse<DocumentDetails>.NotFound("Document");
+				}
+
+				if(!(await IsAuthorized(request.UserId, document.UserId)))
+				{
+					return BaseResponse<DocumentDetails>.Forbbiden();
 				}
 
 				var documentDetails = GenericMapper<Document, DocumentDetails>.Map(document);

@@ -1,5 +1,4 @@
-﻿using MediatR;
-using PedagogyPrime.Core.Common;
+﻿using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
@@ -7,22 +6,29 @@ using PedagogyPrime.Infrastructure.Models.Document;
 
 namespace PedagogyPrime.Infrastructure.Commands.Documents.Update
 {
-	public class UpdateDocumentCommandHandler : IRequestHandler<UpdateDocumentCommand, BaseResponse<DocumentDetails>>
+	using IAuthorization;
+
+	public class UpdateDocumentCommandHandler : BaseRequestHandler<UpdateDocumentCommand, BaseResponse<DocumentDetails>>
 	{
 		private readonly IDocumentRepository documentRepository;
 
-		public UpdateDocumentCommandHandler(IDocumentRepository documentRepository)
+		public UpdateDocumentCommandHandler(IDocumentRepository documentRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.documentRepository = documentRepository;
 		}
 
-		public async Task<BaseResponse<DocumentDetails>> Handle(
+		public override async Task<BaseResponse<DocumentDetails>> Handle(
 			UpdateDocumentCommand request,
 			CancellationToken cancellationToken
 	   )
 		{
 			try
 			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<DocumentDetails>.Forbbiden();
+				}
+
 				var document = await documentRepository.GetById(request.Id);
 
 				if(document == null)
@@ -32,10 +38,9 @@ namespace PedagogyPrime.Infrastructure.Commands.Documents.Update
 
 				document.Id = document.Id;
 				document.UserId = request.UserId;
-				document.Content = request.Content;
+				document.ContentUrl = request.ContentUrl;
 				document.State = request.State;
 				document.Type = request.Type;
-				document.FirebaseLink = request.FirebaseLink;
 
 				await documentRepository.SaveChanges();
 

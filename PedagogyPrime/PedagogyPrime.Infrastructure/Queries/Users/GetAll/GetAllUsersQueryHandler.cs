@@ -4,25 +4,30 @@
 	using Core.Common;
 	using Core.Entities;
 	using Core.IRepositories;
-	using MediatR;
+	using IAuthorization;
 	using Models.User;
 
-	public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, BaseResponse<List<UserDetails>>>
+	public class GetAllUsersQueryHandler : BaseRequestHandler<GetAllUsersQuery, BaseResponse<List<UserDetails>>>
 	{
 		private readonly IUserRepository userRepository;
 
-		public GetAllUsersQueryHandler(IUserRepository userRepository)
+		public GetAllUsersQueryHandler(IUserRepository userRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.userRepository = userRepository;
 		}
 
-		public async Task<BaseResponse<List<UserDetails>>> Handle(
+		public override async Task<BaseResponse<List<UserDetails>>> Handle(
 			GetAllUsersQuery request,
 			CancellationToken cancellationToken
 		)
 		{
 			try
 			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<List<UserDetails>>.Forbbiden();
+				}
+
 				var users = await userRepository.GetAll();
 
 				var usersDetails = users.Select(GenericMapper<User, UserDetails>.Map).ToList();

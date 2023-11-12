@@ -4,19 +4,20 @@
 	using Core.Common;
 	using Core.Entities;
 	using Core.IRepositories;
-	using MediatR;
+	using IAuthorization;
 	using Models.User;
 
-	public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, BaseResponse<UserDetails>>
+	public class GetUserByIdQueryHandler : BaseRequestHandler<GetUserByIdQuery, BaseResponse<UserDetails>>
 	{
 		private readonly IUserRepository userRepository;
 
-		public GetUserByIdQueryHandler(IUserRepository userRepository)
+
+		public GetUserByIdQueryHandler(IUserRepository userRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.userRepository = userRepository;
 		}
 
-		public async Task<BaseResponse<UserDetails>> Handle(
+		public override async Task<BaseResponse<UserDetails>> Handle(
 			GetUserByIdQuery request,
 			CancellationToken cancellationToken
 		)
@@ -28,6 +29,11 @@
 				if(user == null)
 				{
 					return BaseResponse<UserDetails>.NotFound("User");
+				}
+
+				if(!(await IsAuthorized(request.UserId, user.Id)))
+				{
+					return BaseResponse<UserDetails>.Forbbiden();
 				}
 
 				var userDetails = GenericMapper<User, UserDetails>.Map(user);

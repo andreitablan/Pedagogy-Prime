@@ -1,35 +1,46 @@
-﻿using MediatR;
-using PedagogyPrime.Core.Common;
+﻿using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 
 namespace PedagogyPrime.Infrastructure.Commands.Courses.Create
 {
-	public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, BaseResponse<bool>>
+	using Common;
+	using IAuthorization;
+
+	public class CreateCourseCommandHandler : BaseRequestHandler<CreateCourseCommand, BaseResponse<bool>>
 	{
 		private readonly ICourseRepository courseRepository;
 
-		public CreateCourseCommandHandler(ICourseRepository courseRepository)
+		public CreateCourseCommandHandler(
+			ICourseRepository courseRepository,
+			IUserAuthorization userAuthorization
+		) : base(userAuthorization)
 		{
 			this.courseRepository = courseRepository;
 		}
 
-		public async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<bool>> Handle(
 			CreateCourseCommand request,
 			CancellationToken cancellationToken
 		)
 		{
 			try
 			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<bool>.Forbbiden();
+				}
+
 				var course = new Course
 				{
 					Id = Guid.NewGuid(),
 					Name = request.Name,
 					Description = request.Description,
-					Content = request.Content,
+					ContentUrl = request.ContentUrl,
 					Coverage = request.Coverage,
-					Subject = request.Subject
+					SubjectId = request.SubjectId
 				};
+
 				await courseRepository.Add(course);
 				await courseRepository.SaveChanges();
 

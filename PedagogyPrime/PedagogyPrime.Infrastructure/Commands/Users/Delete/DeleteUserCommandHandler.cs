@@ -1,25 +1,34 @@
 ﻿namespace PedagogyPrime.Infrastructure.Commands.Users.Delete
 {
+	using Common;
 	using Core.Common;
 	using Core.IRepositories;
-	using MediatR;
+	using PedagogyPrime.Infrastructure.IAuthorization;
 
-	public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, BaseResponse<bool>>
+	public class DeleteUserCommandHandler : BaseRequestHandler<DeleteUserCommand, BaseResponse<bool>>
 	{
 		private readonly IUserRepository userRepository;
 
-		public DeleteUserCommandHandler(IUserRepository userRepository)
+		public DeleteUserCommandHandler(
+			IUserRepository userRepository,
+			IUserAuthorization userAuthorization
+		) : base(userAuthorization)
 		{
 			this.userRepository = userRepository;
 		}
 
-		public async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<bool>> Handle(
 			DeleteUserCommand request,
 			CancellationToken cancellationToken
 		)
 		{
 			try
 			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<bool>.Forbbiden();
+				}
+
 				var result = await userRepository.Delete(request.Id);
 
 				if(result == 0)
