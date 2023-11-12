@@ -7,35 +7,32 @@ using PedagogyPrime.Infrastructure.Models.Course;
 
 namespace PedagogyPrime.Infrastructure.Queries.Courses.GetAll
 {
-    public class GetAllCoursesQueryHandler : IRequestHandler<GetAllCoursesQuery, BaseResponse<List<CourseDetails>>>
-    {
-        private readonly ICourseRepository courseRepository;
-        public GetAllCoursesQueryHandler(ICourseRepository courseRepository)
-        {
-            this.courseRepository = courseRepository;
-        }
-        public async Task<BaseResponse<List<CourseDetails>>> Handle(
-            GetAllCoursesQuery request,
-            CancellationToken cancellationToken
-        )
-        {
-            try
-            {
-                var courses = await courseRepository.GetAll();
+	public class GetAllCoursesQueryHandler : IRequestHandler<GetAllCoursesQuery, BaseResponse<List<CourseDetails>>>
+	{
+		private readonly ICourseRepository courseRepository;
 
-                var courseDetails = courses.Select(GenericMapper<Course, CourseDetails>.Map).ToList();
+		public GetAllCoursesQueryHandler(ICourseRepository courseRepository)
+		{
+			this.courseRepository = courseRepository;
+		}
 
-                return BaseResponse<List<CourseDetails>>.Ok(courseDetails);
-            }
-            catch (Exception e)
-            {
-                return BaseResponse<List<CourseDetails>>.BadRequest(
-                    new List<string>
-                    {
-                        e.Message
-                    }
-                );
-            }
-        }
-    }
+		public async Task<BaseResponse<List<CourseDetails>>> Handle(
+			GetAllCoursesQuery request,
+			CancellationToken cancellationToken
+		)
+		{
+			try
+			{
+				var courses = await courseRepository.GetAll();
+
+				var courseDetails = courses.Select(GenericMapper<Course, CourseDetails>.Map).ToList();
+
+				return BaseResponse<List<CourseDetails>>.Ok(courseDetails);
+			}
+			catch
+			{
+				return BaseResponse<List<CourseDetails>>.InternalServerError();
+			}
+		}
+	}
 }

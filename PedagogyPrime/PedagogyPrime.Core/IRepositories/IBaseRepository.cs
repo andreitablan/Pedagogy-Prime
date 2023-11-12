@@ -11,7 +11,7 @@
 
 		void Update(T entity);
 
-		Task Delete(Guid id);
+		Task<int> Delete(Guid id);
 
 		Task<int> SaveChanges();
 	}

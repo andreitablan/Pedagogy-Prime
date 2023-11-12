@@ -37,12 +37,9 @@
 
 				return BaseResponse<bool>.Created();
 			}
-			catch(Exception e)
+			catch
 			{
-				return BaseResponse<bool>.BadRequest(new List<string>
-				{
-					e.Message
-				});
+				return BaseResponse<bool>.InternalServerError();
 			}
 		}
 	}

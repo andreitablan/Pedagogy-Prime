@@ -29,14 +29,9 @@
 
 				return BaseResponse<List<UserDetails>>.Ok(usersDetails);
 			}
-			catch(Exception e)
+			catch
 			{
-				return BaseResponse<List<UserDetails>>.BadRequest(
-					new List<string>
-					{
-						e.Message
-					}
-				);
+				return BaseResponse<List<UserDetails>>.InternalServerError();
 			}
 		}
 	}
