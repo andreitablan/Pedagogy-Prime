@@ -8,6 +8,7 @@ using PedagogyPrime.Infrastructure.Models.Homework;
 using PedagogyPrime.Infrastructure.Queries.Documents.GetAll;
 using PedagogyPrime.Infrastructure.Queries.Documents.GetById;
 using PedagogyPrime.Infrastructure.Queries.Homeworks.GetAll;
+using PedagogyPrime.Infrastructure.Queries.Homeworks.GetById;
 
 namespace PedagogyPrime.API.Controllers
 {
@@ -24,17 +25,15 @@ namespace PedagogyPrime.API.Controllers
 			return HandleResponse(await _mediator.Send(new GetAllHomeworkQuery()));
 		}
 
-		/*
+	
 		[HttpGet("{id}")]
 		public async Task<ActionResult<HomeworkDetails>> GetById(Guid id)
 		{
-			var query = new GetDocumentByIdQuery
-			{
-				Id = id
-			};
+			var query = new GetHomeworkByIdQuery(id);
+			
 			return HandleResponse(await _mediator.Send(query));
 		}
-
+	/*
 		[HttpPost]
 		public async Task<ActionResult<bool>> Create(
 			[FromBody] CreateDocumentCommand command

@@ -26,7 +26,6 @@
     <Folder Include="Commands\Homeworks\Create\" />
     <Folder Include="Commands\Homeworks\Delete\" />
     <Folder Include="Commands\Homeworks\Update\" />
-    <Folder Include="Queries\Homeworks\GetById\" />
   </ItemGroup>
 
 </Project>
