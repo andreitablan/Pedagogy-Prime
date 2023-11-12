@@ -2,8 +2,6 @@
 {
 	using Commands.Users.Create;
 	using Microsoft.Extensions.DependencyInjection;
-	using PedagogyPrime.Infrastructure.Commands.Courses.Create;
-	using PedagogyPrime.Infrastructure.Commands.Documents.Create;
 
 	public static class InfrastructureServices
 	{

@@ -66,6 +66,18 @@
 			};
 		}
 
+		public static BaseResponse<T> InternalServerError(string message)
+		{
+			return new BaseResponse<T>
+			{
+				StatusCode = StatusCodes.InternalServerError,
+				Errors = new List<string>
+				{
+					message
+				}
+			};
+		}
+
 		public static BaseResponse<T> Forbbiden()
 		{
 			return new BaseResponse<T>()
