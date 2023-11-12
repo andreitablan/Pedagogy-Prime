@@ -1,14 +1,12 @@
-using System.Collections.Generic;
-using System;
-
 namespace PedagogyPrime.Core.Entities
-{    
-    public class Assignment: BaseEntity
-    {
-        public Guid CourseId { get; set; }
-        public DateTime Deadline { get; set; }
-        public string Description { get; set; }
-        public List<Homework> Homeworks { get; set; }
-        public Homework Solution { get; set; }
-    }
+{
+	public class Assignment : BaseEntity
+	{
+		public DateTime Deadline { get; set; }
+		public string Description { get; set; }
+		public List<Homework> Homeworks { get; set; }
+		public Guid SolutionId { get; set; }
+		public Guid CourseId { get; set; }
+		public Course Course { get; set; }
+	}
 }

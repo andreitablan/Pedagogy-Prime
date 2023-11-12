@@ -2,10 +2,12 @@
 {
 	using Core.Common;
 	using MediatR;
+	using Microsoft.AspNetCore.Authorization;
 	using Microsoft.AspNetCore.Mvc;
 	using CustomStatusCodes = Core.Common.StatusCodes;
 	using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
+	[Authorize]
 	[ApiController, Route("api/v{version:apiVersion}/[controller]")]
 	public class BaseController : ControllerBase
 	{
@@ -32,12 +34,12 @@
 		{
 			return response.StatusCode switch
 			{
-				CustomStatusCodes.Ok => Ok(response),
-				CustomStatusCodes.NotFound => NotFound(),
-				CustomStatusCodes.BadRequest => BadRequest(response),
-				CustomStatusCodes.Forbidden => Forbid(),
-				CustomStatusCodes.Created => StatusCode(StatusCodes.Status201Created),
-				CustomStatusCodes.InternalServerError => StatusCode(StatusCodes.Status500InternalServerError)
+				CustomStatusCodes.Ok => StatusCode(StatusCodes.Status200OK, response),
+				CustomStatusCodes.NotFound => StatusCode(StatusCodes.Status404NotFound, response),
+				CustomStatusCodes.BadRequest => StatusCode(StatusCodes.Status400BadRequest, response),
+				CustomStatusCodes.Forbidden => StatusCode(StatusCodes.Status403Forbidden, response),
+				CustomStatusCodes.Created => StatusCode(StatusCodes.Status201Created, response),
+				CustomStatusCodes.InternalServerError => StatusCode(StatusCodes.Status500InternalServerError, response)
 			};
 		}
 	}

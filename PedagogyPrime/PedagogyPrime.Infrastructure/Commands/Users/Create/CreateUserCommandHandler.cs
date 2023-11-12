@@ -1,26 +1,35 @@
 ﻿namespace PedagogyPrime.Infrastructure.Commands.Users.Create
 {
+	using Common;
 	using Core.Entities;
 	using Core.IRepositories;
-	using MediatR;
 	using PedagogyPrime.Core.Common;
+	using PedagogyPrime.Infrastructure.IAuthorization;
 
-	public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseResponse<bool>>
+	public class CreateUserCommandHandler : BaseRequestHandler<CreateUserCommand, BaseResponse<bool>>
 	{
 		private readonly IUserRepository userRepository;
 
-		public CreateUserCommandHandler(IUserRepository userRepository)
+		public CreateUserCommandHandler(
+			IUserRepository userRepository,
+			IUserAuthorization userAuthorization
+		) : base(userAuthorization)
 		{
 			this.userRepository = userRepository;
 		}
 
-		public async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<bool>> Handle(
 			CreateUserCommand request,
 			CancellationToken cancellationToken
 		)
 		{
 			try
 			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<bool>.Forbbiden();
+				}
+
 				var user = new User
 				{
 					Id = Guid.NewGuid(),

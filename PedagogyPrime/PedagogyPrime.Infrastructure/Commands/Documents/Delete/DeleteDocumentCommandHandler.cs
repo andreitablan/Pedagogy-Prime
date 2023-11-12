@@ -1,25 +1,32 @@
-﻿using MediatR;
-using PedagogyPrime.Core.Common;
+﻿using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.IRepositories;
 
 namespace PedagogyPrime.Infrastructure.Commands.Documents.Delete
 {
-	public class DeleteDocumentCommandHandler : IRequestHandler<DeleteDocumentCommand, BaseResponse<bool>>
+	using Common;
+	using PedagogyPrime.Infrastructure.IAuthorization;
+
+	public class DeleteDocumentCommandHandler : BaseRequestHandler<DeleteDocumentCommand, BaseResponse<bool>>
 	{
 		private readonly IDocumentRepository documentRepository;
 
-		public DeleteDocumentCommandHandler(IDocumentRepository documentRepository)
+		public DeleteDocumentCommandHandler(IDocumentRepository documentRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.documentRepository = documentRepository;
 		}
 
-		public async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<bool>> Handle(
 			DeleteDocumentCommand request,
 			CancellationToken cancellationToken
 		)
 		{
 			try
 			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<bool>.Forbbiden();
+				}
+
 				var result = await documentRepository.Delete(request.Id);
 
 				if(result == 0)

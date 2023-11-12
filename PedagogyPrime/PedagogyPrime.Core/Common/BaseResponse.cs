@@ -62,7 +62,23 @@
 		{
 			return new BaseResponse<T>
 			{
-				StatusCode = StatusCodes.InternalServerError
+				StatusCode = StatusCodes.InternalServerError,
+				Errors = new List<string>
+				{
+					"There was a problem with your request. Please contact the application admin for further details."
+				}
+			};
+		}
+
+		public static BaseResponse<T> InternalServerError(string message)
+		{
+			return new BaseResponse<T>
+			{
+				StatusCode = StatusCodes.InternalServerError,
+				Errors = new List<string>
+				{
+					message
+				}
 			};
 		}
 

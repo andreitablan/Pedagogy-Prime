@@ -4,27 +4,33 @@
 	using Core.Common;
 	using Core.Entities;
 	using Core.IRepositories;
-	using MediatR;
+	using IAuthorization;
 	using Models.User;
 
-	public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, BaseResponse<UserDetails>>
+	public class UpdateUserCommandHandler : BaseRequestHandler<UpdateUserCommand, BaseResponse<UserDetails>>
 	{
 		private readonly IUserRepository userRepository;
 
 		public UpdateUserCommandHandler(
-			IUserRepository userRepository
-		)
+			IUserRepository userRepository,
+			IUserAuthorization userAuthorization
+		) : base(userAuthorization)
 		{
 			this.userRepository = userRepository;
 		}
 
-		public async Task<BaseResponse<UserDetails>> Handle(
+		public override async Task<BaseResponse<UserDetails>> Handle(
 			UpdateUserCommand request,
 			CancellationToken cancellationToken
 		)
 		{
 			try
 			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<UserDetails>.Forbbiden();
+				}
+
 				var user = await userRepository.GetById(request.Id);
 
 				if(user == null)
