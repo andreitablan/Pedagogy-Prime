@@ -19,13 +19,4 @@
     <ProjectReference Include="..\PedagogyPrime.Persistence\PedagogyPrime.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\Assignments\Create\" />
-    <Folder Include="Commands\Assignments\Delete\" />
-    <Folder Include="Commands\Assignments\Update\" />
-    <Folder Include="Commands\Homeworks\Create\" />
-    <Folder Include="Commands\Homeworks\Delete\" />
-    <Folder Include="Commands\Homeworks\Update\" />
-  </ItemGroup>
-
 </Project>
