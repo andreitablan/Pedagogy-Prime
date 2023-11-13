@@ -1,8 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PedagogyPrime.Infrastructure.Commands.Assignments.Create;
+using PedagogyPrime.Infrastructure.Commands.Assignments.Delete;
+using PedagogyPrime.Infrastructure.Commands.Assignments.Update;
 using PedagogyPrime.Infrastructure.Commands.Documents.Create;
 using PedagogyPrime.Infrastructure.Commands.Documents.Delete;
 using PedagogyPrime.Infrastructure.Commands.Documents.Update;
+using PedagogyPrime.Infrastructure.Commands.Homeworks.Create;
+using PedagogyPrime.Infrastructure.Commands.Homeworks.Delete;
+using PedagogyPrime.Infrastructure.Commands.Homeworks.Update;
+using PedagogyPrime.Infrastructure.Models.Assignment;
 using PedagogyPrime.Infrastructure.Models.Document;
 using PedagogyPrime.Infrastructure.Models.Homework;
 using PedagogyPrime.Infrastructure.Queries.Documents.GetAll;
@@ -33,30 +40,31 @@ namespace PedagogyPrime.API.Controllers
 			
 			return HandleResponse(await _mediator.Send(query));
 		}
-	/*
-		[HttpPost]
-		public async Task<ActionResult<bool>> Create(
-			[FromBody] CreateDocumentCommand command
-		)
-		{
-			return HandleResponse(await _mediator.Send(command));
-		}
 
-		[HttpPut("{id}")]
-		public async Task<ActionResult<DocumentDetails>> Update(Guid id, [FromBody] UpdateDocumentCommand command)
-		{
-			command.Id = id;
-			return HandleResponse(await _mediator.Send(command));
-		}
+        [HttpPost]
+        public async Task<ActionResult<bool>> Create(
+               [FromBody] CreateHomeworkCommand command
+           )
+        {
+            return HandleResponse(await _mediator.Send(command));
+        }
 
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<bool>> Delete(Guid id)
-		{
-			var command = new DeleteDocumentCommand
-			{
-				Id = id
-			};
-			return HandleResponse(await _mediator.Send(command));
-		}*/
-	}
+        [HttpPut("{id}")]
+        public async Task<ActionResult<HomeworkDetails>> Update(
+            Guid id,
+            [FromBody] UpdateHomeworkCommand command
+        )
+        {
+            command.Id = id;
+            return HandleResponse(await _mediator.Send(command));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> Delete(
+            Guid id
+        )
+        {
+            return HandleResponse(await _mediator.Send(new DeleteHomeworkCommand(id)));
+        }
+    }
 }

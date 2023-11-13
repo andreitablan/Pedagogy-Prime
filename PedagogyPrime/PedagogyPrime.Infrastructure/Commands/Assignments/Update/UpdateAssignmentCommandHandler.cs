@@ -40,10 +40,7 @@
 				}
 				assignment.Deadline = request.Deadline;
 				assignment.Description = request.Description;
-				assignment.Homeworks = request.Homeworks;
-				assignment.SolutionId = request.SolutionId;
 				assignment.CourseId = request.CourseId;
-				assignment.Course = request.Course;
 
 				await assignmentRepository.SaveChanges();
 

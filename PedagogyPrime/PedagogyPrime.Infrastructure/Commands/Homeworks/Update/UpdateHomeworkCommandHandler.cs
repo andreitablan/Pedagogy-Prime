@@ -44,9 +44,7 @@
 				homework.Review = request.Review;
 				homework.ContentUrl = request.ContentUrl;
 				homework.UserId = request.UserId;
-				homework.User = request.User;
 				homework.AssignmentId = request.AssignmentId;
-				homework.Assignment = request.Assignment;
 
 
                 await homeworkRepository.SaveChanges();

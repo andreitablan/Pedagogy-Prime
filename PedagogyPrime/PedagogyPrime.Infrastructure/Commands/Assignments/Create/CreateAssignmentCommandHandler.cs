@@ -35,10 +35,7 @@
 					Id = Guid.NewGuid(),
 					Deadline = request.Deadline,
 					Description = request.Description,
-					Homeworks = request.Homeworks,
-					SolutionId = request.SolutionId,
 					CourseId = request.CourseId,
-					Course = request.Course
                  };
 
 				await assignmentRepository.Add(assignment);

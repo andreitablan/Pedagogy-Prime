@@ -33,14 +33,10 @@
 				var homework = new Homework
 				{
 					Id = Guid.NewGuid(),
-
-					Grade = request.Grade,
                     Review = request.Review,
 					ContentUrl = request.ContentUrl,
 					UserId = request.UserId,
-					User = request.User,
 					AssignmentId = request.AssignmentId,
-					Assignment = request.Assignment
                 };
 
 				await homeworkRepository.Add(homework);

@@ -1,9 +1,9 @@
 ﻿namespace PedagogyPrime.Infrastructure
 {
 	using Authorization;
-	using Commands.Users.Create;
 	using IAuthorization;
 	using Microsoft.Extensions.DependencyInjection;
+	using PedagogyPrime.Infrastructure.Commands.Homeworks.Create;
 
 	public static class InfrastructureServices
 	{
