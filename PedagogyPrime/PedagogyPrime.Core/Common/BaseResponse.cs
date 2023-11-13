@@ -37,7 +37,16 @@
 			};
 		}
 
-		public static BaseResponse<T> NotFound(string resource)
+        public static BaseResponse<Guid> Created(Guid id)
+        {
+			return new BaseResponse<Guid>
+			{
+				Resource = id,
+                StatusCode = StatusCodes.Created
+            };
+        }
+
+        public static BaseResponse<T> NotFound(string resource)
 		{
 			return new BaseResponse<T>
 			{
