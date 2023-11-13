@@ -3,25 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using PedagogyPrime.Infrastructure.Commands.Assignments.Create;
 using PedagogyPrime.Infrastructure.Commands.Assignments.Delete;
 using PedagogyPrime.Infrastructure.Commands.Assignments.Update;
-using PedagogyPrime.Infrastructure.Commands.Documents.Create;
-using PedagogyPrime.Infrastructure.Commands.Documents.Delete;
-using PedagogyPrime.Infrastructure.Commands.Documents.Update;
-using PedagogyPrime.Infrastructure.Commands.Homeworks.Create;
-using PedagogyPrime.Infrastructure.Commands.Users.Delete;
-using PedagogyPrime.Infrastructure.Commands.Users.Update;
 using PedagogyPrime.Infrastructure.Models.Assignment;
-using PedagogyPrime.Infrastructure.Models.Document;
-using PedagogyPrime.Infrastructure.Models.Homework;
-using PedagogyPrime.Infrastructure.Models.User;
 using PedagogyPrime.Infrastructure.Queries.Assignments.GetAll;
 using PedagogyPrime.Infrastructure.Queries.Assignments.GetById;
-using PedagogyPrime.Infrastructure.Queries.Documents.GetAll;
-using PedagogyPrime.Infrastructure.Queries.Documents.GetById;
-using PedagogyPrime.Infrastructure.Queries.Homeworks.GetAll;
 
 namespace PedagogyPrime.API.Controllers
 {
-	public class AssignmentsController : BaseController
+    public class AssignmentsController : BaseController
 	{
 		public AssignmentsController(IMediator mediator)
 			: base(mediator)

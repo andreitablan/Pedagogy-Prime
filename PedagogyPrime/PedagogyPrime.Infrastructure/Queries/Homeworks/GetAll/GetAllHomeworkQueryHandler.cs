@@ -1,5 +1,4 @@
-﻿using MediatR;
-using PedagogyPrime.Core.Common;
+﻿using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Infrastructure.Common;

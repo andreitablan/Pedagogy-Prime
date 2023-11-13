@@ -4,9 +4,6 @@ using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
 using PedagogyPrime.Infrastructure.IAuthorization;
 using PedagogyPrime.Infrastructure.Models.Assignment;
-using PedagogyPrime.Infrastructure.Models.Homework;
-using PedagogyPrime.Infrastructure.Queries.Homeworks.GetAll;
-using PedagogyPrime.Persistence.Repositories;
 
 namespace PedagogyPrime.Infrastructure.Queries.Assignments.GetAll
 {

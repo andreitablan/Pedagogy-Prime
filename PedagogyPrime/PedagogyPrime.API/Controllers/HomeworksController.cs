@@ -1,25 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PedagogyPrime.Infrastructure.Commands.Assignments.Create;
-using PedagogyPrime.Infrastructure.Commands.Assignments.Delete;
-using PedagogyPrime.Infrastructure.Commands.Assignments.Update;
-using PedagogyPrime.Infrastructure.Commands.Documents.Create;
-using PedagogyPrime.Infrastructure.Commands.Documents.Delete;
-using PedagogyPrime.Infrastructure.Commands.Documents.Update;
 using PedagogyPrime.Infrastructure.Commands.Homeworks.Create;
 using PedagogyPrime.Infrastructure.Commands.Homeworks.Delete;
 using PedagogyPrime.Infrastructure.Commands.Homeworks.Update;
-using PedagogyPrime.Infrastructure.Models.Assignment;
-using PedagogyPrime.Infrastructure.Models.Document;
 using PedagogyPrime.Infrastructure.Models.Homework;
-using PedagogyPrime.Infrastructure.Queries.Documents.GetAll;
-using PedagogyPrime.Infrastructure.Queries.Documents.GetById;
 using PedagogyPrime.Infrastructure.Queries.Homeworks.GetAll;
 using PedagogyPrime.Infrastructure.Queries.Homeworks.GetById;
 
 namespace PedagogyPrime.API.Controllers
 {
-	public class HomeworksController : BaseController
+    public class HomeworksController : BaseController
 	{
 		public HomeworksController(IMediator mediator)
 			: base(mediator)
@@ -42,7 +32,7 @@ namespace PedagogyPrime.API.Controllers
 		}
 
         [HttpPost]
-        public async Task<ActionResult<bool>> Create(
+        public async Task<ActionResult<Guid>> Create(
                [FromBody] CreateHomeworkCommand command
            )
         {
