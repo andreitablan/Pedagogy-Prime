@@ -43,7 +43,7 @@ namespace PedagogyPrime.API.Controllers
 		}
 
         [HttpPost]
-        public async Task<ActionResult<bool>> Create(
+        public async Task<ActionResult<Guid>> Create(
             [FromBody] CreateAssignmentCommand command
         )
         {

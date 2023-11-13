@@ -4,7 +4,7 @@
 	using PedagogyPrime.Core.Common;
 	using PedagogyPrime.Core.Entities;
 
-	public class CreateAssignmentCommand : BaseRequest<BaseResponse<bool>>
+	public class CreateAssignmentCommand : BaseRequest<BaseResponse<Guid>>
 	{
         public DateTime Deadline { get; set; }
         public string Description { get; set; }

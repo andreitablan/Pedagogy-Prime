@@ -6,7 +6,7 @@
 	using PedagogyPrime.Core.Common;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 
-	public class CreateHomeworkCommandHandler : BaseRequestHandler<CreateHomeworkCommand, BaseResponse<bool>>
+	public class CreateHomeworkCommandHandler : BaseRequestHandler<CreateHomeworkCommand, BaseResponse<Guid>>
 	{
 		private readonly IHomeworkRepository homeworkRepository;
 
@@ -18,7 +18,7 @@
 			this.homeworkRepository = homeworkRepository;
 		}
 
-		public override async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<Guid>> Handle(
             CreateHomeworkCommand request,
 			CancellationToken cancellationToken
 		)
@@ -27,7 +27,7 @@
 			{
 				if(!(await IsAuthorized(request.UserId)))
 				{
-					return BaseResponse<bool>.Forbbiden();
+					return BaseResponse<Guid>.Forbbiden();
 				}
 
 				var homework = new Homework
@@ -42,11 +42,11 @@
 				await homeworkRepository.Add(homework);
 				await homeworkRepository.SaveChanges();
 
-				return BaseResponse<bool>.Created();
+				return BaseResponse<Guid>.Created(homework.Id);
 			}
 			catch
 			{
-				return BaseResponse<bool>.InternalServerError();
+				return BaseResponse<Guid>.InternalServerError();
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 	using PedagogyPrime.Core.Common;
 	using PedagogyPrime.Core.Entities;
 
-	public class CreateHomeworkCommand : BaseRequest<BaseResponse<bool>>
+	public class CreateHomeworkCommand : BaseRequest<BaseResponse<Guid>>
 	{
         public string Review { get; set; }
         public string ContentUrl { get; set; }

@@ -6,7 +6,7 @@
 	using PedagogyPrime.Core.Common;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 
-	public class CreateAssignmentCommandHandler : BaseRequestHandler<CreateAssignmentCommand, BaseResponse<bool>>
+	public class CreateAssignmentCommandHandler : BaseRequestHandler<CreateAssignmentCommand, BaseResponse<Guid>>
 	{
 		private readonly IAssignmentRepository assignmentRepository;
 
@@ -18,7 +18,7 @@
 			this.assignmentRepository = assignmentRepository;
 		}
 
-		public override async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<Guid>> Handle(
 			CreateAssignmentCommand request,
 			CancellationToken cancellationToken
 		)
@@ -27,7 +27,7 @@
 			{
 				if(!(await IsAuthorized(request.UserId)))
 				{
-					return BaseResponse<bool>.Forbbiden();
+					return BaseResponse<Guid>.Forbbiden();
 				}
 
 				var assignment = new Assignment
@@ -41,11 +41,11 @@
 				await assignmentRepository.Add(assignment);
 				await assignmentRepository.SaveChanges();
 
-				return BaseResponse<bool>.Created();
+				return BaseResponse<Guid>.Created(assignment.Id);
 			}
 			catch
 			{
-				return BaseResponse<bool>.InternalServerError();
+				return BaseResponse<Guid>.InternalServerError();
 			}
 		}
 	}
