@@ -34,7 +34,7 @@ namespace PedagogyPrime.API.Controllers
 
 		[HttpPost]
 		public async Task<ActionResult<bool>> Create(
-			[FromBody] CreateUserCommand command
+			[FromBody] CreateHomeworkCommand command
 		)
 		{
 			return HandleResponse(await _mediator.Send(command));

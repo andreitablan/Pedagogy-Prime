@@ -9,7 +9,7 @@
 	{
 		public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
 		{
-			services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(CreateUserCommand).Assembly); });
+			services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(CreateHomeworkCommand).Assembly); });
 
 			services.AddScoped<IUserAuthorization, UserAuthorization>();
 			return services;
