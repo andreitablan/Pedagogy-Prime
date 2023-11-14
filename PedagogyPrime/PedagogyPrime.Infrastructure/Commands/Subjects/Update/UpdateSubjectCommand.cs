@@ -2,7 +2,7 @@
 {
 	using Common;
 	using Core.Common;
-	using Models.User;
+	using Models.Subject;
 	using PedagogyPrime.Core.Entities;
 	using System.Text.Json.Serialization;
 

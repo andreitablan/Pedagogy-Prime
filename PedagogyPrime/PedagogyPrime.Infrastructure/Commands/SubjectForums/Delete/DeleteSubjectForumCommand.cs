@@ -2,7 +2,7 @@
 using PedagogyPrime.Infrastructure.Common;
 using System.Text.Json.Serialization;
 
-namespace PedagogyPrime.Infrastructure.Commands.SubjectForum.Delete
+namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Delete
 {
     public class DeleteSubjectForumCommand : BaseRequest<BaseResponse<bool>>
     {

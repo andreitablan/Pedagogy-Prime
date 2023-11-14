@@ -1,7 +1,7 @@
 ﻿using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.IRepositories;
 
-namespace PedagogyPrime.Infrastructure.Commands.SubjectForum.Delete
+namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Delete
 {
 	using Common;
 	using PedagogyPrime.Infrastructure.IAuthorization;
@@ -10,7 +10,7 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForum.Delete
 	{
 		private readonly ISubjectForumRepository subjectForumRepository;
 
-		public DeleteDocumentCommandHandler(ISubjectForumRepository subjectForumRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
+		public DeleteSubjectForumCommandHandler(ISubjectForumRepository subjectForumRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.subjectForumRepository = subjectForumRepository;
 		}

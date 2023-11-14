@@ -2,7 +2,7 @@
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
-using PedagogyPrime.Infrastructure.Models.Document;
+using PedagogyPrime.Infrastructure.Models.Subject;
 
 namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetById
 {
@@ -28,7 +28,7 @@ namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetById
 
 				if(subject == null)
 				{
-					return BaseResponse<DocumentDetails>.NotFound("Subject");
+					return BaseResponse<SubjectDetails>.NotFound("Subject");
 				}
 
 				var subjectDetails = GenericMapper<Subject, SubjectDetails>.Map(subject);

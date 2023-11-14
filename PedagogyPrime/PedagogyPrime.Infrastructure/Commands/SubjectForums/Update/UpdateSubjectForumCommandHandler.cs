@@ -2,9 +2,9 @@
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
-using PedagogyPrime.Infrastructure.Models.Document;
+using PedagogyPrime.Infrastructure.Models.SubjectForum;
 
-namespace PedagogyPrime.Infrastructure.Commands.Subjects.Update
+namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Update
 {
 	using IAuthorization;
 
@@ -17,7 +17,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Subjects.Update
 			this.subjectForumRepository = subjectForumRepository;
 		}
 
-		public override async Task<BaseResponse<SubjectDetails>> Handle(
+		public override async Task<BaseResponse<SubjectForumDetails>> Handle(
             UpdateSubjectForumCommand request,
 			CancellationToken cancellationToken
 	   )
@@ -31,13 +31,13 @@ namespace PedagogyPrime.Infrastructure.Commands.Subjects.Update
 
 				var subjectForum = await subjectForumRepository.GetById(request.Id);
 
-				if(subject == null)
+				if(subjectForum == null)
 				{
 					return BaseResponse<SubjectForumDetails>.NotFound("SubjectForum");
 				}
 
-                subject.Id = subject.Id;
-                subject.SubjectId = request.SubjectId;
+                subjectForum.Id = subjectForum.Id;
+                subjectForum.SubjectId = request.SubjectId;
 
 				await subjectForumRepository.SaveChanges();
 

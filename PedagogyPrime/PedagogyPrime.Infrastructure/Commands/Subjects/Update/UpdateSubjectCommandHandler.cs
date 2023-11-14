@@ -2,7 +2,7 @@
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
-using PedagogyPrime.Infrastructure.Models.Document;
+using PedagogyPrime.Infrastructure.Models.Subject;
 
 namespace PedagogyPrime.Infrastructure.Commands.Subjects.Update
 {

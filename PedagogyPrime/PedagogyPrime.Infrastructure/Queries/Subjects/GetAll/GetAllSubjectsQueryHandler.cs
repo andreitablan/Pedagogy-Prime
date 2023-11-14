@@ -2,7 +2,7 @@
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
-using PedagogyPrime.Infrastructure.Models.Document;
+using PedagogyPrime.Infrastructure.Models.Subject;
 
 namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetAll
 {
@@ -12,7 +12,7 @@ namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetAll
 	{
 		private readonly ISubjectRepository subjectRepository;
 
-		public GetAllDocumentsQueryHandler(ISubjectRepository subjectRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
+		public GetAllSubjectsQueryHandler(ISubjectRepository subjectRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.subjectRepository = subjectRepository;
 		}
@@ -31,13 +31,13 @@ namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetAll
 
 				var subjects = await subjectRepository.GetAll();
 
-				var subjectsDetails = subject.Select(GenericMapper<Subject, SubjectDetails>.Map).ToList();
+				var subjectsDetails = subjects.Select(GenericMapper<Subject, SubjectDetails>.Map).ToList();
 
 				return BaseResponse<List<SubjectDetails>>.Ok(subjectsDetails);
 			}
 			catch
 			{
-				return BaseResponse<List<DocumentDetails>>.InternalServerError();
+				return BaseResponse<List<SubjectDetails>>.InternalServerError();
 			}
 		}
 	}

@@ -1,8 +1,8 @@
-﻿namespace PedagogyPrime.Infrastructure.Commands.SubjectForum.Update
+﻿namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Update
 {
 	using Common;
 	using Core.Common;
-	using Models.User;
+	using Models.SubjectForum;
 	using PedagogyPrime.Core.Entities;
 	using System.Text.Json.Serialization;
 

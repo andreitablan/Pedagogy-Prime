@@ -3,7 +3,7 @@ using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.IAuthorization;
 
-namespace PedagogyPrime.Infrastructure.Commands.SubjectForum.Create
+namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 {
 	using Common;
 
@@ -11,7 +11,7 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForum.Create
 	{
 		private readonly ISubjectForumRepository subjectForumRepository;
 
-		public CreateSubjectCommandHandler(ISubjectForumRepository subjectForumRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
+		public CreateSubjectForumCommandHandler(ISubjectForumRepository subjectForumRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.subjectForumRepository = subjectForumRepository;
 		}
@@ -28,7 +28,7 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForum.Create
 					return BaseResponse<bool>.Forbbiden();
 				}
 
-				var subjectForum = new Subject
+				var subjectForum = new SubjectForum
 				{
 					Id = Guid.NewGuid(),
 				};

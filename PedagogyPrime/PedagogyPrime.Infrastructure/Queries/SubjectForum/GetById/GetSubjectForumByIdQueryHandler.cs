@@ -2,9 +2,9 @@
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
-using PedagogyPrime.Infrastructure.Models.Document;
+using PedagogyPrime.Infrastructure.Models.SubjectForum;
 
-namespace PedagogyPrime.Infrastructure.Queries.SubjectForum.GetById
+namespace PedagogyPrime.Infrastructure.Queries.SubjectForums.GetById
 {
 	using IAuthorization;
 
