@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PedagogyPrime.Persistence.Context;
 
@@ -11,9 +12,11 @@ using PedagogyPrime.Persistence.Context;
 namespace PedagogyPrime.Persistence.Migrations
 {
     [DbContext(typeof(PedagogyPrimeDbContext))]
-    partial class PedagogyPrimeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231113165549_UpdateRequiredFieldsForAssignmentAndHomework")]
+    partial class UpdateRequiredFieldsForAssignmentAndHomework
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

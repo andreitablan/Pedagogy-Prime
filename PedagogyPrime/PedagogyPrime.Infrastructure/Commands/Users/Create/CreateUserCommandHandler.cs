@@ -19,7 +19,7 @@
 		}
 
 		public override async Task<BaseResponse<bool>> Handle(
-			CreateUserCommand request,
+            CreateUserCommand request,
 			CancellationToken cancellationToken
 		)
 		{

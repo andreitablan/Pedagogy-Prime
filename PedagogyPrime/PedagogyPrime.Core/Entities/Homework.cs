@@ -16,8 +16,8 @@ namespace PedagogyPrime.Core.Entities
 	};
 	public class Homework : BaseEntity
 	{
-		public Grade Grade { get; set; }
-		public string Review { get; set; }
+		public Grade? Grade { get; set; }
+		public string? Review { get; set; }
 		public string ContentUrl { get; set; }
 		public Guid UserId { get; set; }
 		public User User { get; set; }
