@@ -31,6 +31,7 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 				var subjectForum = new SubjectForum
 				{
 					Id = Guid.NewGuid(),
+					SubjectId = request.SubjectId
 				};
 
 				await subjectForumRepository.Add(subjectForum);

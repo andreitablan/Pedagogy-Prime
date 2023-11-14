@@ -6,5 +6,6 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 {
     public class CreateSubjectForumCommand : BaseRequest<BaseResponse<Guid>>
     {
+        public Guid SubjectId { get; set; }
     }
 }
