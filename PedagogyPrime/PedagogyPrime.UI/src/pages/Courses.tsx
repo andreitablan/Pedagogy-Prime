@@ -1,12 +1,12 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import CrudDocument from "../components/CrudDocument";
+import CrudCourses from "../components/CrudCourses";
 
 const Dashboard: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <CrudDocument />
+      <CrudCourses />
     </div>
   );
 };

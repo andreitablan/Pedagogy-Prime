@@ -1,24 +1,60 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Login from "./components/Login";
-import NotFound from "./pages/NotFound";
-import "./index.css";
+import Courses from "./pages/Courses";
+import ProtectedRoutes from "./ProtectedRoutes";
+import { useState } from "react";
+
+// Create a user context with initial values
+export const UserContext = React.createContext({
+  user: {
+    loggedIn: false,
+    id: "",
+    email: "",
+    userName: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    role: "",
+  },
+  setUser: (userData: any) => {},
+});
 
 function App() {
+  const [user, setUser] = useState({
+    loggedIn: false,
+    id: "",
+    email: "",
+    userName: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    role: "",
+  });
+
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/login" element={<Login />} />
-        <Route element={<Login />} />
-      </Routes>
-    </Router>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+      }}
+    >
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="*" element={<Login />} />
+          </Route>
+        </Routes>
+      </Router>
+    </UserContext.Provider>
   );
 }
 

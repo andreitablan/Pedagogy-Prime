@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../App";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "../components/Navbar";
 
 const Home: React.FC = () => {
+  const { user } = useContext(UserContext);
+
   return (
     <div>
-      <h2>Home Page</h2>
-      {/* Content for the home page */}
+      <Navbar />
+
+      {user && user.loggedIn ? (
+        <div>
+          <p>Welcome, {user.userName}!</p>
+          <p>Email: {user.email}</p>
+          <p>First Name: {user.firstName}</p>
+        </div>
+      ) : (
+        <p>User not logged in.</p>
+      )}
     </div>
   );
 };
