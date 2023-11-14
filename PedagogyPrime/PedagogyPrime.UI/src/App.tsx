@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Courses from "./pages/Courses";
+import ProtectedRoutes from "./ProtectedRoutes";
+import { useState } from "react";
+
+// Create a user context with initial values
+export const UserContext = React.createContext({
+  user: {
+    loggedIn: false,
+    id: "",
+    email: "",
+    userName: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    role: "",
+  },
+  setUser: (userData: any) => {},
+});
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState({
+    loggedIn: false,
+    id: "",
+    email: "",
+    userName: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    role: "",
+  });
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+      }}
+    >
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="*" element={<Login />} />
+          </Route>
+        </Routes>
+      </Router>
+    </UserContext.Provider>
+  );
 }
 
-export default App
+export default App;
