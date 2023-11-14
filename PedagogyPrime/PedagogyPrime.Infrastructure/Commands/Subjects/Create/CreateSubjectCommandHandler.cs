@@ -7,7 +7,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Subjects.Create
 {
 	using Common;
 
-	public class CreateSubjectCommandHandler : BaseRequestHandler<CreateSubjectCommand, BaseResponse<bool>>
+	public class CreateSubjectCommandHandler : BaseRequestHandler<CreateSubjectCommand, BaseResponse<Guid>>
 	{
 		private readonly ISubjectRepository subjectRepository;
 
@@ -16,7 +16,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Subjects.Create
 			this.subjectRepository = subjectRepository;
 		}
 
-		public override async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<Guid>> Handle(
             CreateSubjectCommand request,
 			CancellationToken cancellationToken
 		)
@@ -25,7 +25,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Subjects.Create
 			{
 				if(!(await IsAuthorized(request.UserId)))
 				{
-					return BaseResponse<bool>.Forbbiden();
+					return BaseResponse<Guid>.Forbbiden();
 				}
 
 				var subject = new Subject
@@ -39,11 +39,11 @@ namespace PedagogyPrime.Infrastructure.Commands.Subjects.Create
 				await subjectRepository.Add(subject);
 				await subjectRepository.SaveChanges();
 
-				return BaseResponse<bool>.Created();
+				return BaseResponse<Guid>.Created(subject.Id);
 			}
 			catch
 			{
-				return BaseResponse<bool>.InternalServerError();
+				return BaseResponse<Guid>.InternalServerError();
 			}
 		}
 	}

@@ -7,7 +7,7 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 {
 	using Common;
 
-	public class CreateSubjectForumCommandHandler : BaseRequestHandler<CreateSubjectForumCommand, BaseResponse<bool>>
+	public class CreateSubjectForumCommandHandler : BaseRequestHandler<CreateSubjectForumCommand, BaseResponse<Guid>>
 	{
 		private readonly ISubjectForumRepository subjectForumRepository;
 
@@ -16,7 +16,7 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 			this.subjectForumRepository = subjectForumRepository;
 		}
 
-		public override async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<Guid>> Handle(
             CreateSubjectForumCommand request,
 			CancellationToken cancellationToken
 		)
@@ -25,7 +25,7 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 			{
 				if(!(await IsAuthorized(request.UserId)))
 				{
-					return BaseResponse<bool>.Forbbiden();
+					return BaseResponse<Guid>.Forbbiden();
 				}
 
 				var subjectForum = new SubjectForum
@@ -36,11 +36,11 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 				await subjectForumRepository.Add(subjectForum);
 				await subjectForumRepository.SaveChanges();
 
-				return BaseResponse<bool>.Created();
+				return BaseResponse<Guid>.Created(subjectForum.Id);
 			}
 			catch
 			{
-				return BaseResponse<bool>.InternalServerError();
+				return BaseResponse<Guid>.InternalServerError();
 			}
 		}
 	}
