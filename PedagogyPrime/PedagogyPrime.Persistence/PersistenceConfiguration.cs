@@ -26,7 +26,9 @@ namespace PedagogyPrime.Persistence
 			services.AddScoped<IDocumentRepository, DocumentRepository>();
 			services.AddScoped<IHomeworkRepository, HomeworkRepository>();
 			services.AddScoped<IAssignmentRepository, AssignmentRepository>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
+            services.AddScoped<ISubjectForumRepository, SubjectForumRepository>();
 
-		}
+        }
 	}
 }
