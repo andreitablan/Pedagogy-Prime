@@ -3,7 +3,7 @@ import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavbar from "../components/AppNavbar";
 
-const Home: React.FC = () => {
+const Subjects: React.FC = () => {
   const { user } = useContext(UserContext);
 
   return (
@@ -23,4 +23,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Subjects;

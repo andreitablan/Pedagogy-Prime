@@ -41,7 +41,7 @@ function LoginForm() {
           lastName: userDetails.lastName,
           role: userDetails.role,
         });
-        navigate("/home");
+        navigate("/subjects");
       })
       .catch((error) => {
         console.error(error);
