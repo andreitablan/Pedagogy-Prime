@@ -6,6 +6,14 @@ This project is done for [Advanced Software Engineering Techniques](https://prof
 
 Naming convention for branches is **/feature/lab[n]-v[m]/name_person**, where **n** is the number of the laboratory, **m** is the version of the branch (this helps to create multiple branches for separate purposes). 
 
+## Laboratory 6
+- Security on frontend and backend, frontend integration
+## Laboratory 5
+- [Iteration 2](https://drive.google.com/drive/folders/1Ws48RU9TueaKKtXjONbFM_QL16Of_lxD)
+- [BPMN](https://drive.google.com/drive/folders/1delZzB24iUtgdn6AyC3iCBKtIQ17oH-Q)
+## Laboratory 4
+- [Iteration 1](https://drive.google.com/drive/folders/1Ws48RU9TueaKKtXjONbFM_QL16Of_lxD)
+- Modeling, Design Patterns found in Documentation, Code
 ## Laboratory 3
 - [Requirement analysis](https://docs.google.com/document/d/1lAsE5mVDQusDkmSFsGU7FP6S6FCjtHQH_reb62fKUa0/edit?usp=sharing)
 - [UML Diagrams](https://drive.google.com/drive/folders/1an3M8JxSFjJzNQUVav8LHmsHyzchS7dm?usp=drive_link)
