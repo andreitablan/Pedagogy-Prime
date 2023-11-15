@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import ProtectedRoutes from "./ProtectedRoutes";
 import { useState } from "react";
+import Informations from "./pages/Informations";
 
 // Create a user context with initial values
 export const UserContext = React.createContext({
@@ -50,6 +51,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/courses" element={<Courses />} />
+            <Route path="/info" element={<Informations />} />
             <Route path="*" element={<Login />} />
           </Route>
         </Routes>

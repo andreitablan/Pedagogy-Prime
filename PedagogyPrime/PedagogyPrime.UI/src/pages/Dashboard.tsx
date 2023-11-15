@@ -1,11 +1,11 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import AppNavbar from "../components/AppNavbar";
 import CrudDocument from "../components/CrudDocument";
 
 const Dashboard: React.FC = () => {
   return (
     <div>
-      <Navbar />
+      <AppNavbar />
       <CrudDocument />
     </div>
   );

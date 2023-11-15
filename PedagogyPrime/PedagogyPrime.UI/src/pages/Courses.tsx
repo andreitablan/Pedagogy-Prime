@@ -1,11 +1,11 @@
 import React from "react";
-import Navbar from "../components/Navbar";
+import AppNavbar from "../components/AppNavbar";
 import CrudCourses from "../components/CrudCourses";
 
 const Dashboard: React.FC = () => {
   return (
     <div>
-      <Navbar />
+      <AppNavbar />
       <CrudCourses />
     </div>
   );

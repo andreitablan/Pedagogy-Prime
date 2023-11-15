@@ -109,7 +109,7 @@ function LoginForm() {
                 color: "white",
                 fontWeight: "bold",
                 display: "block",
-                margin: "auto", // Center the button horizontally
+                margin: "auto",
               }}
             >
               Login
