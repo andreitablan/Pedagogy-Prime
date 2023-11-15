@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Home from "./pages/Home";
+import Subjects from "./pages/Subjects";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import ProtectedRoutes from "./ProtectedRoutes";
 import { useState } from "react";
+import Informations from "./pages/Informations";
 
 // Create a user context with initial values
 export const UserContext = React.createContext({
@@ -47,9 +47,9 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/subjects" element={<Subjects />} />
             <Route path="/courses" element={<Courses />} />
+            <Route path="/info" element={<Informations />} />
             <Route path="*" element={<Login />} />
           </Route>
         </Routes>

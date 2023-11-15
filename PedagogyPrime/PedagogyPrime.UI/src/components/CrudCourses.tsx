@@ -122,77 +122,93 @@ const CrudCourse = () => {
 
   return (
     <Fragment>
-      <div
+      <Card
         style={{
-          backgroundColor: "#c5bccc",
-          height: "12vh",
-          padding: "20px",
-          marginBottom: "5px",
+          background:
+            "linear-gradient(to bottom right, #594CF5, #6000FC, #5107F5, #2A1AE1)",
+          color: "white",
+          marginBottom: "16px",
+          marginLeft: "10px",
+          marginRight: "10px",
+          border: "1px solid black",
+          boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
         }}
       >
-        <Container>
-          <Row>
-            <Col>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Col>
-            <Col>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </Col>
-            <Col>
-              <input
-                type="number"
-                className="form-control"
-                placeholder="Enter Coverage"
-                value={coverage}
-                onChange={(e) => setCoverage(e.target.value)}
-              />
-            </Col>
-            <Col>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter Content URL"
-                value={contentUrl}
-                onChange={(e) => setContentUrl(e.target.value)}
-              />
-            </Col>
-            <Col>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter Subject ID"
-                value={subjectId}
-                onChange={(e) => setSubjectId(e.target.value)}
-              />
-            </Col>
-            <Col>
-              <button className="btn btn-primary" onClick={() => handleSave()}>
-                {" "}
-                Submit
-              </button>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+        <Card.Body>
+          <Container>
+            <Row>
+              <Col>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </Col>
+              <Col>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </Col>
+              <Col>
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Enter Coverage"
+                  value={coverage}
+                  onChange={(e) => setCoverage(e.target.value)}
+                />
+              </Col>
+              <Col>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter Content URL"
+                  value={contentUrl}
+                  onChange={(e) => setContentUrl(e.target.value)}
+                />
+              </Col>
+              <Col>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter Subject ID"
+                  value={subjectId}
+                  onChange={(e) => setSubjectId(e.target.value)}
+                />
+              </Col>
+              <Col>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleSave()}
+                >
+                  {" "}
+                  Submit
+                </button>
+              </Col>
+            </Row>
+          </Container>
+        </Card.Body>
+      </Card>
       <Container fluid>
         <Row xs={1} md={2} lg={3} xl={4} className="g-4">
           {data && data.length > 0
             ? data.map((course, index) => (
                 <Col key={index}>
                   <Card
-                    style={{ backgroundColor: "#c5bccc", marginBottom: "16px" }}
+                    style={{
+                      background:
+                        "linear-gradient(to bottom right,  #594CF5, #6000FC, #5107F5, #2A1AE1, #550dba)",
+                      color: "white",
+                      marginBottom: "16px",
+                      border: "1px solid black",
+                      boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
+                    }}
                   >
                     <Card.Body>
                       <Card.Title>{course.name}</Card.Title>

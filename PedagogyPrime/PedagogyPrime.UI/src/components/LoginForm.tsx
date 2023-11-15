@@ -41,7 +41,7 @@ function LoginForm() {
           lastName: userDetails.lastName,
           role: userDetails.role,
         });
-        navigate("/home");
+        navigate("/subjects");
       })
       .catch((error) => {
         console.error(error);
@@ -109,7 +109,7 @@ function LoginForm() {
                 color: "white",
                 fontWeight: "bold",
                 display: "block",
-                margin: "auto", // Center the button horizontally
+                margin: "auto",
               }}
             >
               Login

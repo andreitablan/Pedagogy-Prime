@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "../components/Navbar";
+import AppNavbar from "../components/AppNavbar";
 
-const Home: React.FC = () => {
+const Subjects: React.FC = () => {
   const { user } = useContext(UserContext);
 
   return (
     <div>
-      <Navbar />
+      <AppNavbar />
 
       {user && user.loggedIn ? (
         <div>
@@ -23,4 +23,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Subjects;
