@@ -22,7 +22,6 @@ const AppNavbar: React.FC = () => {
         background:
           "linear-gradient(to bottom right, #07DADA, #60CAEB, #594CF5, #6000FC)",
         marginBottom: "10px",
-        width: "100vw"
       }}
     >
       <div className="container">

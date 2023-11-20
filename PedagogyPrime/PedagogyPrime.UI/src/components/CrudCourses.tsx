@@ -129,7 +129,6 @@ const CrudCourse = () => {
           marginBottom: "16px",
           marginLeft: "10px",
           marginRight: "10px",
-          border: "1px solid black",
           boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
         }}
       >
@@ -205,7 +204,6 @@ const CrudCourse = () => {
                         "linear-gradient(to bottom right,  #594CF5, #6000FC, #5107F5, #2A1AE1, #550dba)",
                       color: "white",
                       marginBottom: "16px",
-                      border: "1px solid black",
                       boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
                     }}
                   >
