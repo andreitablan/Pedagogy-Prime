@@ -6,8 +6,8 @@ import Login from "./pages/Login";
 import Courses from "./pages/Courses";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Informations from "./pages/Informations";
+import SubjectForm from "./pages/SubjectForm";
 import Subject from "./pages/Subject";
-import NotFound from "./pages/NotFound";
 
 // Create a user context with initial values
 export const UserContext = React.createContext({
@@ -38,8 +38,7 @@ function App() {
 
   const userDetails = localStorage.getItem("user");
 
-  if(userDetails)
-  {
+  if (userDetails) {
     user = JSON.parse(userDetails);
   }
 
@@ -56,13 +55,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/subjects">
-            <Route path="" element={<Subjects />}/>
-            <Route path=":id" element={<Subject />}/>
+              <Route path="" element={<Subjects />} />
+              <Route path=":id" element={<Subject />} />
+              <Route path="create" element={<SubjectForm />} />
+              <Route path=":id/edit" element={<SubjectForm />} />
             </Route>
             <Route path="/courses" element={<Courses />} />
             <Route path="/info" element={<Informations />} />
-            <Route path="*" element={<NotFound />} />
-            
+            <Route path="*" element={<Login />} />
           </Route>
         </Routes>
       </Router>

@@ -1,7 +1,10 @@
 import React, { useContext } from "react";
 import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Button from "react-bootstrap/Button";
 import AppNavbar from "../components/AppNavbar";
+import { Link } from "react-router-dom";
+import DisplaySubjects from "../components/DisplaySubjects";
 
 const Subjects: React.FC = () => {
   const { user } = useContext(UserContext);
@@ -9,16 +12,22 @@ const Subjects: React.FC = () => {
   return (
     <div>
       <AppNavbar />
-
-      {user && user.loggedIn ? (
-        <div>
-          <p>Welcome, {user.userName}!</p>
-          <p>Email: {user.email}</p>
-          <p>First Name: {user.firstName}</p>
-        </div>
-      ) : (
-        <p>User not logged in.</p>
-      )}
+      <Link to="/subjects/create">
+        <Button
+          style={{
+            background:
+              "linear-gradient(to bottom right, #594CF5, #6000FC, #5107F5, #2A1AE1)",
+            color: "white",
+            marginBottom: "16px",
+            marginLeft: "16px",
+            boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
+          }}
+          className="btn btn-primary"
+        >
+          New Subject
+        </Button>
+      </Link>
+      <DisplaySubjects />
     </div>
   );
 };
