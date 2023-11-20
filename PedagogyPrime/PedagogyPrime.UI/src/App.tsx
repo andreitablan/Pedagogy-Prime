@@ -7,6 +7,8 @@ import Courses from "./pages/Courses";
 import ProtectedRoutes from "./ProtectedRoutes";
 import { useState } from "react";
 import Informations from "./pages/Informations";
+import SubjectForm from "./pages/SubjectForm";
+import ViewExistingSubject from "./pages/ViewExistingSubject";
 
 // Create a user context with initial values
 export const UserContext = React.createContext({
@@ -50,6 +52,8 @@ function App() {
             <Route path="/subjects" element={<Subjects />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/info" element={<Informations />} />
+            <Route path="/subject" element={<SubjectForm />} />
+            <Route path="/subject/:id" element={<SubjectForm />} />
             <Route path="*" element={<Login />} />
           </Route>
         </Routes>
