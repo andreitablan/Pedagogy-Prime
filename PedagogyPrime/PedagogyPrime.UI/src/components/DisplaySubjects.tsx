@@ -6,7 +6,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axiosInstance from "../AxiosConfig";
-import SubjectForm from "../pages/SubjectForm";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface Subject {
   id: string;
@@ -42,22 +43,28 @@ const DisplaySubjects = () => {
           {subjects.map((subject, index) => (
             <Col key={index}>
               <Link
-                to={`/subject/${subject.id}`}
+                to={`/subjects/${subject.id}`}
                 style={{ textDecoration: "none" }}
               >
                 <Card
                   style={{
                     background:
                       "linear-gradient(to bottom right, #594CF5, #6000FC, #5107F5, #2A1AE1)",
+                    height: "150px",
                     color: "white",
                     marginBottom: "16px",
-                    border: "1px solid black",
                     boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
                   }}
                 >
                   <Card.Body>
+                    <Link to={`/subjects/${subject.id}/edit`}>
+                      <DeleteIcon style={{ color: "white", float: "right" }} />
+                    </Link>
+                    <Link to={`/subjects/${subject.id}/edit`}>
+                      <EditIcon style={{ color: "white", float: "right" }} />
+                    </Link>
                     <Card.Title>{subject.name}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
+                    <Card.Subtitle className="mb-2 text-whitesmoke">
                       {subject.period}
                     </Card.Subtitle>
                     <Card.Text>No of Courses: {subject.noOfCourses}</Card.Text>

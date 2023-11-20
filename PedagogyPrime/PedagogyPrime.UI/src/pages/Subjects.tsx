@@ -12,7 +12,7 @@ const Subjects: React.FC = () => {
   return (
     <div>
       <AppNavbar />
-      <Link to="/subject">
+      <Link to="/subjects/create">
         <Button
           style={{
             background:
@@ -20,7 +20,6 @@ const Subjects: React.FC = () => {
             color: "white",
             marginBottom: "16px",
             marginLeft: "16px",
-            border: "1px solid black",
             boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
           }}
           className="btn btn-primary"

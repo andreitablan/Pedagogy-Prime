@@ -57,11 +57,11 @@ function App() {
             <Route path="/subjects">
               <Route path="" element={<Subjects />} />
               <Route path=":id" element={<Subject />} />
+              <Route path="create" element={<SubjectForm />} />
+              <Route path=":id/edit" element={<SubjectForm />} />
             </Route>
             <Route path="/courses" element={<Courses />} />
             <Route path="/info" element={<Informations />} />
-            <Route path="/subject" element={<SubjectForm />} />
-            <Route path="/subject/:id" element={<SubjectForm />} />
             <Route path="*" element={<Login />} />
           </Route>
         </Routes>
