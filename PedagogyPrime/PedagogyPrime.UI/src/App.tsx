@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Subjects from "./pages/Subjects";
 import Login from "./pages/Login";
 import Courses from "./pages/Courses";
 import ProtectedRoutes from "./ProtectedRoutes";
-import { useState } from "react";
 import Informations from "./pages/Informations";
+import Subject from "./pages/Subject";
+import NotFound from "./pages/NotFound";
 
 // Create a user context with initial values
 export const UserContext = React.createContext({
@@ -24,7 +25,7 @@ export const UserContext = React.createContext({
 });
 
 function App() {
-  const [user, setUser] = useState({
+  let [user, setUser] = useState({
     loggedIn: false,
     id: "",
     email: "",
@@ -34,6 +35,13 @@ function App() {
     lastName: "",
     role: "",
   });
+
+  const userDetails = localStorage.getItem("user");
+
+  if(userDetails)
+  {
+    user = JSON.parse(userDetails);
+  }
 
   return (
     <UserContext.Provider
@@ -47,10 +55,14 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/subjects" element={<Subjects />} />
+            <Route path="/subjects">
+            <Route path="" element={<Subjects />}/>
+            <Route path=":id" element={<Subject />}/>
+            </Route>
             <Route path="/courses" element={<Courses />} />
             <Route path="/info" element={<Informations />} />
-            <Route path="*" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
+            
           </Route>
         </Routes>
       </Router>

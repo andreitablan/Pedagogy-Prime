@@ -7,5 +7,6 @@
 		public String Description { get; set; }
 		public String Content { get; set; }
 		public Double Coverage { get; set; }
+		public int Index { get; set; }
 	}
 }

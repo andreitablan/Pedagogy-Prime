@@ -9,7 +9,9 @@ using PedagogyPrime.Infrastructure.Queries.Subjects.GetById;
 
 namespace PedagogyPrime.API.Controllers
 {
-    public class SubjectsController : BaseController
+	using Microsoft.AspNetCore.Authorization;
+
+	public class SubjectsController : BaseController
 	{
 		public SubjectsController(IMediator mediator)
 			: base(mediator)
@@ -22,46 +24,46 @@ namespace PedagogyPrime.API.Controllers
 			return HandleResponse(await _mediator.Send(new GetAllSubjectsQuery()));
 		}
 
-	
+		[AllowAnonymous]
 		[HttpGet("{id}")]
-		public async Task<ActionResult<SubjectDetails>> GetById(Guid id)
+		public async Task<ActionResult<SubjectInfo>> GetById(Guid id)
 		{
-            var query = new GetSubjectByIdQuery
-            {
-                Id = id
-            };
+			var query = new GetSubjectByIdQuery
+			{
+				Id = id
+			};
 
-            return HandleResponse(await _mediator.Send(query));
+			return HandleResponse(await _mediator.Send(query));
 		}
 
-        [HttpPost]
-        public async Task<ActionResult<Guid>> Create(
-               [FromBody] CreateSubjectCommand command
-           )
-        {
-            return HandleResponse(await _mediator.Send(command));
-        }
+		[HttpPost]
+		public async Task<ActionResult<Guid>> Create(
+			   [FromBody] CreateSubjectCommand command
+		   )
+		{
+			return HandleResponse(await _mediator.Send(command));
+		}
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<SubjectDetails>> Update(
-            Guid id,
-            [FromBody] UpdateSubjectCommand command
-        )
-        {
-            command.Id = id;
-            return HandleResponse(await _mediator.Send(command));
-        }
+		[HttpPut("{id}")]
+		public async Task<ActionResult<SubjectDetails>> Update(
+			Guid id,
+			[FromBody] UpdateSubjectCommand command
+		)
+		{
+			command.Id = id;
+			return HandleResponse(await _mediator.Send(command));
+		}
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> Delete(
-            Guid id
-        )
-        {
-            var command = new DeleteSubjectCommand
-            {
-                Id = id
-            };
-            return HandleResponse(await _mediator.Send(command));
-        }
-    }
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<bool>> Delete(
+			Guid id
+		)
+		{
+			var command = new DeleteSubjectCommand
+			{
+				Id = id
+			};
+			return HandleResponse(await _mediator.Send(command));
+		}
+	}
 }

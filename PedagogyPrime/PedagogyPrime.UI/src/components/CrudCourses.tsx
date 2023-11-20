@@ -8,23 +8,19 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axiosInstance from "../AxiosConfig";
 
-interface Course {
+export interface Course {
   id: string;
   name: string;
   description: string;
   contentUrl: string;
   coverage: number;
   subjectId: string;
+  index: number;
 }
 
 const CrudCourse = () => {
   const [show, setShow] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [editName, setEditName] = useState("");
-  const [editDescription, setEditDescription] = useState("");
-  const [editCoverage, setEditCoverage] = useState(0);
-  const [editContentUrl, setEditContentUrl] = useState("");
-  const [editSubjectId, setEditSubjectId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [coverage, setCoverage] = useState(0);
@@ -56,6 +52,7 @@ const CrudCourse = () => {
       clear();
     });
   };
+
   const clear = () => {
     setName("");
     setContentUrl("");
@@ -63,6 +60,7 @@ const CrudCourse = () => {
     setDescription("");
     setSubjectId("");
   };
+
   const handleUpdate = () => {
     console.log(selectedCourse);
     const data = {
@@ -72,6 +70,7 @@ const CrudCourse = () => {
       contentUrl: selectedCourse.contentUrl,
       subjectId: selectedCourse.subjectId,
     };
+
     axiosInstance
       .put(
         `https://localhost:7136/api/v1.0/Courses/${selectedCourse?.id}`,

@@ -31,7 +31,7 @@ function LoginForm() {
       .then((data) => {
         localStorage.setItem("accessToken", data.resource.accessToken);
         const userDetails = data.resource.userDetails;
-        setUser({
+        const user = {
           loggedIn: true,
           id: userDetails.id,
           email: userDetails.email,
@@ -40,7 +40,12 @@ function LoginForm() {
           firstName: userDetails.firstName,
           lastName: userDetails.lastName,
           role: userDetails.role,
-        });
+        };
+
+        setUser(user);
+
+        localStorage.setItem("user", JSON.stringify(user));
+
         navigate("/subjects");
       })
       .catch((error) => {
@@ -110,6 +115,7 @@ function LoginForm() {
                 fontWeight: "bold",
                 display: "block",
                 margin: "auto",
+                border: "none"
               }}
             >
               Login
