@@ -4,12 +4,21 @@ using PedagogyPrime.Persistence.Context;
 
 namespace PedagogyPrime.Persistence.Repositories
 {
-    public class SubjectRepository : BaseRepository<Subject>, ISubjectRepository
-    {
-        public SubjectRepository(
-           PedagogyPrimeDbContext context
-       ) : base(context)
-        {
-        }
-    }
+	using Microsoft.EntityFrameworkCore;
+
+	public class SubjectRepository : BaseRepository<Subject>, ISubjectRepository
+	{
+		public SubjectRepository(
+		   PedagogyPrimeDbContext context
+	   ) : base(context)
+		{
+		}
+
+		public override async Task<Subject?> GetById(
+			Guid id
+		)
+		{
+			return await _context.Subjects.Include(x => x.Courses).FirstOrDefaultAsync(x => x.Id == id);
+		}
+	}
 }

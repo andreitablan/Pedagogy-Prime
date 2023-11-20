@@ -4,8 +4,8 @@ using PedagogyPrime.Infrastructure.Models.Subject;
 
 namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetById
 {
-    public class GetSubjectByIdQuery : BaseRequest<BaseResponse<SubjectDetails>>
-    {
-        public Guid Id { get; set; }
-    }
+	public class GetSubjectByIdQuery : BaseRequest<BaseResponse<SubjectInfo>>
+	{
+		public Guid Id { get; set; }
+	}
 }

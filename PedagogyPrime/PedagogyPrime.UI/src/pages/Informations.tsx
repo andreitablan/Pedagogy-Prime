@@ -38,7 +38,7 @@ const Informations: React.FC = () => {
     <div>
       <AppNavbar />
 
-      <Container fluid style={{ height: "100vh", overflowY: "auto" }}>
+      <Container >
         {/* Left Card with Text Content */}
         <Row>
           <Col md={8} style={{ padding: "20px" }}>
