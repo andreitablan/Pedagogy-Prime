@@ -9,8 +9,6 @@ using PedagogyPrime.Infrastructure.Queries.Subjects.GetById;
 
 namespace PedagogyPrime.API.Controllers
 {
-	using Microsoft.AspNetCore.Authorization;
-
 	public class SubjectsController : BaseController
 	{
 		public SubjectsController(IMediator mediator)
@@ -24,7 +22,6 @@ namespace PedagogyPrime.API.Controllers
 			return HandleResponse(await _mediator.Send(new GetAllSubjectsQuery()));
 		}
 
-		[AllowAnonymous]
 		[HttpGet("{id}")]
 		public async Task<ActionResult<SubjectInfo>> GetById(Guid id)
 		{
