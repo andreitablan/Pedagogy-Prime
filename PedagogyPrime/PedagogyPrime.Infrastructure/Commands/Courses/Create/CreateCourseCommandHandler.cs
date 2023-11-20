@@ -7,7 +7,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Create
 	using Common;
 	using IAuthorization;
 
-	public class CreateCourseCommandHandler : BaseRequestHandler<CreateCourseCommand, BaseResponse<bool>>
+	public class CreateCourseCommandHandler : BaseRequestHandler<CreateCourseCommand, BaseResponse<Guid>>
 	{
 		private readonly ICourseRepository courseRepository;
 
@@ -19,7 +19,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Create
 			this.courseRepository = courseRepository;
 		}
 
-		public override async Task<BaseResponse<bool>> Handle(
+		public override async Task<BaseResponse<Guid>> Handle(
 			CreateCourseCommand request,
 			CancellationToken cancellationToken
 		)
@@ -28,7 +28,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Create
 			{
 				if(!(await IsAuthorized(request.UserId)))
 				{
-					return BaseResponse<bool>.Forbbiden();
+					return BaseResponse<Guid>.Forbbiden();
 				}
 
 				var course = new Course
@@ -38,17 +38,18 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Create
 					Description = request.Description,
 					ContentUrl = request.ContentUrl,
 					Coverage = request.Coverage,
-					SubjectId = request.SubjectId
+					SubjectId = request.SubjectId,
+					Index = request.Index
 				};
 
 				await courseRepository.Add(course);
 				await courseRepository.SaveChanges();
 
-				return BaseResponse<bool>.Created();
+				return BaseResponse<Guid>.Created(course.Id);
 			}
 			catch
 			{
-				return BaseResponse<bool>.InternalServerError();
+				return BaseResponse<Guid>.InternalServerError();
 			}
 		}
 	}

@@ -9,5 +9,6 @@
 		public Guid SubjectId { get; set; }
 		public Subject Subject { get; set; }
 		public CourseForum CourseForum { get; set; }
+		public int Index { get; set; }
 	}
 }
