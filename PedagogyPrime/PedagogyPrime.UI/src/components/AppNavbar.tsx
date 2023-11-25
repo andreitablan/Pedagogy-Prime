@@ -12,7 +12,7 @@ const AppNavbar: React.FC = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
   }
-  
+
   return (
     <Navbar
       bg="dark"
@@ -33,22 +33,22 @@ const AppNavbar: React.FC = () => {
         }}>
           Pedagogy Prime
         </Link>
-        <Navbar.Toggle aria-controls="navbarNav"/>
+        <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav" style={{
           flexGrow: "0",
           color: "white"
         }}>
           <Nav className="ml-auto">
-            <Link className="nav-link" to="/subjects" title="Subjects" style={{color: "white"}}>
+            <Link className="nav-link" to="/subjects" title="Subjects" style={{ color: "white" }}>
               <SubjectIcon />
             </Link>
-            <Link className="nav-link" to="/courses" title="Courses" style={{color: "white"}}>
+            <Link className="nav-link" to="/courses" title="Courses" style={{ color: "white" }}>
               <MenuBookIcon />
             </Link>
-            <Link className="nav-link" to="/info" title="Informations" style={{color: "white"}}>
+            <Link className="nav-link" to="/info" title="Informations" style={{ color: "white" }}>
               <InfoIcon />
             </Link>
-            <Link className="nav-link" to="/login" title="Logout" style={{color: "white"}} onClick={logout}>
+            <Link className="nav-link" to="/login" title="Logout" style={{ color: "white" }} onClick={logout}>
               <LoginIcon />
             </Link>
           </Nav>

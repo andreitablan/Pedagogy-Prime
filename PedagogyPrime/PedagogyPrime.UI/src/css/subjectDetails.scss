@@ -1,88 +1,121 @@
+.subject-wrapper {
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
 
-
-.subject-wrapper{
-    padding: 0 12px;
+  .header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 20px;
 
-    .header{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        font-size: 20px;
-        
-        .left{
-            display: flex;
-            align-items: center;
-            .name{
-                text-transform: uppercase;
-                font-weight: bold;
-                font-size: 25px;
-                margin-right: 10px;
-            }
-        }
-
-        padding: 15px 0 25px 0;
+    .left {
+      display: flex;
+      align-items: center;
+      .name {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 25px;
+        margin-right: 10px;
+      }
     }
 
-    .accordion-button{
-        .coverage {
-            margin-right: 20px;
-            font-weight: bold;
-        }
+    padding: 15px 0 25px 0;
+  }
 
-        .fail{
-            color: rgb(255, 36, 36);
-        }
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 25px;
 
-        .success{
-            color: rgb(0, 200, 0);
-        }
-
-    }
-
-    .accordion-body{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        button{
-            width: fit-content;
-            background: linear-gradient(to right, #594CF5, #6000FC);
-            color: white;
-            border: none;
-        }
+    button {
+      width: fit-content;
+      background: linear-gradient(to right, #594cf5, #6000fc);
+      color: white;
+      border: none;
     }
   }
-  
-@media (min-width: 576px){
-    .subject-wrapper{
-        width: 540px;
+
+  .participants {
+    padding-top: 40px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    .participant {
+      background-color: rgb(221, 221, 221);
+      border-radius: 8px;
+      padding: 5px;
     }
+  }
+
+  .accordion-button {
+    .coverage {
+      margin-right: 20px;
+      font-weight: bold;
+    }
+
+    .fail {
+      color: rgb(255, 36, 36);
+    }
+
+    .success {
+      color: rgb(0, 200, 0);
+    }
+  }
+
+  .accordion-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    button {
+      width: fit-content;
+      background: linear-gradient(to right, #594cf5, #6000fc);
+      color: white;
+      border: none;
+    }
+  }
 }
 
-@media (min-width: 768px){
-    .subject-wrapper{
-        width: 720px;
-        }
-    }
-
-@media (min-width: 992px){
-    .subject-wrapper{
-        width: 960px;
-    }
+@media (min-width: 576px) {
+  .subject-wrapper {
+    width: 540px;
+  }
 }
 
-@media (min-width: 1200px){
-    .subject-wrapper{
-        width: 1140px;
-    }
+@media (min-width: 768px) {
+  .subject-wrapper {
+    width: 720px;
+  }
 }
 
-@media (min-width: 1400px){
-    .subject-wrapper{
-        width: 1320px;
-    }
+@media (min-width: 992px) {
+  .subject-wrapper {
+    width: 960px;
+  }
 }
-      
-      
+
+@media (min-width: 1200px) {
+  .subject-wrapper {
+    width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .subject-wrapper {
+    width: 1320px;
+  }
+}
+
+@media (min-width: 1800px) {
+  .participants {
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    padding-right: 12px;
+    width: calc((100% - 1320px) / 2);
+  }
+}
