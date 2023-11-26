@@ -1,89 +1,120 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate instead of useHistory
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
 import { v4 } from "uuid";
+import axiosInstance from "../AxiosConfig";
 
-const CourseForm = () => {
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
-  const [fileUpload, setFileUpload] = useState<File | null>(null);
-  const [fileUrl, setFileUrl] = useState<string | null>(null);
+interface CourseFormProps {
+  noOfCourses: number;
+  subjectId?: string;
+  handleNext: () => React.ReactNode | null;
+}
 
-  const filesListRef = ref(storage, "files/");
+const CourseForm: React.FC<CourseFormProps> = ({
+  noOfCourses,
+  subjectId,
+  handleNext,
+}) => {
+  const navigate = useNavigate();
+  const [fileUploads, setFileUploads] = useState<File[]>([]);
+  const [fileUrls, setFileUrls] = useState<string[]>([]);
+  const [courseDescriptions, setCourseDescriptions] = useState<string[]>([]);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    courseIndex: number
+  ) => {
     const file = event.target.files?.[0] || null;
-    setFileUpload(file);
+    if (file) {
+      const newFileUploads = [...fileUploads];
+      newFileUploads[courseIndex] = file;
+      setFileUploads(newFileUploads);
+    }
+    console.log("File selected:", file);
   };
 
-  const uploadFile = () => {
-    if (fileUpload == null) return;
-
-    const fileRef = ref(storage, `files/${fileUpload.name + v4()}`);
-    uploadBytes(fileRef, fileUpload).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        setFileUrl(url);
-        // Redirect to "/subjects" after successful upload
-        navigate("/subjects");
-      });
-    });
+  const handleDescriptionChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    courseIndex: number
+  ) => {
+    const description = event.target.value;
+    const newCourseDescriptions = [...courseDescriptions];
+    newCourseDescriptions[courseIndex] = description;
+    setCourseDescriptions(newCourseDescriptions);
   };
 
-  useEffect(() => {
-    setFileUrl(null); // Clear existing URL
-    listAll(filesListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setFileUrl(url);
+  const uploadFiles = async () => {
+    try {
+      const uploadedFileUrls = [];
+
+      // Sequentially upload files
+      for (const file of fileUploads) {
+        const fileRef = ref(storage, `files/${file.name + v4()}`);
+        uploadBytes(fileRef, file).then((snapshot) => {
+          getDownloadURL(snapshot.ref).then((url) => {
+            uploadedFileUrls.push(url);
+          });
         });
-      });
-    });
-  }, [filesListRef]);
+      }
+
+      const apiUrl = "https://localhost:7136/api/v1/Courses";
+
+      // Sequentially make Axios requests
+      for (let index = 0; index < uploadedFileUrls.length; index++) {
+        const url = uploadedFileUrls[index];
+        const description = courseDescriptions[index] || "";
+
+        const courseData = {
+          name: `Course ${index + 1}`,
+          description,
+          coverage: 0,
+          contentUrl: url,
+          subjectId,
+        };
+
+        // Await the Axios request
+        const result = await axiosInstance.post(apiUrl, courseData);
+
+        if (result.status === 201) {
+          console.log("Course created successfully:", result.data);
+        }
+      }
+
+      console.log("Course data saved successfully");
+      console.log("File uploads:", fileUploads);
+      navigate("/subjects");
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      // Handle error as needed
+    }
+  };
 
   return (
     <div>
-      <div className="container mt-5">
-        <div className="row">
-          <div className="col-md-6 offset-md-3">
-            <h2 className="text-center mb-4">Course Form</h2>
-            <form>
-              <div className="mb-3">
-                <label htmlFor="file" className="form-label">
-                  Upload File:
-                </label>
-                <input
-                  type="file"
-                  className="form-control"
-                  id="file"
-                  onChange={handleFileChange}
-                />
-              </div>
-
-              <div className="text-center">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={uploadFile}
-                >
-                  Upload
-                </button>
-              </div>
-            </form>
-          </div>
+      <h2 className="mb-4">Course Form</h2>
+      {[...Array(noOfCourses)].map((_, index) => (
+        <div key={index} className="mb-3">
+          <label htmlFor={`file-${index}`} className="form-label">
+            {`Course ${index + 1}`}
+          </label>
+          <input
+            type="file"
+            id={`file-${index}`}
+            className="form-control"
+            onChange={(e) => handleFileChange(e, index)}
+          />
+          <input
+            type="text"
+            placeholder="Course Description"
+            className="form-control mt-2"
+            onChange={(e) => handleDescriptionChange(e, index)}
+          />
         </div>
-      </div>
-
-      {fileUrl && (
-        <div className="mt-4">
-          <h3>Uploaded File URL:</h3>
-          <div className="m-2">
-            <strong>File:</strong>
-            <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-              {fileUrl}
-            </a>
-          </div>
-        </div>
-      )}
+      ))}
+      <button type="button" className="btn btn-primary" onClick={uploadFiles}>
+        Upload
+      </button>
     </div>
   );
 };

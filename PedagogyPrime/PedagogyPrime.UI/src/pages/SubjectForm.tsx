@@ -1,63 +1,115 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AppNavbar from "../components/AppNavbar";
-
+import CourseForm from "../components/CourseForm";
+import axiosInstance from "../AxiosConfig";
 interface SubjectFormProps {
-  subjectId?: string; // Make subjectId optional
+  subjectId?: string;
 }
 
+export interface Subject {
+  id: string;
+  name: string;
+  period: string;
+  numberOfCourses: number;
+}
 const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
+  const [step, setStep] = useState(1);
   const [name, setName] = useState("");
   const [period, setPeriod] = useState("");
   const [noOfCourses, setNoOfCourses] = useState(0);
 
-  useEffect(() => {
-    if (subjectId) {
-      // Fetch and set data based on subjectId when in edit mode
-      // Your logic to fetch and set data based on subjectId
+  const handleNext = () => {
+    if (step === 1) {
+      if (!name || !period || noOfCourses <= 0) {
+        alert("Please fill in all fields before proceeding.");
+        return;
+      } else {
+        const url = "https://localhost:7136/api/v1/Subjects";
+
+        const data = {
+          name: name,
+          period: period,
+          noOfCourses: noOfCourses,
+        };
+        axiosInstance.post(url, data).then((result) => {
+          if (result.status === 201) {
+            console.log("Subject created successfully:", result.data);
+            subjectId = result.data;
+            setStep(2);
+          }
+        });
+      }
     }
-  }, [subjectId]);
+  };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-
-    // Your logic to handle form submission
-    if (subjectId) {
-      // Handle editing an existing subject
-    } else {
-      // Handle creating a new subject
+  const handleBack = () => {
+    if (step > 1) {
+      setStep(step - 1);
     }
   };
 
   return (
     <div>
       <AppNavbar />
-      <form onSubmit={handleSubmit}>
-        <label>Name:</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+      {step === 1 && (
+        <form>
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">
+              Subject Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              className="form-control"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="period" className="form-label">
+              Period:
+            </label>
+            <input
+              type="text"
+              id="period"
+              className="form-control"
+              value={period}
+              onChange={(e) => setPeriod(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="noOfCourses" className="form-label">
+              Number of Courses:
+            </label>
+            <input
+              type="number"
+              id="noOfCourses"
+              className="form-control"
+              value={noOfCourses}
+              onChange={(e) => setNoOfCourses(Number(e.target.value))}
+            />
+          </div>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleNext}
+          >
+            Next
+          </button>
+        </form>
+      )}
+      {step === 2 && (
+        <CourseForm
+          noOfCourses={noOfCourses}
+          subjectId={subjectId}
+          handleNext={() => null}
         />
-
-        <label>Period:</label>
-        <input
-          type="text"
-          value={period}
-          onChange={(e) => setPeriod(e.target.value)}
-        />
-
-        <label>No of Courses:</label>
-        <input
-          type="number"
-          value={noOfCourses}
-          onChange={(e) => setNoOfCourses(Number(e.target.value))}
-        />
-
-        {/* Other form fields... */}
-
-        <button type="submit">Submit</button>
-      </form>
+      )}
+      {step > 1 && (
+        <button type="button" onClick={handleBack}>
+          Back
+        </button>
+      )}
     </div>
   );
 };
