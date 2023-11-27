@@ -3,6 +3,7 @@ import axiosInstance from "../AxiosConfig";
 import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
 import mapToRole, { Role, UserDetails } from "../models/UserDetails";
+import CourseContent from "./CourseContent";
 
 
 const SubjectDetails = ({ id }) => {
@@ -110,7 +111,8 @@ const SubjectDetails = ({ id }) => {
                         >
                             <div className="accordion-body">
                                 {course.description}
-                                <button className="btn btn-success">View Content</button>
+                                <CourseContent contentUrl={course.contentUrl} name={course.name}></CourseContent>
+
                             </div>
                         </div>
                     </div>
