@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../AxiosConfig";
 import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
-import mapToRole, { Role, UserDetails } from "../models/UserDetails";
+import mapToRole, { UserDetails } from "../models/UserDetails";
 import CourseContent from "./CourseContent";
+import { Link } from "react-router-dom";
 
 
 const SubjectDetails = ({ id }) => {
@@ -65,6 +66,13 @@ const SubjectDetails = ({ id }) => {
 
     return (
         <div className="subject-wrapper">
+            <div className="back-button">
+                <Link to="/subjects" style={{
+                    textDecoration: "none",
+                }}>
+                    Back to subjects
+                </Link>
+            </div>
             <div className="header">
                 <div className="left">
                     <div className="name">{subject.name}</div>
