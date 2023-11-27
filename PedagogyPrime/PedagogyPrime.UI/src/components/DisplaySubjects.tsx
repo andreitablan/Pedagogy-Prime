@@ -29,7 +29,6 @@ const DisplaySubjects = () => {
       .get("https://localhost:7136/api/v1.0/Subjects")
       .then((result) => {
         const fetchedSubjects: Subject[] = result.data.resource;
-        console.log(fetchedSubjects);
         setSubjects(fetchedSubjects);
       })
       .catch((error) => {

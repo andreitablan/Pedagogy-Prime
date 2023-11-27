@@ -18,26 +18,13 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
   const [period, setPeriod] = useState("");
   const [noOfCourses, setNoOfCourses] = useState(0);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 1) {
       if (!name || !period || noOfCourses <= 0) {
         alert("Please fill in all fields before proceeding.");
         return;
       } else {
-        const url = "https://localhost:7136/api/v1/Subjects";
-
-        const data = {
-          name: name,
-          period: period,
-          noOfCourses: noOfCourses,
-        };
-        axiosInstance.post(url, data).then((result) => {
-          if (result.status === 201) {
-            console.log("Subject created successfully:", result.data);
-            subjectId = result.data;
-            setStep(2);
-          }
-        });
+        setStep(2);
       }
     }
   };
@@ -102,6 +89,8 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
         <CourseForm
           noOfCourses={noOfCourses}
           subjectId={subjectId}
+          subjectName={name}
+          subjectPeriod={period}
           handleNext={() => null}
         />
       )}
