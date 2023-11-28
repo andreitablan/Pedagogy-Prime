@@ -6,8 +6,13 @@ This project is done for [Advanced Software Engineering Techniques](https://prof
 
 Naming convention for branches is **/feature/lab[n]-v[m]/name_person**, where **n** is the number of the laboratory, **m** is the version of the branch (this helps to create multiple branches for separate purposes). 
 
+## Laboratory 7
+- Created the first prototype of the application. The details are in the [Tasks](https://docs.google.com/document/d/1bJmPpIYV2hopaFNLbNVE2fENTN-3CqJLhOjUI7_ayYs/edit#heading=h.98ibuv5xh786) file. 
 ## Laboratory 6
-- Security on frontend and backend
+- Used the principles from AOP and CQRS
+- **Bonus**
+  - *Rares S. and Victor* : security component for backend
+  - *Rares O. and Andrei* : security component for frontend  
 ## Laboratory 5
 - [Iteration 2](https://drive.google.com/drive/folders/1Ws48RU9TueaKKtXjONbFM_QL16Of_lxD)
 - [BPMN](https://drive.google.com/drive/folders/1delZzB24iUtgdn6AyC3iCBKtIQ17oH-Q)
