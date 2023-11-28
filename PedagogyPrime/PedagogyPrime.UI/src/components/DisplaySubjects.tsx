@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import axiosInstance from "../AxiosConfig";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
 
 interface Subject {
   id: string;
@@ -18,7 +19,7 @@ interface Subject {
 
 const DisplaySubjects = () => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     getData();
   }, []);
@@ -28,11 +29,21 @@ const DisplaySubjects = () => {
       .get("https://localhost:7136/api/v1.0/Subjects")
       .then((result) => {
         const fetchedSubjects: Subject[] = result.data.resource;
-        console.log(fetchedSubjects);
         setSubjects(fetchedSubjects);
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+  const handleDelete = (subjectId: string) => {
+    axiosInstance
+      .delete(`https://localhost:7136/api/v1.0/Subjects/${subjectId}`)
+      .then(() => {
+        getData();
+        navigate("/subjects");
+      })
+      .catch((error) => {
+        console.log("Error deleting subject:", error);
       });
   };
 
@@ -58,7 +69,10 @@ const DisplaySubjects = () => {
                 >
                   <Card.Body>
                     <Link to={`/subjects/${subject.id}/edit`}>
-                      <DeleteIcon style={{ color: "white", float: "right" }} />
+                      <DeleteIcon
+                        style={{ color: "white", float: "right" }}
+                        onClick={() => handleDelete(subject.id)}
+                      />
                     </Link>
                     <Link to={`/subjects/${subject.id}/edit`}>
                       <EditIcon style={{ color: "white", float: "right" }} />

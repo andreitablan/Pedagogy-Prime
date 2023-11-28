@@ -8,7 +8,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Informations from "./pages/Informations";
 import SubjectForm from "./pages/SubjectForm";
 import Subject from "./pages/Subject";
-
+import SubjectForumCopy from "./pages/SubjectFormCopy";
 // Create a user context with initial values
 export const UserContext = React.createContext({
   user: {
@@ -60,6 +60,7 @@ function App() {
               <Route path="create" element={<SubjectForm />} />
               <Route path=":id/edit" element={<SubjectForm />} />
             </Route>
+            <Route path="/firebase" element={<SubjectForumCopy />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/info" element={<Informations />} />
             <Route path="*" element={<Login />} />
