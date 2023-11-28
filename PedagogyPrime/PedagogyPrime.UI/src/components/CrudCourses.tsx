@@ -7,16 +7,9 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axiosInstance from "../AxiosConfig";
+import { Course } from "../models/Course";
 
-export interface Course {
-  id: string;
-  name: string;
-  description: string;
-  contentUrl: string;
-  coverage: number;
-  subjectId: string;
-  index: number;
-}
+
 
 const CrudCourse = () => {
   const [show, setShow] = useState(false);
@@ -47,7 +40,7 @@ const CrudCourse = () => {
       contentUrl: contentUrl,
       subjectId: subjectId,
     };
-    axiosInstance.post(url, data).then((result) => {
+    axiosInstance.post(url, data).then(() => {
       getData();
       clear();
     });
@@ -63,6 +56,10 @@ const CrudCourse = () => {
 
   const handleUpdate = () => {
     console.log(selectedCourse);
+    if (!selectedCourse) {
+      return;
+    }
+
     const data = {
       name: selectedCourse.name,
       description: selectedCourse.description,
@@ -86,7 +83,7 @@ const CrudCourse = () => {
     handleClose();
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string) => {
     if (window.confirm("Are you sure to delete this course") == true) {
       axiosInstance
         .delete(`https://localhost:7136/api/v1.0/Courses/${id}`)
@@ -159,7 +156,7 @@ const CrudCourse = () => {
                   className="form-control"
                   placeholder="Enter Coverage"
                   value={coverage}
-                  onChange={(e) => setCoverage(e.target.value)}
+                  onChange={(e) => setCoverage(parseInt(e.target.value))}
                 />
               </Col>
               <Col>
@@ -197,42 +194,42 @@ const CrudCourse = () => {
         <Row xs={1} md={2} lg={3} xl={4} className="g-4">
           {data && data.length > 0
             ? data.map((course, index) => (
-                <Col key={index}>
-                  <Card
-                    style={{
-                      background:
-                        "linear-gradient(to bottom right,  #594CF5, #6000FC, #5107F5, #2A1AE1, #550dba)",
-                      color: "white",
-                      marginBottom: "16px",
-                      boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
-                    }}
-                  >
-                    <Card.Body>
-                      <Card.Title>{course.name}</Card.Title>
-                      <Card.Subtitle className="mb-2 text-muted">
-                        {course.contentUrl}
-                      </Card.Subtitle>
-                      <Card.Text>
-                        Description: {course.description} | Type:{" "}
-                        {course.coverage} | Subject: {course.subjectId} |
-                        Content: {course.contentUrl}
-                      </Card.Text>
-                      <Button
-                        variant="primary"
-                        onClick={() => handleShow(course)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="danger"
-                        onClick={() => handleDelete(course.id)}
-                      >
-                        Delete
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))
+              <Col key={index}>
+                <Card
+                  style={{
+                    background:
+                      "linear-gradient(to bottom right,  #594CF5, #6000FC, #5107F5, #2A1AE1, #550dba)",
+                    color: "white",
+                    marginBottom: "16px",
+                    boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title>{course.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      {course.contentUrl}
+                    </Card.Subtitle>
+                    <Card.Text>
+                      Description: {course.description} | Type:{" "}
+                      {course.coverage} | Subject: {course.subjectId} |
+                      Content: {course.contentUrl}
+                    </Card.Text>
+                    <Button
+                      variant="primary"
+                      onClick={() => handleShow(course)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="danger"
+                      onClick={() => handleDelete(course.id)}
+                    >
+                      Delete
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))
             : "Loading...."}
         </Row>
       </Container>
@@ -281,7 +278,7 @@ const CrudCourse = () => {
                   onChange={(e) =>
                     setSelectedCourse({
                       ...selectedCourse,
-                      coverage: e.target.value,
+                      coverage: parseInt(e.target.value),
                     })
                   }
                 />
