@@ -13,7 +13,6 @@ const AppNavbar: React.FC = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
   };
-
   return (
     <Navbar
       bg="dark"
