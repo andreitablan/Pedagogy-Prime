@@ -29,8 +29,6 @@ def analyze_text(description, pdf_url):
         print("No relevant keywords found in the description.")
         return
 
-    common_keywords = description_nouns.intersection(set(text_tokens))
-
     good_keywords = []
     bad_keywords = []
 
@@ -41,7 +39,9 @@ def analyze_text(description, pdf_url):
         else:
             bad_keywords.append(keyword)
 
-    coverage = len(common_keywords) / len(description_nouns) * 100
+    total_words = len(good_keywords) + len(bad_keywords)
+
+    coverage = (len(good_keywords) / total_words) * 100
 
     result = {
         'coverage': coverage,
@@ -64,6 +64,7 @@ def extract_text_from_pdf(pdf_url):
         for page_num in range(num_pages):
             page = pdf_reader.pages[page_num]
             text += page.extract_text()
+            text = text.lower()
 
     return text
 
