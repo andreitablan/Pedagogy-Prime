@@ -9,7 +9,8 @@ import axiosInstance from "../AxiosConfig";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
-
+import { getStorage, ref, deleteObject } from "firebase/storage";
+import { storage } from "../firebase";
 interface Subject {
   id: string;
   name: string;
@@ -20,6 +21,7 @@ interface Subject {
 const DisplaySubjects = () => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const navigate = useNavigate();
+  const storage = getStorage();
   useEffect(() => {
     getData();
   }, []);
@@ -35,7 +37,35 @@ const DisplaySubjects = () => {
         console.log(error);
       });
   };
+  const getPathStorageFromUrl = (url: string): string => {
+    const str = url.toString();
+    console.log(str);
+    const start = str.indexOf("%2F") + 3;
+    const end = str.indexOf("?");
+    return str.substring(start, end);
+  };
+
   const handleDelete = (subjectId: string) => {
+    axiosInstance
+      .get(`https://localhost:7136/api/v1.0/Subjects/${subjectId}`)
+      .then((result) => {
+        for (let index = 0; index < result.data.resource.noOfCourses; index++) {
+          const fileurl = result.data.resource.coursesDetails[index].contentUrl;
+          const filePath = getPathStorageFromUrl(fileurl);
+          const fileRef = ref(storage, "files/" + filePath);
+          deleteObject(fileRef)
+            .then(() => {
+              console.log("File deleted successfully");
+            })
+            .catch((error) => {
+              console.log("Error deleting file:", error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     axiosInstance
       .delete(`https://localhost:7136/api/v1.0/Subjects/${subjectId}`)
       .then(() => {

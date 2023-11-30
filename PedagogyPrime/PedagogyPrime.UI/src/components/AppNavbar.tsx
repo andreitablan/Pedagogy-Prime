@@ -55,14 +55,6 @@ const AppNavbar: React.FC = () => {
             </Link>
             <Link
               className="nav-link"
-              to="/firebase"
-              title="Firebase"
-              style={{ color: "white" }}
-            >
-              <DocumentScannerIcon />
-            </Link>
-            <Link
-              className="nav-link"
               to="/courses"
               title="Courses"
               style={{ color: "white" }}
