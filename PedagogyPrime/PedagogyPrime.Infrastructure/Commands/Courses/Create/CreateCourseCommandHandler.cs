@@ -37,9 +37,9 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Create
 					Name = request.Name,
 					Description = request.Description,
 					ContentUrl = request.ContentUrl,
-					Coverage = request.Coverage,
 					SubjectId = request.SubjectId,
-					Index = request.Index
+					Index = request.Index,
+					IsVisibleForStudents = false
 				};
 
 				await courseRepository.Add(course);

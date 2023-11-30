@@ -35,7 +35,7 @@ namespace PedagogyPrime.Infrastructure.Queries.Courses.GetAll
 
 				return BaseResponse<List<CourseDetails>>.Ok(courseDetails);
 			}
-			catch
+			catch(Exception e)
 			{
 				return BaseResponse<List<CourseDetails>>.InternalServerError();
 			}
