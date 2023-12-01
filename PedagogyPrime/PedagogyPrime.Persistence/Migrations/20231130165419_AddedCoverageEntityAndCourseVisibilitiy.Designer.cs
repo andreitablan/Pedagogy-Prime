@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PedagogyPrime.Persistence.Context;
 
@@ -11,9 +12,11 @@ using PedagogyPrime.Persistence.Context;
 namespace PedagogyPrime.Persistence.Migrations
 {
     [DbContext(typeof(PedagogyPrimeDbContext))]
-    partial class PedagogyPrimeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231130165419_AddedCoverageEntityAndCourseVisibilitiy")]
+    partial class AddedCoverageEntityAndCourseVisibilitiy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,7 +147,7 @@ namespace PedagogyPrime.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Percentage")
+                    b.Property<double>("Precentage")
                         .HasColumnType("float");
 
                     b.HasKey("Id");

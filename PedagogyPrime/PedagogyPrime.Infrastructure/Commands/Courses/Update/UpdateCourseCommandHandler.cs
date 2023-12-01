@@ -41,7 +41,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Update
 				course.Name = request.Name;
 				course.Description = request.Description;
 				course.ContentUrl = request.ContentUrl;
-				course.Coverage = request.Coverage;
+				course.IsVisibleForStudents = request.IsVisibleForStudents;
 
 				await courseRepository.SaveChanges();
 

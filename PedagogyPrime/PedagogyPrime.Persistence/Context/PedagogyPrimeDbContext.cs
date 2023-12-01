@@ -21,6 +21,7 @@ namespace PedagogyPrime.Persistence.Context
 		public DbSet<SubjectForum> SubjectForums => Set<SubjectForum>();
 		public DbSet<SubjectMessage> SubjectMessages => Set<SubjectMessage>();
 		public DbSet<UserSubject> UsersSubjects => Set<UserSubject>();
+		public DbSet<Coverage> Coverages => Set<Coverage>();
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

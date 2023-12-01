@@ -5,9 +5,11 @@ namespace PedagogyPrime.API.Controllers
 	using Infrastructure.Commands.Users.Create;
 	using Infrastructure.Commands.Users.Delete;
 	using Infrastructure.Commands.Users.Update;
+	using Infrastructure.Models.Subject;
 	using Infrastructure.Models.User;
 	using Infrastructure.Queries.Users.GetAll;
 	using Infrastructure.Queries.Users.GetById;
+	using Infrastructure.Queries.UsersSubjects.GetAllForUser;
 	using MediatR;
 
 	public class UsersController : BaseController
@@ -56,6 +58,14 @@ namespace PedagogyPrime.API.Controllers
 		)
 		{
 			return HandleResponse(await _mediator.Send(new DeleteUserCommand(id)));
+		}
+
+		[HttpGet("{id}/subjects")]
+		public async Task<ActionResult<List<SubjectDetails>>> GetAllSubjectsForUser(
+			Guid id
+		)
+		{
+			return HandleResponse(await _mediator.Send(new GetAllSubjectsForUserQuery()));
 		}
 	}
 }
