@@ -1,16 +1,17 @@
-import React, { useState, useEffect, Fragment, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, Fragment, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axiosInstance from "../AxiosConfig";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../App";
 import { Role } from "../models/UserDetails";
+import "../css/displaySubjects.css";
+import { UserContext } from "../App";
+import { Button } from "react-bootstrap";
+
 
 interface Subject {
   id: string;
@@ -67,8 +68,23 @@ const DisplaySubjects = () => {
   };
 
   return (
-    <Container fluid>
-        <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+    <div className="subjects">
+      <Link to="/subjects/create">
+        <Button
+          style={{
+            background:
+              "linear-gradient(to bottom right, #594CF5, #6000FC, #5107F5, #2A1AE1)",
+            color: "white",
+            marginTop: "15px",
+            marginBottom: "25px",
+            boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
+          }}
+          className="btn btn-primary"
+        >
+          New Subject
+        </Button>
+      </Link>
+        <Row xs={1} md={2} lg={3} xl={4} className="g-4" >
           {subjects.map((subject, index) => (
             <Col key={index}>
               <Link
@@ -107,7 +123,7 @@ const DisplaySubjects = () => {
             </Col>
           ))}
         </Row>
-      </Container>
+    </div>
   );
 };
 

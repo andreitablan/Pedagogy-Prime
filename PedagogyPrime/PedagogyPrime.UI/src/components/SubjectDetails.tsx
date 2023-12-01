@@ -4,7 +4,7 @@ import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
 import mapToRole, { Role, UserDetails } from "../models/UserDetails";
 import CourseContent from "./CourseContent";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { UserContext } from "../App";
 

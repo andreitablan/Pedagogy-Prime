@@ -1,0 +1,42 @@
+
+.create-subject{
+    margin: auto;
+    padding: 0 12px;
+
+    .back-button{
+        text-decoration: none;
+        padding: 0;
+        padding: 15px 0;
+    }
+}
+@media (min-width: 576px) {
+    .create-subject {
+      width: 540px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .create-subject {
+      width: 720px;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .create-subject {
+      width: 960px;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .create-subject {
+      width: 1140px;
+    }
+  }
+  
+  @media (min-width: 1400px) {
+    .create-subject {
+      width: 1320px;
+    }
+  }
+
+  
