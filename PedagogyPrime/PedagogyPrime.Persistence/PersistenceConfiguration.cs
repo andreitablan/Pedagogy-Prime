@@ -21,6 +21,7 @@ namespace PedagogyPrime.Persistence
 				sql.MigrationsHistoryTable("__EFMigrationHistory");
 			}));
 
+			services.AddScoped<ICoverageRepository, CoverageRepository>();
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<ICourseRepository, CourseRepository>();
 			services.AddScoped<IDocumentRepository, DocumentRepository>();
@@ -29,7 +30,6 @@ namespace PedagogyPrime.Persistence
 			services.AddScoped<ISubjectRepository, SubjectRepository>();
 			services.AddScoped<ISubjectForumRepository, SubjectForumRepository>();
 			services.AddScoped<IUserSubjectRepository, UserSubjectRepository>();
-			services.AddScoped<ICoverageRepository, CoverageRepository>();
 		}
 	}
 }

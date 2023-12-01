@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "react-bootstrap/Card";
@@ -9,6 +9,8 @@ import axiosInstance from "../AxiosConfig";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
+import { Role } from "../models/UserDetails";
 
 interface Subject {
   id: string;
@@ -24,9 +26,21 @@ const DisplaySubjects = () => {
     getData();
   }, []);
 
+  const { user } = useContext(UserContext);
+
+
   const getData = () => {
+    let url;
+    if(user.role === Role.Admin){
+      url = "https://localhost:7136/api/v1.0/Subjects"
+      
+    }
+    else{
+      url = `https://localhost:7136/api/v1.0/users/${user.id}/subjects`;
+    }
+
     axiosInstance
-      .get("https://localhost:7136/api/v1.0/Subjects")
+      .get(url)
       .then((result) => {
         const fetchedSubjects: Subject[] = result.data.resource;
         setSubjects(fetchedSubjects);
@@ -35,11 +49,16 @@ const DisplaySubjects = () => {
         console.log(error);
       });
   };
+  
   const handleDelete = (subjectId: string) => {
     axiosInstance
       .delete(`https://localhost:7136/api/v1.0/Subjects/${subjectId}`)
-      .then(() => {
-        getData();
+      .then((result) => {
+        if(result.data.resource){
+          const newSubjects = subjects.filter(x => x.id != subjectId);
+
+          setSubjects(newSubjects);
+        }
         navigate("/subjects");
       })
       .catch((error) => {
@@ -48,8 +67,7 @@ const DisplaySubjects = () => {
   };
 
   return (
-    <Fragment>
-      <Container fluid>
+    <Container fluid>
         <Row xs={1} md={2} lg={3} xl={4} className="g-4">
           {subjects.map((subject, index) => (
             <Col key={index}>
@@ -90,7 +108,6 @@ const DisplaySubjects = () => {
           ))}
         </Row>
       </Container>
-    </Fragment>
   );
 };
 

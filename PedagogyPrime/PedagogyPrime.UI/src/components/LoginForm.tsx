@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
+import mapToRole from "../models/UserDetails";
 function LoginForm() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -33,13 +34,8 @@ function LoginForm() {
         const userDetails = data.resource.userDetails;
         const user = {
           loggedIn: true,
-          id: userDetails.id,
-          email: userDetails.email,
-          userName: userDetails.userName,
-          password: userDetails.password,
-          firstName: userDetails.firstName,
-          lastName: userDetails.lastName,
-          role: userDetails.role,
+          ...userDetails,
+          role:  mapToRole(userDetails.role)
         };
 
         setUser(user);

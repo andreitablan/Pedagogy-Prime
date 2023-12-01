@@ -6,7 +6,7 @@
 
 	public class CoverageRepository : BaseRepository<Coverage>, ICoverageRepository
 	{
-		protected CoverageRepository(
+		public CoverageRepository(
 			PedagogyPrimeDbContext context
 		) : base(context)
 		{

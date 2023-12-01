@@ -13,7 +13,6 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Update
 		public String Name { get; set; }
 		public String Description { get; set; }
 		public String ContentUrl { get; set; }
-		public String Subject { get; set; }
 		public bool IsVisibleForStudents { get; set; }
 	}
 }

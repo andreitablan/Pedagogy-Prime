@@ -2,7 +2,7 @@
 
 namespace PedagogyPrime.Core.IRepositories
 {
-    public interface ISubjectRepository : IBaseRepository<Subject>
-    {
-    }
+	public interface ISubjectRepository : IBaseRepository<Subject>
+	{
+	}
 }

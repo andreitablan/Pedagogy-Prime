@@ -18,7 +18,7 @@ namespace PedagogyPrime.Persistence.Repositories
 			Guid id
 		)
 		{
-			return await _context.Subjects.Include(x => x.Courses).FirstOrDefaultAsync(x => x.Id == id);
+			return await _context.Subjects.Include(x => x.Courses).ThenInclude(x => x.Coverage).FirstOrDefaultAsync(x => x.Id == id);
 		}
 	}
 }

@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axiosInstance from "../AxiosConfig";
 import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
-import mapToRole, { UserDetails } from "../models/UserDetails";
+import mapToRole, { Role, UserDetails } from "../models/UserDetails";
 import CourseContent from "./CourseContent";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { UserContext } from "../App";
 
 
 const SubjectDetails = ({ id }) => {
@@ -15,6 +17,8 @@ const SubjectDetails = ({ id }) => {
         noOfCourses: 0,
         coursesDetails: [],
     });
+
+    const { user } = useContext(UserContext);
 
     const [shouldShowParticipants, setShouldShowParticipants] = useState(false);
 
@@ -37,7 +41,7 @@ const SubjectDetails = ({ id }) => {
 
 
 
-    const getParticipants = () => {
+    const handleGetParticipants = () => {
         axiosInstance
             .get(`https://localhost:7136/api/v1.0/subjects/${id}/users`)
             .then((result) => {
@@ -56,8 +60,30 @@ const SubjectDetails = ({ id }) => {
     const toggleParticipants = () => {
         setShouldShowParticipants(!shouldShowParticipants);
 
-        getParticipants();
+        handleGetParticipants();
 
+    }
+
+    const handleChangeCourseVisibility = (course: Course) => {
+       
+        course.isVisibleForStudents = !course.isVisibleForStudents;
+        axiosInstance
+        .put(
+            `https://localhost:7136/api/v1.0/Courses/${course.id}`,
+            course
+        )
+        .then((result) => {
+            subject.coursesDetails.forEach((x: Course) => {
+                if(x.id === course.id){
+                    x.isVisibleForStudents = course.isVisibleForStudents;
+                }
+            });
+
+            setSubject({...subject});
+        })
+        .catch(() => {
+            course.isVisibleForStudents = false;
+        });
     }
 
     if (!subject) {
@@ -81,50 +107,69 @@ const SubjectDetails = ({ id }) => {
                 <div className="right">{subject.period}</div>
             </div>
             <div className="actions">
-                <button className="add-sutdent btn btn-success">Add Participants</button>
+            { [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && <Button className="add-sutdent btn btn-success">Add Participants</Button>}
                 <button className="show-students btn btn-success" onClick={() => toggleParticipants()}>{shouldShowParticipants ? "Hide Participants" : "Show Participants"}</button>
             </div>
             <div className="accordion" id="accordionPanelsStayOpenExample">
-                {subject.coursesDetails.map((course: Course, index) => (
-                    <div key={index} className="accordion-item">
-                        <h2
-                            className="accordion-header"
-                            id={`panelsStayOpen-heading-${index}`}
-                        >
-                            <button
-                                className={`accordion-button ${index != 0 ? "collapsed" : ""}`}
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target={`#panelsStayOpen-collapse-${index}`}
-                                aria-expanded={index == 0} // Expand the first item by default
-                                aria-controls={`panelsStayOpen-collapse-${index}`}
-                            >
-                                <div
-                                    className={`coverage ${course.coverage < 50 ? "fail" : "success"
-                                        }`}
-                                >
-                                    {course.coverage}%
+                {
+                    subject.coursesDetails.filter((x : Course)=> x.isVisibleForStudents).length == 0 && ![Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) 
+                    ?(<div>There are no courses available yet.</div>)
+                    :subject.coursesDetails.map((course: Course, index) => {
+                    
+                        if(course.isVisibleForStudents || [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role)){
+                            return (
+                                <div  key={index} className="accordion-item">
+                                    <h2
+                                        className="accordion-header"
+                                        id={`panelsStayOpen-heading-${index}`}
+                                    >
+                                        <button
+                                            className={`accordion-button ${index != 0 ? "collapsed" : ""}`}
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target={`#panelsStayOpen-collapse-${index}`}
+                                            aria-expanded={index == 0} // Expand the first item by default
+                                            aria-controls={`panelsStayOpen-collapse-${index}`}
+                                        >
+                                            {
+                                                course.coverage ?
+                                                (<div
+                                                    className={`coverage ${course.coverage.precentage < 50 ? "fail" : "success"
+                                                        }`}
+                                                >
+                                                    {course.coverage.precentage}%
+                                                </div>
+                                                )
+                                                : 
+                                                (
+                                                    <div className="coverage fail" > 0% </div>
+                                                )
+                                            }
+            
+                                            <div className="course-name">
+                                                Course {index + 1}: {course.name}
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div
+                                        id={`panelsStayOpen-collapse-${index}`}
+                                        className={`accordion-collapse collapse ${index === 0 ? "show" : ""
+                                            }`}
+                                        aria-labelledby={`panelsStayOpen-heading-${index}`}
+                                    >
+                                        <div className="accordion-body">
+                                            {course.description}
+                                            <div className="course-actions">
+                                                <CourseContent contentUrl={course.contentUrl} name={course.name}></CourseContent>
+                                                { [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && <Button onClick={() => handleChangeCourseVisibility(course)} >{course.isVisibleForStudents ?  "Hide Course from Students" : "Make Visible for Students"}</Button>}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div className="course-name">
-                                    Course {index + 1}: {course.name}
-                                </div>
-                            </button>
-                        </h2>
-                        <div
-                            id={`panelsStayOpen-collapse-${index}`}
-                            className={`accordion-collapse collapse ${index === 0 ? "show" : ""
-                                }`}
-                            aria-labelledby={`panelsStayOpen-heading-${index}`}
-                        >
-                            <div className="accordion-body">
-                                {course.description}
-                                <CourseContent contentUrl={course.contentUrl} name={course.name}></CourseContent>
-
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                            )
+                        }
+                    })
+                }
             </div>
             {
                 participants ? shouldShowParticipants ? (

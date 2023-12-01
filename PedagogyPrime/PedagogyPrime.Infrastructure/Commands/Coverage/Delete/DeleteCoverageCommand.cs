@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PedagogyPrime.Infrastructure.Commands.Coverage.Delete
+﻿namespace PedagogyPrime.Infrastructure.Commands.Coverage.Delete
 {
-	internal class DeleteCoverageCommand
+	using Common;
+	using Core.Common;
+
+	public class DeleteCoverageCommand : BaseRequest<BaseResponse<bool>>
 	{
+		public Guid Id { get; set; }
 	}
 }
