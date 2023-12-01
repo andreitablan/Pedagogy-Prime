@@ -1,7 +1,5 @@
-import { useState, useEffect, Fragment, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect, Fragment, useContext } from "react";
-import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
@@ -10,12 +8,9 @@ import axiosInstance from "../AxiosConfig";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Role } from "../models/UserDetails";
-import "../css/displaySubjects.css";
-import { UserContext } from "../App";
+import "../css/displaySubjects.scss";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
-import { Role } from "../models/UserDetails";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { storage } from "../firebase";
 

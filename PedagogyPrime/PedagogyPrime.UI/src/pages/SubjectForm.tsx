@@ -14,6 +14,7 @@ export interface Subject {
   period: string;
   numberOfCourses: number;
 }
+
 const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");

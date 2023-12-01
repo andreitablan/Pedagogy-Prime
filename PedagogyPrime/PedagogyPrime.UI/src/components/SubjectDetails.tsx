@@ -3,11 +3,10 @@ import axiosInstance from "../AxiosConfig";
 import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
 import mapToRole, { Role, UserDetails } from "../models/UserDetails";
-import CourseContent from "./CourseContent";
-import { Link } from "react-router-dom";
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import { UserContext } from "../App";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import CourseContent from "./CourseContent";
 
 
 const SubjectDetails = ({ id }) => {
@@ -63,11 +62,8 @@ const SubjectDetails = ({ id }) => {
 
         handleGetParticipants();
 
-            setSubject({...subject});
-        })
-        .catch(() => {
-            course.isVisibleForStudents = false;
-        });
+        setSubject({...subject});
+        
     }
 
     const handleChangeCourseVisibility = (course: Course) => {
