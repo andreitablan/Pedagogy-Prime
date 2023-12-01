@@ -17,6 +17,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
   const [name, setName] = useState("");
   const [period, setPeriod] = useState("");
   const [noOfCourses, setNoOfCourses] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const handleNext = async () => {
     if (step === 1) {
@@ -92,10 +93,12 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
           subjectName={name}
           subjectPeriod={period}
           handleNext={() => null}
+          loading={loading}
+          setLoading={setLoading}
         />
       )}
-      {step > 1 && (
-        <button type="button" onClick={handleBack}>
+      {step > 1 && !loading && (
+        <button type="button" className="btn btn-primary" onClick={handleBack}>
           Back
         </button>
       )}
