@@ -31,7 +31,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Coverage.Create
 					GoodWords = request.GoodWords,
 					BadWords = request.BadWords,
 					CourseId = request.CourseId,
-					Precentage = request.Precentage
+					Percentage = request.Precentage
 				};
 
 				await coverageRepository.Add(coverage);

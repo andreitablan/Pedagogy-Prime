@@ -211,7 +211,7 @@ const CrudCourse = () => {
                     </Card.Subtitle>
                     <Card.Text>
                       Description: {course.description} | Type:{" "}
-                      {course.coverage?.precentage} | Subject: {course.subjectId} |
+                      {course.coverage?.percentage} | Subject: {course.subjectId} |
                       Content: {course.contentUrl}
                     </Card.Text>
                     <Button
@@ -274,11 +274,11 @@ const CrudCourse = () => {
                   type="number"
                   className="form-control"
                   placeholder="Enter Coverage"
-                  value={selectedCourse.coverage.precentage}
+                  value={selectedCourse.coverage.percentage}
                   onChange={(e) =>
                     setSelectedCourse({
                       ...selectedCourse,
-                      coverage: {precentage: parseInt(e.target.value), badWords: [], goodWords: []},
+                      coverage: {percentage: parseInt(e.target.value), badWords: [], goodWords: []},
                     })
                   }
                 />

@@ -1,5 +1,5 @@
 export interface Coverage{
-    precentage: number;
+    percentage: number;
     badWords: string[];
     goodWords: string[];
 }

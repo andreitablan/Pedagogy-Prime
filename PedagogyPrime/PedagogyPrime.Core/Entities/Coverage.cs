@@ -2,7 +2,7 @@
 {
 	public class Coverage : BaseEntity
 	{
-		public Double Precentage { get; set; }
+		public Double Percentage { get; set; }
 		public List<string> GoodWords { get; set; }
 		public List<string> BadWords { get; set; }
 		public Guid CourseId { get; set; }

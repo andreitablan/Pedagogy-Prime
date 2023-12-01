@@ -12,7 +12,7 @@ import { UserContext } from "../App";
 const SubjectDetails = ({ id }) => {
     const [subject, setSubject] = useState({
         id: "",
-        name: "Mama",
+        name: "",
         period: "",
         noOfCourses: 0,
         coursesDetails: [],
@@ -90,6 +90,10 @@ const SubjectDetails = ({ id }) => {
         return <p>Loading...</p>;
     }
 
+    if(subject.id === ''){
+        return <p>No subject</p>
+    }
+
     return (
         <div className="subject-wrapper">
             <div className="back-button">
@@ -134,10 +138,10 @@ const SubjectDetails = ({ id }) => {
                                             {
                                                 course.coverage ?
                                                 (<div
-                                                    className={`coverage ${course.coverage.precentage < 50 ? "fail" : "success"
+                                                    className={`coverage ${course.coverage.percentage < 50 ? "fail" : "success"
                                                         }`}
                                                 >
-                                                    {course.coverage.precentage}%
+                                                    {course.coverage.percentage}%
                                                 </div>
                                                 )
                                                 : 
