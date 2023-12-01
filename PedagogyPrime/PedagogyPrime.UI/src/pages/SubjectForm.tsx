@@ -19,6 +19,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
   const [name, setName] = useState("");
   const [period, setPeriod] = useState("");
   const [noOfCourses, setNoOfCourses] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const handleNext = async () => {
     if (step === 1) {

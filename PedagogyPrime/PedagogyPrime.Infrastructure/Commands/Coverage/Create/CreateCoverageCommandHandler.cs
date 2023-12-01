@@ -30,9 +30,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Coverage.Create
 					Id = Guid.NewGuid(),
 					GoodWords = request.GoodWords,
 					BadWords = request.BadWords,
-					CourseId = request.CourseId,
-					Precentage = request.Precentage
-				};
+        };
 
 				await coverageRepository.Add(coverage);
 				await coverageRepository.SaveChanges();

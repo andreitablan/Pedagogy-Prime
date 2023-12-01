@@ -5,6 +5,7 @@ import { Course } from "../models/Course";
 import mapToRole, { Role, UserDetails } from "../models/UserDetails";
 import CourseContent from "./CourseContent";
 import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { UserContext } from "../App";
 
@@ -12,7 +13,7 @@ import { UserContext } from "../App";
 const SubjectDetails = ({ id }) => {
     const [subject, setSubject] = useState({
         id: "",
-        name: "Mama",
+        name: "",
         period: "",
         noOfCourses: 0,
         coursesDetails: [],
@@ -62,6 +63,11 @@ const SubjectDetails = ({ id }) => {
 
         handleGetParticipants();
 
+            setSubject({...subject});
+        })
+        .catch(() => {
+            course.isVisibleForStudents = false;
+        });
     }
 
     const handleChangeCourseVisibility = (course: Course) => {
@@ -88,6 +94,10 @@ const SubjectDetails = ({ id }) => {
 
     if (!subject) {
         return <p>Loading...</p>;
+    }
+
+    if(subject.id === ''){
+        return <p>No subject</p>
     }
 
     return (
@@ -134,10 +144,10 @@ const SubjectDetails = ({ id }) => {
                                             {
                                                 course.coverage ?
                                                 (<div
-                                                    className={`coverage ${course.coverage.precentage < 50 ? "fail" : "success"
+                                                    className={`coverage ${course.coverage.percentage < 50 ? "fail" : "success"
                                                         }`}
                                                 >
-                                                    {course.coverage.precentage}%
+                                                    {course.coverage.percentage}%
                                                 </div>
                                                 )
                                                 : 

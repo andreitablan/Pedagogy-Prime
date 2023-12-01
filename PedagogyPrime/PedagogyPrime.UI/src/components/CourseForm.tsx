@@ -11,6 +11,8 @@ interface CourseFormProps {
   subjectName?: string;
   subjectPeriod?: string;
   handleNext: () => React.ReactNode | null;
+  loading: boolean; // Receive loading as a prop
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>; // Receive setLoading as a prop
 }
 
 const CourseForm: React.FC<CourseFormProps> = ({
@@ -19,6 +21,8 @@ const CourseForm: React.FC<CourseFormProps> = ({
   subjectName,
   subjectPeriod,
   handleNext,
+  loading,
+  setLoading,
 }) => {
   const navigate = useNavigate();
   const [fileUploads, setFileUploads] = useState<File[]>([]);
@@ -48,6 +52,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
   };
 
   const uploadFiles = async () => {
+    setLoading(true);
     try {
       const url = "https://localhost:7136/api/v1/Subjects";
 
@@ -109,9 +114,18 @@ const CourseForm: React.FC<CourseFormProps> = ({
       console.error("Error uploading files:", error);
       alert("Error uploading files");
       navigate("/subjects");
+    } finally {
+      setLoading(false);
     }
   };
-
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-circle"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
     <div>
       <h2 className="mb-4">Course Form</h2>
