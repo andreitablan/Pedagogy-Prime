@@ -86,6 +86,54 @@ const SubjectDetails = ({ id }) => {
         });
     }
 
+    const handleGenerateCourseCoverage = async (course: Course) => {
+        axiosInstance.post('http://localhost:5000/check-course', {
+            firebase_link: course.contentUrl,
+            description: course.description,
+        })
+        .then((result) => {
+            console.log("In generating coverage");
+            const { coverage, good_keywords, bad_keywords } = result.data;
+
+            subject.coursesDetails.forEach((x: Course) => {
+                if (x.id === course.id) {
+                    console.log("Found course");
+                    x.coverage = {
+                        percentage: coverage,
+                        goodWords: good_keywords,
+                        badWords: bad_keywords,
+                    };
+                    
+                    course.coverage = {
+                        percentage: coverage,
+                        goodWords: good_keywords,
+                        badWords: bad_keywords,
+                    };
+
+                }
+            });
+    
+            setSubject({ ...subject });
+
+            console.log("Updating course in API");
+            axiosInstance
+            .put(
+                `https://localhost:7136/api/v1.0/Courses/${course.id}`,
+                course
+            )
+            .then((result) => {
+                console.log(course.coverage);
+                console.log("Coverage was generated!");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        })
+        .catch(() => {
+            console.log(error);
+        });
+    };
+
     if (!subject) {
         return <p>Loading...</p>;
     }
@@ -166,6 +214,7 @@ const SubjectDetails = ({ id }) => {
                                             <div className="course-actions">
                                                 <CourseContent contentUrl={course.contentUrl} name={course.name}></CourseContent>
                                                 { [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && <Button onClick={() => handleChangeCourseVisibility(course)} >{course.isVisibleForStudents ?  "Hide Course from Students" : "Make Visible for Students"}</Button>}
+                                                { [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && <Button onClick={() => handleGenerateCourseCoverage(course)} >{(course.coverage == null) ? "Generate Coverage" : "Regenerate Coverage"}</Button>}
                                             </div>
                                         </div>
                                     </div>

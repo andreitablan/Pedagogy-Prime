@@ -1,6 +1,7 @@
 from nltk.corpus import wordnet
 from nltk import pos_tag, word_tokenize
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import PyPDF2
 import requests
 
@@ -8,6 +9,7 @@ hardcoded_words = ['course', 'teacher', 'student'] # Add more if needed
 
 
 app = Flask("Parser")
+CORS(app)
 
 def get_synonyms(word):
     synonyms = set()
