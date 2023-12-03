@@ -5,7 +5,7 @@ import { Course } from "../models/Course";
 import mapToRole, { Role, UserDetails } from "../models/UserDetails";
 import CourseContent from "./CourseContent";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { UserContext } from "../App";
 
 
@@ -23,6 +23,9 @@ const SubjectDetails = ({ id }) => {
     const [shouldShowParticipants, setShouldShowParticipants] = useState(false);
 
     const [participants, setParticipants] = useState<UserDetails[] | undefined>(undefined);
+
+    const [loadingCoverage, setLoadingCoverage] = useState(false);
+    const [loadingCoverageId, setLoadingCoverageId] = useState([]);
 
     useEffect(() => {
         getData();
@@ -86,7 +89,8 @@ const SubjectDetails = ({ id }) => {
         });
     }
 
-    const handleGenerateCourseCoverage = async (course: Course) => {
+    const handleGenerateCourseCoverage = (course: Course) => {
+        setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
         axiosInstance.post('http://localhost:5000/check-course', {
             firebase_link: course.contentUrl,
             description: course.description,
@@ -122,6 +126,7 @@ const SubjectDetails = ({ id }) => {
                 course
             )
             .then((result) => {
+                setLoadingCoverageId((prevIds) => prevIds.filter((id) => id !== course.id));
                 console.log(course.coverage);
                 console.log("Coverage was generated!");
             })
@@ -132,6 +137,7 @@ const SubjectDetails = ({ id }) => {
         .catch(() => {
             console.log(error);
         });
+
     };
 
     if (!subject) {
@@ -183,18 +189,23 @@ const SubjectDetails = ({ id }) => {
                                             aria-expanded={index == 0} // Expand the first item by default
                                             aria-controls={`panelsStayOpen-collapse-${index}`}
                                         >
-                                            {
-                                                course.coverage ?
-                                                (<div
-                                                    className={`coverage ${course.coverage.percentage < 50 ? "fail" : "success"
-                                                        }`}
-                                                >
-                                                    {course.coverage.percentage}%
-                                                </div>
-                                                )
-                                                : 
-                                                (
-                                                    <div className="coverage fail" > 0% </div>
+                                            {   loadingCoverage || loadingCoverageId.includes(course.id)?
+                                                <Spinner animation="border" role="status">
+                                                    <span className="visually-hidden">Loading...</span>
+                                                </Spinner>
+                                                :(
+                                                    course.coverage ?
+                                                    (<div
+                                                        className={`coverage ${course.coverage.percentage < 50 ? "fail" : "success"
+                                                            }`}
+                                                    >
+                                                        {course.coverage.percentage}%
+                                                    </div>
+                                                    )
+                                                    : 
+                                                    (
+                                                        <div className="coverage fail" > 0% </div>
+                                                    )
                                                 )
                                             }
             
@@ -210,6 +221,25 @@ const SubjectDetails = ({ id }) => {
                                         aria-labelledby={`panelsStayOpen-heading-${index}`}
                                     >
                                         <div className="accordion-body">
+                                            <div className="coverage-words">
+                                                {course.coverage && [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && (
+                                                    <>
+                                                        <strong>Relevant topics: </strong>
+                                                        {[...course.coverage.goodWords.keys()].map((i) => (
+                                                        <span key={i} className="good-word">
+                                                            {course.coverage.goodWords[i]}
+                                                            {i < course.coverage.goodWords.length - 1 && ' '}
+                                                        </span>
+                                                        ))}
+                                                        {[...course.coverage.badWords.keys()].map((i) => (
+                                                            <span key={i} className="bad-word">
+                                                                {course.coverage.badWords[i]}
+                                                                {i < course.coverage.badWords.length - 1 && ' '}
+                                                            </span>
+                                                        ))}
+                                                    </>
+                                                )}
+                                            </div>
                                             {course.description}
                                             <div className="course-actions">
                                                 <CourseContent contentUrl={course.contentUrl} name={course.name}></CourseContent>
