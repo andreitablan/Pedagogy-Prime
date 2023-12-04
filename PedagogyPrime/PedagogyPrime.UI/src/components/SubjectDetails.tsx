@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import axiosInstance from "../AxiosConfig";
 import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
+import { CoverageDetails } from "../models/Coverage";
 import mapToRole, { Role, UserDetails } from "../models/UserDetails";
 import CourseContent from "./CourseContent";
 import { Link, useLocation } from "react-router-dom";
@@ -91,6 +92,7 @@ const SubjectDetails = ({ id }) => {
 
     const handleGenerateCourseCoverage = (course: Course) => {
         setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
+        let coverageData: CoverageDetails;
         axiosInstance.post('http://localhost:5000/check-course', {
             firebase_link: course.contentUrl,
             description: course.description,
@@ -108,10 +110,12 @@ const SubjectDetails = ({ id }) => {
                         badWords: bad_keywords,
                     };
                     
-                    course.coverage = {
+                    coverageData = 
+                    {
                         percentage: coverage,
                         goodWords: good_keywords,
                         badWords: bad_keywords,
+                        courseId: course.id
                     };
 
                 }
@@ -121,9 +125,9 @@ const SubjectDetails = ({ id }) => {
 
             console.log("Updating course in API");
             axiosInstance
-            .put(
-                `https://localhost:7136/api/v1.0/Courses/${course.id}`,
-                course
+            .post(
+                `https://localhost:7136/api/v1.0/Coverage`,
+                coverageData
             )
             .then((result) => {
                 setLoadingCoverageId((prevIds) => prevIds.filter((id) => id !== course.id));

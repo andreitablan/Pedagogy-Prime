@@ -2,8 +2,9 @@
 {
 	using Common;
 	using Core.Common;
+    using PedagogyPrime.Infrastructure.Models.Coverage;
 
-	public class UpdateCoverageCommand : BaseRequest<BaseResponse<bool>>
+    public class UpdateCoverageCommand : BaseRequest<BaseResponse<CoverageDetails>>
 	{
 		public Guid Id { get; set; }
 		public List<string> GoodWords { get; set; }
