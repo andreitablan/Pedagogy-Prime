@@ -10,7 +10,6 @@ interface CourseFormProps {
   subjectId?: string;
   subjectName?: string;
   subjectPeriod?: string;
-  handleNext: () => React.ReactNode | null;
   loading: boolean; // Receive loading as a prop
   setLoading: React.Dispatch<React.SetStateAction<boolean>>; // Receive setLoading as a prop
 }
@@ -20,7 +19,6 @@ const CourseForm: React.FC<CourseFormProps> = ({
   subjectId,
   subjectName,
   subjectPeriod,
-  handleNext,
   loading,
   setLoading,
 }) => {

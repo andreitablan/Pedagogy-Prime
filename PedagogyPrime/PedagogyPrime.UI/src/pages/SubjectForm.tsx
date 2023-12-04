@@ -14,13 +14,11 @@ export interface Subject {
   period: string;
   numberOfCourses: number;
 }
-
 const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
   const [period, setPeriod] = useState("");
   const [noOfCourses, setNoOfCourses] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   const handleNext = async () => {
     if (step === 1) {
@@ -102,7 +100,6 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
             subjectId={subjectId}
             subjectName={name}
             subjectPeriod={period}
-            handleNext={() => null}
           />
         )}
       </div>
