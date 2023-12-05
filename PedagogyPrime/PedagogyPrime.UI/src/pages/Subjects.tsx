@@ -12,21 +12,7 @@ const Subjects: React.FC = () => {
   return (
     <div>
       <AppNavbar />
-      <Link to="/subjects/create">
-        <Button
-          style={{
-            background:
-              "linear-gradient(to bottom right, #594CF5, #6000FC, #5107F5, #2A1AE1)",
-            color: "white",
-            marginBottom: "16px",
-            marginLeft: "16px",
-            boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
-          }}
-          className="btn btn-primary"
-        >
-          New Subject
-        </Button>
-      </Link>
+      
       <DisplaySubjects />
     </div>
   );

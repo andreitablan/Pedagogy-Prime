@@ -31,8 +31,9 @@
   .actions {
     display: flex;
     padding-bottom: 25px;
+    padding-left: 0px;
     gap: 15px;
-    
+
     button {
       width: fit-content;
       background: linear-gradient(to right, #594cf5, #6000fc);
