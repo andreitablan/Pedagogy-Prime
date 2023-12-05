@@ -27,6 +27,7 @@
 				var coverage = await coverageRepository.GetById(request.Id);
 
 				coverage.GoodWords = request.GoodWords;
+				coverage.BadWords = request.BadWords;
 				coverage.Percentage = request.Precentage;
 
 				await coverageRepository.SaveChanges();
