@@ -4,9 +4,12 @@
 	using Core.Common;
 	using Core.IRepositories;
 	using IAuthorization;
+    using PedagogyPrime.Core.Entities;
+    using PedagogyPrime.Infrastructure.Models.Course;
+    using PedagogyPrime.Infrastructure.Models.Coverage;
 	using PedagogyPrime.Infrastructure.AOP.Handler;
 
-	public class UpdateCoverageCommandHandler : BaseRequestHandler<UpdateCoverageCommand, BaseResponse<bool>>
+    public class UpdateCoverageCommandHandler : BaseRequestHandler<UpdateCoverageCommand, BaseResponse<CoverageDetails>>
 	{
 		private readonly ICoverageRepository coverageRepository;
 
@@ -18,7 +21,7 @@
 			this.coverageRepository = coverageRepository;
 		}
         [HandlerAspect]
-        public override async Task<BaseResponse<bool>> Handle(
+        public override async Task<BaseResponse<CoverageDetails>> Handle(
 			UpdateCoverageCommand request,
 			CancellationToken cancellationToken
 		)
@@ -27,17 +30,24 @@
 			{
 				var coverage = await coverageRepository.GetById(request.Id);
 
+				if(coverage == null)
+				{
+					return BaseResponse<bool>.NotFound("Coverage");
+				}
+
 				coverage.GoodWords = request.GoodWords;
 				coverage.BadWords = request.BadWords;
-				coverage.Percentage = request.Precentage;
+                coverage.Percentage = request.Precentage;
 
 				await coverageRepository.SaveChanges();
 
-				return BaseResponse<bool>.Ok(true);
+                var coverageDetails = GenericMapper<Coverage, CoverageDetails>.Map(coverage);
+
+                return BaseResponse<CoverageDetails>.Ok(coverageDetails);
 			}
 			catch
 			{
-				return BaseResponse<bool>.InternalServerError();
+				return BaseResponse<CoverageDetails>.InternalServerError();
 			}
 		}
 	}

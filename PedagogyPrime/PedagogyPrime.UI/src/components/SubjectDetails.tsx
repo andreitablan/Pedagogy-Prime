@@ -2,11 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import axiosInstance from "../AxiosConfig";
 import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
+import { CoverageDetails } from "../models/Coverage";
 import mapToRole, { Role, UserDetails } from "../models/UserDetails";
 import CourseContent from "./CourseContent";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { UserContext } from "../App";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import CourseContent from "./CourseContent";
+import UpdateCourse from "./UdpateCourse";
 
 
 const SubjectDetails = ({ id }) => {
@@ -23,6 +28,9 @@ const SubjectDetails = ({ id }) => {
     const [shouldShowParticipants, setShouldShowParticipants] = useState(false);
 
     const [participants, setParticipants] = useState<UserDetails[] | undefined>(undefined);
+
+    const [loadingCoverage, setLoadingCoverage] = useState(false);
+    const [loadingCoverageId, setLoadingCoverageId] = useState([]);
 
     useEffect(() => {
         getData();
@@ -62,6 +70,8 @@ const SubjectDetails = ({ id }) => {
 
         handleGetParticipants();
 
+        setSubject({...subject});
+        
     }
 
     const handleChangeCourseVisibility = (course: Course) => {
@@ -85,6 +95,60 @@ const SubjectDetails = ({ id }) => {
             course.isVisibleForStudents = false;
         });
     }
+
+    const handleGenerateCourseCoverage = (course: Course) => {
+        setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
+        let coverageData: CoverageDetails;
+        axiosInstance.post('http://localhost:5000/check-course', {
+            firebase_link: course.contentUrl,
+            description: course.description,
+        })
+        .then((result) => {
+            console.log("In generating coverage");
+            const { coverage, good_keywords, bad_keywords } = result.data;
+
+            subject.coursesDetails.forEach((x: Course) => {
+                if (x.id === course.id) {
+                    console.log("Found course");
+                    x.coverage = {
+                        percentage: coverage,
+                        goodWords: good_keywords,
+                        badWords: bad_keywords,
+                    };
+                    
+                    coverageData = 
+                    {
+                        percentage: coverage,
+                        goodWords: good_keywords,
+                        badWords: bad_keywords,
+                        courseId: course.id
+                    };
+
+                }
+            });
+    
+            setSubject({ ...subject });
+
+            console.log("Updating course in API");
+            axiosInstance
+            .post(
+                `https://localhost:7136/api/v1.0/Coverage`,
+                coverageData
+            )
+            .then((result) => {
+                setLoadingCoverageId((prevIds) => prevIds.filter((id) => id !== course.id));
+                console.log(course.coverage);
+                console.log("Coverage was generated!");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        })
+        .catch(() => {
+            console.log(error);
+        });
+
+    };
 
     if (!subject) {
         return <p>Loading...</p>;
@@ -135,18 +199,23 @@ const SubjectDetails = ({ id }) => {
                                             aria-expanded={index == 0} // Expand the first item by default
                                             aria-controls={`panelsStayOpen-collapse-${index}`}
                                         >
-                                            {
-                                                course.coverage ?
-                                                (<div
-                                                    className={`coverage ${course.coverage.percentage < 50 ? "fail" : "success"
-                                                        }`}
-                                                >
-                                                    {course.coverage.percentage}%
-                                                </div>
-                                                )
-                                                : 
-                                                (
-                                                    <div className="coverage fail" > 0% </div>
+                                            {   loadingCoverage || loadingCoverageId.includes(course.id)?
+                                                <Spinner animation="border" role="status">
+                                                    <span className="visually-hidden">Loading...</span>
+                                                </Spinner>
+                                                :(
+                                                    course.coverage ?
+                                                    (<div
+                                                        className={`coverage ${course.coverage.percentage < 50 ? "fail" : "success"
+                                                            }`}
+                                                    >
+                                                        {course.coverage.percentage}%
+                                                    </div>
+                                                    )
+                                                    : 
+                                                    (
+                                                        <div className="coverage fail" > 0% </div>
+                                                    )
                                                 )
                                             }
             
@@ -162,10 +231,31 @@ const SubjectDetails = ({ id }) => {
                                         aria-labelledby={`panelsStayOpen-heading-${index}`}
                                     >
                                         <div className="accordion-body">
+                                            <div className="coverage-words">
+                                                {course.coverage && [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && (
+                                                    <>
+                                                        <strong>Relevant topics: </strong>
+                                                        {[...course.coverage.goodWords.keys()].map((i) => (
+                                                        <span key={i} className="good-word">
+                                                            {course.coverage.goodWords[i]}
+                                                            {i < course.coverage.goodWords.length - 1 && ' '}
+                                                        </span>
+                                                        ))}
+                                                        {[...course.coverage.badWords.keys()].map((i) => (
+                                                            <span key={i} className="bad-word">
+                                                                {course.coverage.badWords[i]}
+                                                                {i < course.coverage.badWords.length - 1 && ' '}
+                                                            </span>
+                                                        ))}
+                                                    </>
+                                                )}
+                                            </div>
                                             {course.description}
                                             <div className="course-actions">
                                                 <CourseContent contentUrl={course.contentUrl} name={course.name}></CourseContent>
                                                 { [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && <Button onClick={() => handleChangeCourseVisibility(course)} >{course.isVisibleForStudents ?  "Hide Course from Students" : "Make Visible for Students"}</Button>}
+                                                { [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && <Button onClick={() => handleGenerateCourseCoverage(course)} >{(course.coverage == null) ? "Generate Coverage" : "Regenerate Coverage"}</Button>}
+                                                <UpdateCourse item={course}></UpdateCourse>
                                             </div>
                                         </div>
                                     </div>

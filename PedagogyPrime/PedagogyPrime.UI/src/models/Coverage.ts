@@ -3,3 +3,7 @@ export interface Coverage{
     badWords: string[];
     goodWords: string[];
 }
+
+export interface CoverageDetails extends Coverage {
+    courseId: string
+}
