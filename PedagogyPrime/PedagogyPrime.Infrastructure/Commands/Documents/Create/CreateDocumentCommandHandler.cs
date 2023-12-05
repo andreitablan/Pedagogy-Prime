@@ -6,6 +6,7 @@ using PedagogyPrime.Infrastructure.IAuthorization;
 namespace PedagogyPrime.Infrastructure.Commands.Documents.Create
 {
 	using Common;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class CreateDocumentCommandHandler : BaseRequestHandler<CreateDocumentCommand, BaseResponse<bool>>
 	{
@@ -15,8 +16,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Documents.Create
 		{
 			this.documentRepository = documentRepository;
 		}
-
-		public override async Task<BaseResponse<bool>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<bool>> Handle(
 			CreateDocumentCommand request,
 			CancellationToken cancellationToken
 		)

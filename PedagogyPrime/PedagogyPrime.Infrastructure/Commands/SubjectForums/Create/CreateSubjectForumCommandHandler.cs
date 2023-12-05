@@ -6,6 +6,7 @@ using PedagogyPrime.Infrastructure.IAuthorization;
 namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 {
 	using Common;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class CreateSubjectForumCommandHandler : BaseRequestHandler<CreateSubjectForumCommand, BaseResponse<Guid>>
 	{
@@ -15,8 +16,8 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Create
 		{
 			this.subjectForumRepository = subjectForumRepository;
 		}
-
-		public override async Task<BaseResponse<Guid>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<Guid>> Handle(
             CreateSubjectForumCommand request,
 			CancellationToken cancellationToken
 		)

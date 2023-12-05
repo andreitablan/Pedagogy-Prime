@@ -3,6 +3,7 @@
 	using Common;
 	using Core.Common;
 	using Core.IRepositories;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 
 	public class DeleteAssignmentCommandHandler : BaseRequestHandler<DeleteAssignmentCommand, BaseResponse<bool>>
@@ -16,8 +17,8 @@
 		{
 			this.assignmentRepository = assignmentRepository;
 		}
-
-		public override async Task<BaseResponse<bool>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<bool>> Handle(
 			DeleteAssignmentCommand request,
 			CancellationToken cancellationToken
 		)

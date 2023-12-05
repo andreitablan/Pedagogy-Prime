@@ -6,6 +6,7 @@ using PedagogyPrime.Infrastructure.IAuthorization;
 namespace PedagogyPrime.Infrastructure.Commands.Subjects.Create
 {
     using Common;
+    using PedagogyPrime.Infrastructure.AOP.Handler;
 
     public class CreateSubjectCommandHandler : BaseRequestHandler<CreateSubjectCommand, BaseResponse<Guid>>
     {
@@ -20,7 +21,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Subjects.Create
             this.subjectRepository = subjectRepository;
             this.userSubjectRepository = userSubjectRepository;
         }
-
+        [HandlerAspect]
         public override async Task<BaseResponse<Guid>> Handle(
             CreateSubjectCommand request,
             CancellationToken cancellationToken

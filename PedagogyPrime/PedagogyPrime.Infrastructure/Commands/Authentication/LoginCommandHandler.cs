@@ -8,6 +8,7 @@
 	using Microsoft.Extensions.Configuration;
 	using Microsoft.IdentityModel.Tokens;
 	using Models.User;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using System.IdentityModel.Tokens.Jwt;
 	using System.Security.Claims;
 	using System.Text;
@@ -22,8 +23,8 @@
 			this.userRepository = userRepository;
 			this.configuration = configuration;
 		}
-
-		public async Task<BaseResponse<LoginResult>> Handle(
+        [HandlerAspect]
+        public async Task<BaseResponse<LoginResult>> Handle(
 			LoginCommand request,
 			CancellationToken cancellationToken
 		)

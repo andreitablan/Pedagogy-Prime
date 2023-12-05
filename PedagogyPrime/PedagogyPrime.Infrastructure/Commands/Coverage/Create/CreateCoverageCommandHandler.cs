@@ -6,6 +6,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Coverage.Create
 	using Core.Entities;
 	using Core.IRepositories;
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using System.Threading;
 	using System.Threading.Tasks;
 
@@ -20,8 +21,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Coverage.Create
 		{
 			this.coverageRepository = coverageRepository;
 		}
-
-		public override async Task<BaseResponse<Guid>> Handle(CreateCoverageCommand request, CancellationToken cancellationToken)
+        [HandlerAspect]
+        public override async Task<BaseResponse<Guid>> Handle(CreateCoverageCommand request, CancellationToken cancellationToken)
 		{
 			try
 			{

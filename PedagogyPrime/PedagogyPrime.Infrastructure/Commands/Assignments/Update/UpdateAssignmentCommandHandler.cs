@@ -6,6 +6,7 @@
 	using Core.IRepositories;
 	using IAuthorization;
 	using Models.User;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.Models.Assignment;
 
 	public class UpdateAssignmentCommandHandler : BaseRequestHandler<UpdateAssignmentCommand, BaseResponse<AssignmentDetails>>
@@ -19,8 +20,8 @@
 		{
 			this.assignmentRepository = assignmentRepository;
 		}
-
-		public override async Task<BaseResponse<AssignmentDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<AssignmentDetails>> Handle(
 			UpdateAssignmentCommand request,
 			CancellationToken cancellationToken
 		)

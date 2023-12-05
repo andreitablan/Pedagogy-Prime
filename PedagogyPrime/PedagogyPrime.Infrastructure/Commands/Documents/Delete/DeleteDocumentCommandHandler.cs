@@ -4,6 +4,7 @@ using PedagogyPrime.Core.IRepositories;
 namespace PedagogyPrime.Infrastructure.Commands.Documents.Delete
 {
 	using Common;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 
 	public class DeleteDocumentCommandHandler : BaseRequestHandler<DeleteDocumentCommand, BaseResponse<bool>>
@@ -14,8 +15,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Documents.Delete
 		{
 			this.documentRepository = documentRepository;
 		}
-
-		public override async Task<BaseResponse<bool>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<bool>> Handle(
 			DeleteDocumentCommand request,
 			CancellationToken cancellationToken
 		)

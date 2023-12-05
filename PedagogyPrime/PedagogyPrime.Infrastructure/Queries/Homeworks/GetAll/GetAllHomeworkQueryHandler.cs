@@ -4,6 +4,7 @@ using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Infrastructure.Common;
 using PedagogyPrime.Infrastructure.Models.Homework;
 using PedagogyPrime.Infrastructure.IAuthorization;
+using PedagogyPrime.Infrastructure.AOP.Handler;
 
 namespace PedagogyPrime.Infrastructure.Queries.Homeworks.GetAll
 {
@@ -15,6 +16,7 @@ namespace PedagogyPrime.Infrastructure.Queries.Homeworks.GetAll
         {
             this.homeworkRepository = homeworkRepository;
         }
+        [HandlerAspect]
         public override async Task<BaseResponse<List<HomeworkDetails>>> Handle(
             GetAllHomeworkQuery request,
             CancellationToken cancellationToken

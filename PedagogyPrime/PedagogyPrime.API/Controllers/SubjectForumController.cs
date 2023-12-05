@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PedagogyPrime.API.AOP;
 using PedagogyPrime.Infrastructure.Commands.SubjectForums.Create;
 using PedagogyPrime.Infrastructure.Commands.SubjectForums.Delete;
 using PedagogyPrime.Infrastructure.Commands.SubjectForums.Update;
@@ -17,14 +18,16 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<SubjectForumDetails>>> GetAll()
+        [TraceApiAspect(nameof(SubjectForumController))]
+        public async Task<ActionResult<List<SubjectForumDetails>>> GetAll()
 		{
 			return HandleResponse(await _mediator.Send(new GetAllSubjectForumQuery()));
 		}
 
 	
 		[HttpGet("{id}")]
-		public async Task<ActionResult<SubjectForumDetails>> GetById(Guid id)
+        [TraceApiAspect(nameof(SubjectForumController))]
+        public async Task<ActionResult<SubjectForumDetails>> GetById(Guid id)
 		{
             var query = new GetSubjectForumByIdQuery
             {
@@ -35,6 +38,7 @@ namespace PedagogyPrime.API.Controllers
 		}
 
         [HttpPost]
+        [TraceApiAspect(nameof(SubjectForumController))]
         public async Task<ActionResult<Guid>> Create(
                [FromBody] CreateSubjectForumCommand command
            )
@@ -43,6 +47,7 @@ namespace PedagogyPrime.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [TraceApiAspect(nameof(SubjectForumController))]
         public async Task<ActionResult<SubjectForumDetails>> Update(
             Guid id,
             [FromBody] UpdateSubjectForumCommand command
@@ -53,6 +58,7 @@ namespace PedagogyPrime.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [TraceApiAspect(nameof(SubjectForumController))]
         public async Task<ActionResult<bool>> Delete(
             Guid id
         )

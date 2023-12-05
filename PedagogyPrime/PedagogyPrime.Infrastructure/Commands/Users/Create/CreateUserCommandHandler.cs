@@ -4,6 +4,7 @@
 	using Core.Entities;
 	using Core.IRepositories;
 	using PedagogyPrime.Core.Common;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 
 	public class CreateUserCommandHandler : BaseRequestHandler<CreateUserCommand, BaseResponse<bool>>
@@ -17,8 +18,8 @@
 		{
 			this.userRepository = userRepository;
 		}
-
-		public override async Task<BaseResponse<bool>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<bool>> Handle(
             CreateUserCommand request,
 			CancellationToken cancellationToken
 		)

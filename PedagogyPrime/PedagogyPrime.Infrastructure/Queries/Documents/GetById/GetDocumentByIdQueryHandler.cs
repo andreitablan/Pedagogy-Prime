@@ -7,6 +7,7 @@ using PedagogyPrime.Infrastructure.Models.Document;
 namespace PedagogyPrime.Infrastructure.Queries.Documents.GetById
 {
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class GetDocumentByIdQueryHandler : BaseRequestHandler<GetDocumentByIdQuery, BaseResponse<DocumentDetails>>
 	{
@@ -16,8 +17,8 @@ namespace PedagogyPrime.Infrastructure.Queries.Documents.GetById
 		{
 			this.documentRepository = documentRepository;
 		}
-
-		public override async Task<BaseResponse<DocumentDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<DocumentDetails>> Handle(
 			GetDocumentByIdQuery request,
 			CancellationToken cancellationToken
 		)

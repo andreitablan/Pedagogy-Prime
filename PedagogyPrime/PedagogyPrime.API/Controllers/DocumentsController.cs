@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PedagogyPrime.API.AOP;
 using PedagogyPrime.Infrastructure.Commands.Documents.Create;
 using PedagogyPrime.Infrastructure.Commands.Documents.Delete;
 using PedagogyPrime.Infrastructure.Commands.Documents.Update;
@@ -17,13 +18,15 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<DocumentDetails>>> GetAll()
+        [TraceApiAspect(nameof(DocumentsController))]
+        public async Task<ActionResult<List<DocumentDetails>>> GetAll()
 		{
 			return HandleResponse(await _mediator.Send(new GetAllDocumentsQuery()));
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<DocumentDetails>> GetById(Guid id)
+        [TraceApiAspect(nameof(DocumentsController))]
+        public async Task<ActionResult<DocumentDetails>> GetById(Guid id)
 		{
 			var query = new GetDocumentByIdQuery
 			{
@@ -33,7 +36,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<bool>> Create(
+        [TraceApiAspect(nameof(DocumentsController))]
+        public async Task<ActionResult<bool>> Create(
 			[FromBody] CreateDocumentCommand command
 		)
 		{
@@ -41,14 +45,16 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult<DocumentDetails>> Update(Guid id, [FromBody] UpdateDocumentCommand command)
+        [TraceApiAspect(nameof(DocumentsController))]
+        public async Task<ActionResult<DocumentDetails>> Update(Guid id, [FromBody] UpdateDocumentCommand command)
 		{
 			command.Id = id;
 			return HandleResponse(await _mediator.Send(command));
 		}
 
 		[HttpDelete("{id}")]
-		public async Task<ActionResult<bool>> Delete(Guid id)
+        [TraceApiAspect(nameof(DocumentsController))]
+        public async Task<ActionResult<bool>> Delete(Guid id)
 		{
 			var command = new DeleteDocumentCommand
 			{

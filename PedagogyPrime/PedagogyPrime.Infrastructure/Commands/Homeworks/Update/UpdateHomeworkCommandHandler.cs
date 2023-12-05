@@ -6,6 +6,7 @@
 	using Core.IRepositories;
 	using IAuthorization;
 	using Models.User;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.Commands.Homeworks.Update;
 	using PedagogyPrime.Infrastructure.Models.Homework;
 
@@ -20,8 +21,8 @@
 		{
 			this.homeworkRepository = homeworkRepository;
 		}
-
-		public override async Task<BaseResponse<HomeworkDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<HomeworkDetails>> Handle(
             UpdateHomeworkCommand request,
 			CancellationToken cancellationToken
 		)

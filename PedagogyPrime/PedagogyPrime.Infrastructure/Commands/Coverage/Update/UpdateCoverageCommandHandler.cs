@@ -4,6 +4,7 @@
 	using Core.Common;
 	using Core.IRepositories;
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class UpdateCoverageCommandHandler : BaseRequestHandler<UpdateCoverageCommand, BaseResponse<bool>>
 	{
@@ -16,8 +17,8 @@
 		{
 			this.coverageRepository = coverageRepository;
 		}
-
-		public override async Task<BaseResponse<bool>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<bool>> Handle(
 			UpdateCoverageCommand request,
 			CancellationToken cancellationToken
 		)

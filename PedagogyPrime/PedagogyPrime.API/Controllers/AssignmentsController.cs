@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PedagogyPrime.API.AOP;
 using PedagogyPrime.Infrastructure.Commands.Assignments.Create;
 using PedagogyPrime.Infrastructure.Commands.Assignments.Delete;
 using PedagogyPrime.Infrastructure.Commands.Assignments.Update;
@@ -17,20 +18,23 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<AssignmentDetails>>> GetAll()
+        [TraceApiAspect(nameof(AssignmentsController))]
+        public async Task<ActionResult<List<AssignmentDetails>>> GetAll()
 		{
 			return HandleResponse(await _mediator.Send(new GetAllAssignmentsQuerry()));
 		}
 
 		
 		[HttpGet("{id}")]
-		public async Task<ActionResult<AssignmentDetails>> GetById(Guid id)
+        [TraceApiAspect(nameof(AssignmentsController))]
+        public async Task<ActionResult<AssignmentDetails>> GetById(Guid id)
 		{
 			var query = new GetAssignmentByIdQuery(id);
 			return HandleResponse(await _mediator.Send(query));
 		}
 
         [HttpPost]
+        [TraceApiAspect(nameof(AssignmentsController))]
         public async Task<ActionResult<Guid>> Create(
             [FromBody] CreateAssignmentCommand command
         )
@@ -39,6 +43,7 @@ namespace PedagogyPrime.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [TraceApiAspect(nameof(AssignmentsController))]
         public async Task<ActionResult<AssignmentDetails>> Update(
             Guid id,
             [FromBody] UpdateAssignmentCommand command
@@ -49,6 +54,7 @@ namespace PedagogyPrime.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [TraceApiAspect(nameof(AssignmentsController))]
         public async Task<ActionResult<bool>> Delete(
             Guid id
         )

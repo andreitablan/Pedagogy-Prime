@@ -2,6 +2,7 @@
 {
 	using IAuthorization;
 	using MediatR;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public abstract class BaseRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
 	where TRequest : IRequest<TResponse>
@@ -13,7 +14,8 @@
 			this.userAuthorization = userAuthorization;
 		}
 
-		public virtual Task<TResponse> Handle(
+        [HandlerAspect]
+        public virtual Task<TResponse> Handle(
 			TRequest request,
 			CancellationToken cancellationToken
 		)

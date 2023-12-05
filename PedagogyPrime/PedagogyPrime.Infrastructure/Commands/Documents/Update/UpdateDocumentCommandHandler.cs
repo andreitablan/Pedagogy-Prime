@@ -7,6 +7,7 @@ using PedagogyPrime.Infrastructure.Models.Document;
 namespace PedagogyPrime.Infrastructure.Commands.Documents.Update
 {
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class UpdateDocumentCommandHandler : BaseRequestHandler<UpdateDocumentCommand, BaseResponse<DocumentDetails>>
 	{
@@ -16,8 +17,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Documents.Update
 		{
 			this.documentRepository = documentRepository;
 		}
-
-		public override async Task<BaseResponse<DocumentDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<DocumentDetails>> Handle(
 			UpdateDocumentCommand request,
 			CancellationToken cancellationToken
 	   )

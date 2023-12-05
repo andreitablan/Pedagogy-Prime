@@ -7,6 +7,7 @@ using PedagogyPrime.Infrastructure.Models.SubjectForum;
 namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Update
 {
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class UpdateSubjectForumCommandHandler : BaseRequestHandler<UpdateSubjectForumCommand, BaseResponse<SubjectForumDetails>>
 	{
@@ -16,8 +17,8 @@ namespace PedagogyPrime.Infrastructure.Commands.SubjectForums.Update
 		{
 			this.subjectForumRepository = subjectForumRepository;
 		}
-
-		public override async Task<BaseResponse<SubjectForumDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<SubjectForumDetails>> Handle(
             UpdateSubjectForumCommand request,
 			CancellationToken cancellationToken
 	   )
