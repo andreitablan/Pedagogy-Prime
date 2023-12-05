@@ -3,10 +3,11 @@ import axiosInstance from "../AxiosConfig";
 import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
 import mapToRole, { Role, UserDetails } from "../models/UserDetails";
-import CourseContent from "./CourseContent";
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import { UserContext } from "../App";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import CourseContent from "./CourseContent";
+import UpdateCourse from "./UdpateCourse";
 
 
 const SubjectDetails = ({ id }) => {
@@ -62,6 +63,8 @@ const SubjectDetails = ({ id }) => {
 
         handleGetParticipants();
 
+        setSubject({...subject});
+        
     }
 
     const handleChangeCourseVisibility = (course: Course) => {
@@ -166,6 +169,7 @@ const SubjectDetails = ({ id }) => {
                                             <div className="course-actions">
                                                 <CourseContent contentUrl={course.contentUrl} name={course.name}></CourseContent>
                                                 { [Role.Admin.toString(), Role.Teacher.toString()].includes(user.role) && <Button onClick={() => handleChangeCourseVisibility(course)} >{course.isVisibleForStudents ?  "Hide Course from Students" : "Make Visible for Students"}</Button>}
+                                                <UpdateCourse item={course}></UpdateCourse>
                                             </div>
                                         </div>
                                     </div>
