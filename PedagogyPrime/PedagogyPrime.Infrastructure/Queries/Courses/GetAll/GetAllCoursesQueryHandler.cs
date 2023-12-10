@@ -7,6 +7,7 @@ using PedagogyPrime.Infrastructure.Models.Course;
 namespace PedagogyPrime.Infrastructure.Queries.Courses.GetAll
 {
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class GetAllCoursesQueryHandler : BaseRequestHandler<GetAllCoursesQuery, BaseResponse<List<CourseDetails>>>
 	{
@@ -16,8 +17,8 @@ namespace PedagogyPrime.Infrastructure.Queries.Courses.GetAll
 		{
 			this.courseRepository = courseRepository;
 		}
-
-		public override async Task<BaseResponse<List<CourseDetails>>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<List<CourseDetails>>> Handle(
 			GetAllCoursesQuery request,
 			CancellationToken cancellationToken
 		)

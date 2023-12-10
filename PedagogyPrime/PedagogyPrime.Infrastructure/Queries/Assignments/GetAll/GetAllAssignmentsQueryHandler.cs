@@ -1,6 +1,7 @@
 ﻿using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
+using PedagogyPrime.Infrastructure.AOP.Handler;
 using PedagogyPrime.Infrastructure.Common;
 using PedagogyPrime.Infrastructure.IAuthorization;
 using PedagogyPrime.Infrastructure.Models.Assignment;
@@ -14,6 +15,7 @@ namespace PedagogyPrime.Infrastructure.Queries.Assignments.GetAll
         {
             this.assignmentRepository = assignmentRepository;
         }
+        [HandlerAspect]
         public override async Task<BaseResponse<List<AssignmentDetails>>> Handle(
         GetAllAssignmentsQuerry request,
             CancellationToken cancellationToken

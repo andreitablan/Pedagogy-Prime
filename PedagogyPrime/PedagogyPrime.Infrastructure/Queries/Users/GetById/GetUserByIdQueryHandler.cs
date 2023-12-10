@@ -6,6 +6,7 @@
 	using Core.IRepositories;
 	using IAuthorization;
 	using Models.User;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class GetUserByIdQueryHandler : BaseRequestHandler<GetUserByIdQuery, BaseResponse<UserDetails>>
 	{
@@ -16,8 +17,8 @@
 		{
 			this.userRepository = userRepository;
 		}
-
-		public override async Task<BaseResponse<UserDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<UserDetails>> Handle(
 			GetUserByIdQuery request,
 			CancellationToken cancellationToken
 		)

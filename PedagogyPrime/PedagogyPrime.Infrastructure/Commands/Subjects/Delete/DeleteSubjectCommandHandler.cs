@@ -4,6 +4,7 @@ using PedagogyPrime.Core.IRepositories;
 namespace PedagogyPrime.Infrastructure.Commands.Subjects.Delete
 {
 	using Common;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 
 	public class DeleteSubjectCommandHandler : BaseRequestHandler<DeleteSubjectCommand, BaseResponse<bool>>
@@ -14,8 +15,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Subjects.Delete
 		{
 			this.subjectRepository = subjectRepository;
 		}
-
-		public override async Task<BaseResponse<bool>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<bool>> Handle(
 			DeleteSubjectCommand request,
 			CancellationToken cancellationToken
 		)

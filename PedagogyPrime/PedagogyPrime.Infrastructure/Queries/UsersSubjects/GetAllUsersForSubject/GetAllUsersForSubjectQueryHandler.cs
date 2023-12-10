@@ -3,6 +3,7 @@
 	using PedagogyPrime.Core.Common;
 	using PedagogyPrime.Core.Entities;
 	using PedagogyPrime.Core.IRepositories;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.Common;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 	using PedagogyPrime.Infrastructure.Models.User;
@@ -15,8 +16,8 @@
 		{
 			this.userSubjectRepository = userSubjectRepository;
 		}
-
-		public override async Task<BaseResponse<List<UserDetails>>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<List<UserDetails>>> Handle(
 			GetAllUsersForSubjectQuery request,
 			CancellationToken cancellationToken
 		)

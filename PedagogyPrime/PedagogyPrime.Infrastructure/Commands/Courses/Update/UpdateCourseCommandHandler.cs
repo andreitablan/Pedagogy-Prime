@@ -1,6 +1,7 @@
 ﻿using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
+using PedagogyPrime.Infrastructure.AOP.Handler;
 using PedagogyPrime.Infrastructure.Common;
 using PedagogyPrime.Infrastructure.IAuthorization;
 using PedagogyPrime.Infrastructure.Models.Course;
@@ -18,8 +19,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Update
 		{
 			this.courseRepository = courseRepository;
 		}
-
-		public override async Task<BaseResponse<CourseDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<CourseDetails>> Handle(
 		   UpdateCourseCommand request,
 		   CancellationToken cancellationToken
 	   )

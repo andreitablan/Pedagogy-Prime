@@ -5,6 +5,7 @@ using PedagogyPrime.Infrastructure.IAuthorization;
 namespace PedagogyPrime.Infrastructure.Commands.Courses.Delete
 {
 	using Common;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class DeleteCourseCommandHandler : BaseRequestHandler<DeleteCourseCommand, BaseResponse<bool>>
 	{
@@ -17,8 +18,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Delete
 		{
 			this.courseRepository = courseRepository;
 		}
-
-		public override async Task<BaseResponse<bool>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<bool>> Handle(
 			DeleteCourseCommand request,
 			CancellationToken cancellationToken
 		)

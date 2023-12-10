@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PedagogyPrime.API.AOP;
 using PedagogyPrime.Infrastructure.Commands.Homeworks.Create;
 using PedagogyPrime.Infrastructure.Commands.Homeworks.Delete;
 using PedagogyPrime.Infrastructure.Commands.Homeworks.Update;
@@ -17,14 +18,16 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<HomeworkDetails>>> GetAll()
+        [TraceApiAspect(nameof(HomeworksController))]
+        public async Task<ActionResult<List<HomeworkDetails>>> GetAll()
 		{
 			return HandleResponse(await _mediator.Send(new GetAllHomeworkQuery()));
 		}
 
 	
 		[HttpGet("{id}")]
-		public async Task<ActionResult<HomeworkDetails>> GetById(Guid id)
+        [TraceApiAspect(nameof(HomeworksController))]
+        public async Task<ActionResult<HomeworkDetails>> GetById(Guid id)
 		{
 			var query = new GetHomeworkByIdQuery(id);
 			
@@ -32,6 +35,7 @@ namespace PedagogyPrime.API.Controllers
 		}
 
         [HttpPost]
+        [TraceApiAspect(nameof(HomeworksController))]
         public async Task<ActionResult<Guid>> Create(
                [FromBody] CreateHomeworkCommand command
            )
@@ -40,6 +44,7 @@ namespace PedagogyPrime.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [TraceApiAspect(nameof(HomeworksController))]
         public async Task<ActionResult<HomeworkDetails>> Update(
             Guid id,
             [FromBody] UpdateHomeworkCommand command
@@ -50,6 +55,7 @@ namespace PedagogyPrime.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [TraceApiAspect(nameof(HomeworksController))]
         public async Task<ActionResult<bool>> Delete(
             Guid id
         )

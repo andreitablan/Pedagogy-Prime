@@ -6,6 +6,7 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Create
 {
 	using Common;
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class CreateCourseCommandHandler : BaseRequestHandler<CreateCourseCommand, BaseResponse<Guid>>
 	{
@@ -18,8 +19,8 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Create
 		{
 			this.courseRepository = courseRepository;
 		}
-
-		public override async Task<BaseResponse<Guid>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<Guid>> Handle(
 			CreateCourseCommand request,
 			CancellationToken cancellationToken
 		)

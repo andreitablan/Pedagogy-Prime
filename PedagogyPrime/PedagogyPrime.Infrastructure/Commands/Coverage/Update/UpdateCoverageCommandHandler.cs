@@ -7,6 +7,7 @@
     using PedagogyPrime.Core.Entities;
     using PedagogyPrime.Infrastructure.Models.Course;
     using PedagogyPrime.Infrastructure.Models.Coverage;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
     public class UpdateCoverageCommandHandler : BaseRequestHandler<UpdateCoverageCommand, BaseResponse<CoverageDetails>>
 	{
@@ -19,8 +20,8 @@
 		{
 			this.coverageRepository = coverageRepository;
 		}
-
-		public override async Task<BaseResponse<CoverageDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<CoverageDetails>> Handle(
 			UpdateCoverageCommand request,
 			CancellationToken cancellationToken
 		)
@@ -31,7 +32,7 @@
 
 				if(coverage == null)
 				{
-					return BaseResponse<bool>.NotFound("Coverage");
+					return BaseResponse<CoverageDetails>.NotFound("Coverage");
 				}
 
 				coverage.GoodWords = request.GoodWords;

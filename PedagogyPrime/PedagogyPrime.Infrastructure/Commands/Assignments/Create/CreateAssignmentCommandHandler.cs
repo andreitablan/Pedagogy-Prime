@@ -4,6 +4,7 @@
 	using Core.Entities;
 	using Core.IRepositories;
 	using PedagogyPrime.Core.Common;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 
 	public class CreateAssignmentCommandHandler : BaseRequestHandler<CreateAssignmentCommand, BaseResponse<Guid>>
@@ -17,8 +18,8 @@
 		{
 			this.assignmentRepository = assignmentRepository;
 		}
-
-		public override async Task<BaseResponse<Guid>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<Guid>> Handle(
 			CreateAssignmentCommand request,
 			CancellationToken cancellationToken
 		)

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PedagogyPrime.API.AOP;
 using PedagogyPrime.Infrastructure.Commands.Courses.Create;
 using PedagogyPrime.Infrastructure.Commands.Courses.Delete;
 using PedagogyPrime.Infrastructure.Commands.Courses.Update;
@@ -16,13 +17,15 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<CourseDetails>>> GetAll()
+        [TraceApiAspect(nameof(CoursesController))]
+        public async Task<ActionResult<List<CourseDetails>>> GetAll()
 		{
 			return HandleResponse(await _mediator.Send(new GetAllCoursesQuery()));
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<CourseDetails>> GetById(Guid id)
+        [TraceApiAspect(nameof(CoursesController))]
+        public async Task<ActionResult<CourseDetails>> GetById(Guid id)
 		{
 			var query = new GetCourseByIdQuery
 			{
@@ -33,7 +36,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<Guid>> Create(
+        [TraceApiAspect(nameof(CoursesController))]
+        public async Task<ActionResult<Guid>> Create(
 			[FromBody] CreateCourseCommand command
 		)
 		{
@@ -41,14 +45,16 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult<CourseDetails>> Update(Guid id, [FromBody] UpdateCourseCommand command)
+        [TraceApiAspect(nameof(CoursesController))]
+        public async Task<ActionResult<CourseDetails>> Update(Guid id, [FromBody] UpdateCourseCommand command)
 		{
 			command.Id = id;
 			return HandleResponse(await _mediator.Send(command));
 		}
 
 		[HttpDelete("{id}")]
-		public async Task<ActionResult<bool>> Delete(Guid id)
+        [TraceApiAspect(nameof(CoursesController))]
+        public async Task<ActionResult<bool>> Delete(Guid id)
 		{
 			var command = new DeleteCourseCommand
 			{

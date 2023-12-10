@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using PedagogyPrime.API.AOP;
 using PedagogyPrime.Infrastructure.Commands.Subjects.Create;
 using PedagogyPrime.Infrastructure.Commands.Subjects.Delete;
 using PedagogyPrime.Infrastructure.Commands.Subjects.Update;
@@ -11,7 +12,7 @@ using PedagogyPrime.Infrastructure.Queries.UsersSubjects.GetAllUsersForSubject;
 
 namespace PedagogyPrime.API.Controllers
 {
-	public class SubjectsController : BaseController
+    public class SubjectsController : BaseController
 	{
 		public SubjectsController(IMediator mediator)
 			: base(mediator)
@@ -19,13 +20,15 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<SubjectDetails>>> GetAll()
+        [TraceApiAspect(nameof(SubjectsController))]
+        public async Task<ActionResult<List<SubjectDetails>>> GetAll()
 		{
 			return HandleResponse(await _mediator.Send(new GetAllSubjectsQuery()));
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<SubjectInfo>> GetById(Guid id)
+        [TraceApiAspect(nameof(SubjectsController))]
+        public async Task<ActionResult<SubjectInfo>> GetById(Guid id)
 		{
 			var query = new GetSubjectByIdQuery
 			{
@@ -36,7 +39,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<Guid>> Create(
+        [TraceApiAspect(nameof(SubjectsController))]
+        public async Task<ActionResult<Guid>> Create(
 			   [FromBody] CreateSubjectCommand command
 		   )
 		{
@@ -44,7 +48,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult<SubjectDetails>> Update(
+        [TraceApiAspect(nameof(SubjectsController))]
+        public async Task<ActionResult<SubjectDetails>> Update(
 			Guid id,
 			[FromBody] UpdateSubjectCommand command
 		)
@@ -54,7 +59,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public async Task<ActionResult<bool>> Delete(
+        [TraceApiAspect(nameof(SubjectsController))]
+        public async Task<ActionResult<bool>> Delete(
 			Guid id
 		)
 		{
@@ -66,7 +72,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet("{id}/users")]
-		public async Task<ActionResult<List<UserDetails>>> GetAllUsers(Guid id)
+        [TraceApiAspect(nameof(SubjectsController))]
+        public async Task<ActionResult<List<UserDetails>>> GetAllUsers(Guid id)
 		{
 			var command = new GetAllUsersForSubjectQuery
 			{

@@ -4,6 +4,7 @@
 	using Core.Entities;
 	using Core.IRepositories;
 	using Microsoft.EntityFrameworkCore;
+	using PedagogyPrime.Persistence.AOP;
 
 	public class BaseRepository<TEntity> : IBaseRepository<TEntity>
 		where TEntity : BaseEntity
@@ -17,7 +18,7 @@
 			_context = context;
 			_context.ChangeTracker.Clear();
 		}
-
+		[TraceRepositoryAspect]
 		public virtual async Task<List<TEntity>> GetAll()
 		{
 			return await _context
@@ -25,7 +26,7 @@
 				.AsNoTracking()
 				.ToListAsync();
 		}
-
+		[TraceRepositoryAspect]
 		public virtual async Task<TEntity?> GetById(
 			Guid id
 		)
@@ -34,7 +35,7 @@
 				.Set<TEntity>()
 				.FirstOrDefaultAsync(e => e.Id == id);
 		}
-
+		[TraceRepositoryAspect]
 		public async Task Add(
 			TEntity entity
 		)
@@ -43,7 +44,7 @@
 				.Set<TEntity>()
 				.AddAsync(entity);
 		}
-
+		[TraceRepositoryAspect]
 		public void Update(
 			TEntity entity
 		)
@@ -52,7 +53,7 @@
 				.Set<TEntity>()
 				.Update(entity);
 		}
-
+		[TraceRepositoryAspect]
 		public virtual async Task<int> Delete(
 			Guid id
 		)
@@ -61,7 +62,7 @@
 				.Set<TEntity>()
 				.DeleteByKeyAsync(id);
 		}
-
+		[TraceRepositoryAspect]
 		public async Task<int> SaveChanges()
 		{
 			return await _context.SaveChangesAsync();

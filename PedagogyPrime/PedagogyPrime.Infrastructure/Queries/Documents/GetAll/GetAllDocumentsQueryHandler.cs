@@ -7,6 +7,7 @@ using PedagogyPrime.Infrastructure.Models.Document;
 namespace PedagogyPrime.Infrastructure.Queries.Documents.GetAll
 {
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class GetAllDocumentsQueryHandler : BaseRequestHandler<GetAllDocumentsQuery, BaseResponse<List<DocumentDetails>>>
 	{
@@ -16,8 +17,8 @@ namespace PedagogyPrime.Infrastructure.Queries.Documents.GetAll
 		{
 			this.documentRepository = documentRepository;
 		}
-
-		public override async Task<BaseResponse<List<DocumentDetails>>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<List<DocumentDetails>>> Handle(
 			GetAllDocumentsQuery request,
 			CancellationToken cancellationToken
 		)
