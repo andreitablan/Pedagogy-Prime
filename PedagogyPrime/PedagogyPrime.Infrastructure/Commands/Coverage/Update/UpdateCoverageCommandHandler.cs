@@ -32,7 +32,7 @@
 
 				if(coverage == null)
 				{
-					return BaseResponse<bool>.NotFound("Coverage");
+					return BaseResponse<CoverageDetails>.NotFound("Coverage");
 				}
 
 				coverage.GoodWords = request.GoodWords;
