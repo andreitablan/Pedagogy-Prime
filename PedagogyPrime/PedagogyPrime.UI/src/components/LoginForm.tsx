@@ -8,7 +8,20 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const observeLoginAttempt = () => {
+    console.log("User attempted to log in.");
+  };
+  const verifyLogin = (response) => {
+    if (response.status === 200) {
+      return true;
+    } else {
+      alert("Wrong username or password!");
+      throw new Error("Wrong username or password");
+    }
+  };
+
   const handleSubmit = (e) => {
+    observeLoginAttempt();
     e.preventDefault();
     const loginUser = {
       username: userName,
@@ -23,7 +36,7 @@ function LoginForm() {
       body: JSON.stringify(loginUser),
     })
       .then((response) => {
-        if (response.status === 200) {
+        if (verifyLogin(response)) {
           return response.json();
         } else {
           throw new Error("Wrong username or password");
@@ -35,7 +48,7 @@ function LoginForm() {
         const user = {
           loggedIn: true,
           ...userDetails,
-          role:  mapToRole(userDetails.role)
+          role: mapToRole(userDetails.role),
         };
 
         setUser(user);
@@ -111,7 +124,7 @@ function LoginForm() {
                 fontWeight: "bold",
                 display: "block",
                 margin: "auto",
-                border: "none"
+                border: "none",
               }}
             >
               Login
