@@ -2,15 +2,14 @@
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { key, messagingSenderId, appId, measurementId } from "./confidential";
 const firebaseConfig = {
-  apiKey: key,
+  apiKey: "AIzaSyDPoku4vPkx0cKTh-55bz-NNn1MnbyA88A",
   authDomain: "pedagogy-prime.firebaseapp.com",
   projectId: "pedagogy-prime",
   storageBucket: "pedagogy-prime.appspot.com",
-  messagingSenderId: messagingSenderId,
-  appId: appId,
-  measurementId: measurementId,
+  messagingSenderId: "283690466019",
+  appId: "1:283690466019:web:2832ab626e04fa4527e3d6",
+  measurementId: "G-8SNK8HYQ7E",
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
