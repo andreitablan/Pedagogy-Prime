@@ -1,20 +1,44 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import mapToRole from "../models/UserDetails";
+
 function LoginForm() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [isBlocked, setIsBlocked] = useState(false);
+
+  useEffect(() => {
+    const resetAttemptsTimer = setTimeout(() => {
+      setLoginAttempts(0);
+      setIsBlocked(false);
+    }, 5 * 60 * 1000);
+
+    return () => clearTimeout(resetAttemptsTimer);
+  }, [loginAttempts]);
+
   const observeLoginAttempt = () => {
     console.log("User attempted to log in.");
   };
+
   const verifyLogin = (response) => {
     if (response.status === 200) {
+      setLoginAttempts(0);
       return true;
     } else {
+      setLoginAttempts((prevAttempts) => prevAttempts + 1);
+
+      console.log(loginAttempts);
+      if (loginAttempts + 1 > 5) {
+        setIsBlocked(true);
+        alert("Login blocked. Please try again later.");
+      }
+
       alert("Wrong username or password!");
       throw new Error("Wrong username or password");
     }
@@ -23,6 +47,12 @@ function LoginForm() {
   const handleSubmit = (e) => {
     observeLoginAttempt();
     e.preventDefault();
+
+    if (isBlocked) {
+      alert("Login blocked. Please try again later.");
+      return;
+    }
+
     const loginUser = {
       username: userName,
       password: password,
@@ -60,7 +90,6 @@ function LoginForm() {
       .catch((error) => {
         console.error(error);
         if (error.message === "Wrong username or password") {
-          alert("Wrong username or password!");
           setUserName("");
           setPassword("");
         }
