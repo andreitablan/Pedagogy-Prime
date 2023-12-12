@@ -8,7 +8,7 @@ import CourseContent from "./CourseContent";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { UserContext } from "../App";
-import UpdateCourse from "./UdpateCourse";
+import UpdateCourse from "./UpdateCourse";
 
 const SubjectDetails = ({ id }) => {
   const [subject, setSubject] = useState({
@@ -313,7 +313,11 @@ const SubjectDetails = ({ id }) => {
                               : "Regenerate Coverage"}
                           </Button>
                         )}
-                        <UpdateCourse item={course}></UpdateCourse>
+                        {[
+                          Role.Admin.toString(),
+                          Role.Teacher.toString(),
+                        ].includes(user.role) && 
+                        <UpdateCourse item={course} onModalUpdate={handleModalUpdate}></UpdateCourse>}
                       </div>
                     </div>
                   </div>
