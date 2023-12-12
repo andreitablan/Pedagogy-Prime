@@ -88,11 +88,10 @@ const CourseForm: React.FC<CourseFormProps> = ({
       for (let index = 0; index < uploadedFileUrls.length; index++) {
         const url = uploadedFileUrls[index];
         const description = courseDescriptions[index] || "";
-
         const courseData = {
           name: `Course ${index + 1}`,
           description,
-          coverage: 0,
+          coverage: null,
           contentUrl: url,
           subjectId,
         };

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import mapToRole from "../models/UserDetails";
-
+import log from "../logger";
 function LoginForm() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +23,7 @@ function LoginForm() {
   }, [loginAttempts]);
 
   const observeLoginAttempt = () => {
-    console.log("User attempted to log in.");
+    console.log("loginAttempts");
   };
 
   const verifyLogin = (response) => {
