@@ -105,12 +105,14 @@ const SubjectDetails = ({ id }) => {
                     if (x.id === course.id) {
                         console.log("Found course");
                         x.coverage = {
+                            id: course.coverage.id,
                             percentage: coverage,
                             goodWords: good_keywords,
                             badWords: bad_keywords,
                         };
     
                         coverageData = {
+                            id: course.coverage.id,
                             percentage: coverage,
                             goodWords: good_keywords,
                             badWords: bad_keywords,
@@ -122,8 +124,17 @@ const SubjectDetails = ({ id }) => {
                 setSubject({ ...subject });
     
                 console.log("Updating course in API");
-                axiosInstance
-                .post(`https://localhost:7136/api/v1.0/Coverage`, coverageData)
+                (!course.coverage ? axiosInstance
+                    .post(
+                        `https://localhost:7136/api/v1.0/Coverage`,
+                        coverageData
+                    ) : 
+                    axiosInstance
+                        .put(
+                            `https://localhost:7136/api/v1.0/Coverage/${course.coverage.id}`,
+                            coverageData
+                        )
+                    )
                 .then((result) => {
                     setLoadingCoverageId((prevIds) =>
                     prevIds.filter((id) => id !== course.id)
@@ -165,6 +176,7 @@ const SubjectDetails = ({ id }) => {
                     if (x.id === course.id) {
                         console.log("Found course");
                         x.coverage = {
+                            id: course.coverage.id,
                             percentage: coverage,
                             goodWords: good_keywords,
                             badWords: bad_keywords,
@@ -172,6 +184,7 @@ const SubjectDetails = ({ id }) => {
 
                         coverageData =
                         {
+                            id: course.coverage.id,
                             percentage: coverage,
                             goodWords: good_keywords,
                             badWords: bad_keywords,
@@ -183,19 +196,25 @@ const SubjectDetails = ({ id }) => {
                 setSubject({ ...subject });
 
                 console.log("Updating course in API");
+                (!course.coverage ? axiosInstance
+                .post(
+                    `https://localhost:7136/api/v1.0/Coverage`,
+                    coverageData
+                ) : 
                 axiosInstance
-                    .post(
-                        `https://localhost:7136/api/v1.0/Coverage`,
+                    .put(
+                        `https://localhost:7136/api/v1.0/Coverage/${course.coverage.id}`,
                         coverageData
                     )
-                    .then((result) => {
-                        setLoadingCoverageId((prevIds) => prevIds.filter((id) => id !== course.id));
-                        console.log(course.coverage);
-                        console.log("Coverage was generated!");
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                )
+                .then((result) => {
+                    setLoadingCoverageId((prevIds) => prevIds.filter((id) => id !== course.id));
+                    console.log(course.coverage);
+                    console.log("Coverage was generated!");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
             })
             .catch(() => {
                 console.log(error);
