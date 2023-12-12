@@ -8,7 +8,7 @@ import CourseContent from "./CourseContent";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { UserContext } from "../App";
-import UpdateCourse from "./UdpateCourse";
+import UpdateCourse from "./UpdateCourse";
 import AddParticipant from "./AddParticipant";
 
 const SubjectDetails = ({ id }) => {
@@ -66,101 +66,111 @@ const SubjectDetails = ({ id }) => {
 
     handleGetParticipants();
 
+    setSubject({ ...subject });
+
+  }
+
+  const handleChangeCourseVisibility = (course: Course) => {
+
+    course.isVisibleForStudents = !course.isVisibleForStudents;
+    axiosInstance
+      .put(
+        `https://localhost:7136/api/v1.0/Courses/${course.id}`,
+        course
+      )
+      .then((result) => {
+
         setSubject({ ...subject });
+      })
+      .catch(() => {
+        course.isVisibleForStudents = false;
+      });
+  }
 
-    }
+  const handleGenerateCourseCoverage = (course: Course) => {
+    setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
+    let coverageData: CoverageDetails;
+    axiosInstance.post('http://localhost:5000/check-course', {
+      firebase_link: course.contentUrl,
+      description: course.description,
+    })
+      .then((result) => {
+        console.log("In generating coverage");
+        const { coverage, good_keywords, bad_keywords } = result.data;
 
-    const handleChangeCourseVisibility = (course: Course) => {
+        subject.coursesDetails.forEach((x: Course) => {
+          if (x.id === course.id) {
+            console.log("Found course");
+            x.coverage = {
+              percentage: coverage,
+              goodWords: good_keywords,
+              badWords: bad_keywords,
+            };
 
-        course.isVisibleForStudents = !course.isVisibleForStudents;
-        axiosInstance
-            .put(
-                `https://localhost:7136/api/v1.0/Courses/${course.id}`,
-                course
-            )
-            .then((result) => {
-
-                setSubject({ ...subject });
-            })
-            .catch(() => {
-                course.isVisibleForStudents = false;
-            });
-    }
-
-    const handleGenerateCourseCoverage = (course: Course) => {
-        setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
-        let coverageData: CoverageDetails;
-        axiosInstance.post('http://localhost:5000/check-course', {
-            firebase_link: course.contentUrl,
-            description: course.description,
-        })
-            .then((result) => {
-                console.log("In generating coverage");
-                const { coverage, good_keywords, bad_keywords } = result.data;
-
-                subject.coursesDetails.forEach((x: Course) => {
-                    if (x.id === course.id) {
-                        console.log("Found course");
-                        x.coverage = {
-                            percentage: coverage,
-                            goodWords: good_keywords,
-                            badWords: bad_keywords,
-                        };
-
-                        coverageData =
-                        {
-                            percentage: coverage,
-                            goodWords: good_keywords,
-                            badWords: bad_keywords,
-                            courseId: course.id
-                        };
-                    }
-                });
-
-                setSubject({ ...subject });
-
-                console.log("Updating course in API");
-                axiosInstance
-                    .post(
-                        `https://localhost:7136/api/v1.0/Coverage`,
-                        coverageData
-                    )
-                    .then((result) => {
-                        setLoadingCoverageId((prevIds) => prevIds.filter((id) => id !== course.id));
-                        console.log(course.coverage);
-                        console.log("Coverage was generated!");
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            })
-            .catch(() => {
-                console.log(error);
-            });
-
-    };
-
-    const handleModalUpdate = (response) => {
-        const course = response.resource;
-        subject.coursesDetails.map((x: Course) => {
-            if (x.id === course.id) {
-                x.name = course.name;
-                x.description = course.description;
-                x.contentUrl = course.contentUrl;
-                x.coverage = course.coverage;
-            }
+            coverageData =
+            {
+              percentage: coverage,
+              goodWords: good_keywords,
+              badWords: bad_keywords,
+              courseId: course.id
+            };
+          }
         });
 
         setSubject({ ...subject });
-    };
 
-    if (!subject) {
-        return <p>Loading...</p>;
-    }
+        console.log("Updating course in API");
+        axiosInstance
+          .post(
+            `https://localhost:7136/api/v1.0/Coverage`,
+            coverageData
+          )
+          .then((result) => {
+            setLoadingCoverageId((prevIds) => prevIds.filter((id) => id !== course.id));
+            console.log(course.coverage);
+            console.log("Coverage was generated!");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+      .catch(() => {
+        console.log(error);
+      });
 
-    if (subject.id === '') {
-        return <p>No subject</p>
+  };
+
+  const handleModalUpdate = (response) => {
+    const course = response.resource;
+    subject.coursesDetails.map((x: Course) => {
+      if (x.id === course.id) {
+        x.name = course.name;
+        x.description = course.description;
+        x.contentUrl = course.contentUrl;
+        x.coverage = course.coverage;
+      }
+    });
+
+    setSubject({ ...subject });
+  };
+
+  const handleAddParticipant = (response) => {
+    if (!participants) {
+      setParticipants([response]);
     }
+    else {
+      participants.push(response);
+      setParticipants({ ...participants });
+    }
+  }
+
+  if (!subject) {
+    return <p>Loading...</p>;
+  }
+
+  if (subject.id === '') {
+    return <p>No subject</p>
+  }
 
   return (
     <div className="subject-wrapper">
@@ -185,10 +195,8 @@ const SubjectDetails = ({ id }) => {
         {[Role.Admin.toString(), Role.Teacher.toString()].includes(
           user.role
         ) && (
-          <Button className="add-sutdent btn btn-success">
-            Add Participants
-          </Button>
-        )}
+            <AddParticipant onModalUpdate={handleAddParticipant}></AddParticipant>
+          )}
         <button
           className="show-students btn btn-success"
           onClick={() => toggleParticipants()}
@@ -199,9 +207,9 @@ const SubjectDetails = ({ id }) => {
       <div className="accordion" id="accordionPanelsStayOpenExample">
         {subject.coursesDetails.filter((x: Course) => x.isVisibleForStudents)
           .length == 0 &&
-        ![Role.Admin.toString(), Role.Teacher.toString()].includes(
-          user.role
-        ) ? (
+          ![Role.Admin.toString(), Role.Teacher.toString()].includes(
+            user.role
+          ) ? (
           <div>There are no courses available yet.</div>
         ) : (
           subject.coursesDetails.map((course: Course, index) => {
@@ -218,9 +226,8 @@ const SubjectDetails = ({ id }) => {
                     id={`panelsStayOpen-heading-${index}`}
                   >
                     <button
-                      className={`accordion-button ${
-                        index != 0 ? "collapsed" : ""
-                      }`}
+                      className={`accordion-button ${index != 0 ? "collapsed" : ""
+                        }`}
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target={`#panelsStayOpen-collapse-${index}`}
@@ -228,15 +235,14 @@ const SubjectDetails = ({ id }) => {
                       aria-controls={`panelsStayOpen-collapse-${index}`}
                     >
                       {loadingCoverage ||
-                      loadingCoverageId.includes(course.id) ? (
+                        loadingCoverageId.includes(course.id) ? (
                         <Spinner animation="border" role="status">
                           <span className="visually-hidden">Loading...</span>
                         </Spinner>
                       ) : course.coverage ? (
                         <div
-                          className={`coverage ${
-                            course.coverage.percentage < 50 ? "fail" : "success"
-                          }`}
+                          className={`coverage ${course.coverage.percentage < 50 ? "fail" : "success"
+                            }`}
                         >
                           {course.coverage.percentage}%
                         </div>
@@ -251,9 +257,8 @@ const SubjectDetails = ({ id }) => {
                   </h2>
                   <div
                     id={`panelsStayOpen-collapse-${index}`}
-                    className={`accordion-collapse collapse ${
-                      index === 0 ? "show" : ""
-                    }`}
+                    className={`accordion-collapse collapse ${index === 0 ? "show" : ""
+                      }`}
                     aria-labelledby={`panelsStayOpen-heading-${index}`}
                   >
                     <div className="accordion-body">
@@ -294,31 +299,31 @@ const SubjectDetails = ({ id }) => {
                           Role.Admin.toString(),
                           Role.Teacher.toString(),
                         ].includes(user.role) && (
-                          <Button
-                            onClick={() => handleChangeCourseVisibility(course)}
-                          >
-                            {course.isVisibleForStudents
-                              ? "Hide Course from Students"
-                              : "Make Visible for Students"}
-                          </Button>
-                        )}
+                            <Button
+                              onClick={() => handleChangeCourseVisibility(course)}
+                            >
+                              {course.isVisibleForStudents
+                                ? "Hide Course from Students"
+                                : "Make Visible for Students"}
+                            </Button>
+                          )}
                         {[
                           Role.Admin.toString(),
                           Role.Teacher.toString(),
                         ].includes(user.role) && (
-                          <Button
-                            onClick={() => handleGenerateCourseCoverage(course)}
-                          >
-                            {course.coverage == null
-                              ? "Generate Coverage"
-                              : "Regenerate Coverage"}
-                          </Button>
-                        )}
+                            <Button
+                              onClick={() => handleGenerateCourseCoverage(course)}
+                            >
+                              {course.coverage == null
+                                ? "Generate Coverage"
+                                : "Regenerate Coverage"}
+                            </Button>
+                          )}
                         {[
                           Role.Admin.toString(),
                           Role.Teacher.toString(),
-                        ].includes(user.role) && 
-                        <UpdateCourse item={course} onModalUpdate={handleModalUpdate}></UpdateCourse>}
+                        ].includes(user.role) &&
+                          <UpdateCourse item={course} onModalUpdate={handleModalUpdate}></UpdateCourse>}
                       </div>
                     </div>
                   </div>
