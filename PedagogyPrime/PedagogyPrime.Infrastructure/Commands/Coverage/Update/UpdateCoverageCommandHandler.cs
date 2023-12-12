@@ -6,32 +6,33 @@
     using IAuthorization;
     using PedagogyPrime.Core.Entities;
     using PedagogyPrime.Infrastructure.Models.Coverage;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
     public class UpdateCoverageCommandHandler : BaseRequestHandler<UpdateCoverageCommand, BaseResponse<CoverageDetails>>
     {
         private readonly ICoverageRepository coverageRepository;
 
-        public UpdateCoverageCommandHandler(
-            IUserAuthorization userAuthorization,
-            ICoverageRepository coverageRepository
-        ) : base(userAuthorization)
-        {
-            this.coverageRepository = coverageRepository;
-        }
-
+		public UpdateCoverageCommandHandler(
+			IUserAuthorization userAuthorization,
+			ICoverageRepository coverageRepository
+		) : base(userAuthorization)
+		{
+			this.coverageRepository = coverageRepository;
+		}
+        [HandlerAspect]
         public override async Task<BaseResponse<CoverageDetails>> Handle(
-            UpdateCoverageCommand request,
-            CancellationToken cancellationToken
-        )
-        {
-            try
-            {
-                var coverage = await coverageRepository.GetById(request.Id);
+			UpdateCoverageCommand request,
+			CancellationToken cancellationToken
+		)
+		{
+			try
+			{
+				var coverage = await coverageRepository.GetById(request.Id);
 
-                if (coverage == null)
-                {
-                    return BaseResponse<CoverageDetails>.NotFound("Coverage");
-                }
+				if(coverage == null)
+				{
+					return BaseResponse<CoverageDetails>.NotFound("Coverage");
+				}
 
                 coverage.GoodWords = request.GoodWords;
                 coverage.BadWords = request.BadWords;

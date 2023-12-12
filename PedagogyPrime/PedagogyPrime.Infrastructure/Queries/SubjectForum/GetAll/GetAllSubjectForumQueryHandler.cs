@@ -7,6 +7,7 @@ using PedagogyPrime.Infrastructure.Models.SubjectForum;
 namespace PedagogyPrime.Infrastructure.Queries.SubjectForums.GetAll
 {
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class GetAllSubjectForumQueryHandler : BaseRequestHandler<GetAllSubjectForumQuery, BaseResponse<List<SubjectForumDetails>>>
 	{
@@ -16,8 +17,8 @@ namespace PedagogyPrime.Infrastructure.Queries.SubjectForums.GetAll
 		{
 			this.subjectForumRepository = subjectForumRepository;
 		}
-
-		public override async Task<BaseResponse<List<SubjectForumDetails>>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<List<SubjectForumDetails>>> Handle(
             GetAllSubjectForumQuery request,
 			CancellationToken cancellationToken
 		)

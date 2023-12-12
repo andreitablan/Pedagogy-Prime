@@ -8,6 +8,7 @@ namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetById
 {
 	using IAuthorization;
 	using Models.Course;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class GetSubjectByIdQueryHandler : BaseRequestHandler<GetSubjectByIdQuery, BaseResponse<SubjectInfo>>
 	{
@@ -17,8 +18,8 @@ namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetById
 		{
 			this.subjectRepository = subjectRepository;
 		}
-
-		public override async Task<BaseResponse<SubjectInfo>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<SubjectInfo>> Handle(
 			GetSubjectByIdQuery request,
 			CancellationToken cancellationToken
 		)

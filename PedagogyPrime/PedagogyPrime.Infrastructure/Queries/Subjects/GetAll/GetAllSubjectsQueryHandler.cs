@@ -7,17 +7,21 @@ using PedagogyPrime.Infrastructure.Models.Subject;
 namespace PedagogyPrime.Infrastructure.Queries.Subjects.GetAll
 {
 	using IAuthorization;
+	using PedagogyPrime.Infrastructure.AOP;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
+	using PedagogyPrime.Infrastructure.Authorization;
 
 	public class GetAllSubjectsQueryHandler : BaseRequestHandler<GetAllSubjectsQuery, BaseResponse<List<SubjectDetails>>>
 	{
 		private readonly ISubjectRepository subjectRepository;
 
-		public GetAllSubjectsQueryHandler(ISubjectRepository subjectRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
+        public GetAllSubjectsQueryHandler(ISubjectRepository subjectRepository, IUserAuthorization userAuthorization) : base(userAuthorization)
 		{
 			this.subjectRepository = subjectRepository;
-		}
+        }
 
-		public override async Task<BaseResponse<List<SubjectDetails>>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<List<SubjectDetails>>> Handle(
 			GetAllSubjectsQuery request,
 			CancellationToken cancellationToken
 		)

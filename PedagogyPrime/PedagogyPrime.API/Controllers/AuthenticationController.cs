@@ -6,6 +6,7 @@ namespace PedagogyPrime.API.Controllers
 	using Infrastructure.Models.User;
 	using MediatR;
 	using Microsoft.AspNetCore.Authorization;
+	using PedagogyPrime.API.AOP;
 
 	[AllowAnonymous]
 	public class AuthenticationController : BaseController
@@ -16,8 +17,9 @@ namespace PedagogyPrime.API.Controllers
 		{
 		}
 
-		[HttpPost("login")]
-		public async Task<ActionResult<LoginResult>> Login([FromBody] LoginCommand command)
+        [HttpPost("login")]
+        [TraceApiAspect(nameof(AuthenticationController))]
+        public async Task<ActionResult<LoginResult>> Login([FromBody] LoginCommand command)
 		{
 			return HandleResponse(await _mediator.Send(command));
 		}

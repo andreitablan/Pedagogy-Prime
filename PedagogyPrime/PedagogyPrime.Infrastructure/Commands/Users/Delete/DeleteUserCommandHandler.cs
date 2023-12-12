@@ -3,6 +3,7 @@
 	using Common;
 	using Core.Common;
 	using Core.IRepositories;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 	using PedagogyPrime.Infrastructure.IAuthorization;
 
 	public class DeleteUserCommandHandler : BaseRequestHandler<DeleteUserCommand, BaseResponse<bool>>
@@ -16,8 +17,8 @@
 		{
 			this.userRepository = userRepository;
 		}
-
-		public override async Task<BaseResponse<bool>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<bool>> Handle(
 			DeleteUserCommand request,
 			CancellationToken cancellationToken
 		)

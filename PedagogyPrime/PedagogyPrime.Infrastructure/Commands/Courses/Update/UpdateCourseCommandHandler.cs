@@ -3,6 +3,7 @@ using PedagogyPrime.Core.Common;
 using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Commands.Coverage.Delete;
+using PedagogyPrime.Infrastructure.AOP.Handler;
 using PedagogyPrime.Infrastructure.Common;
 using PedagogyPrime.Infrastructure.IAuthorization;
 using PedagogyPrime.Infrastructure.Models.Course;
@@ -14,27 +15,25 @@ namespace PedagogyPrime.Infrastructure.Commands.Courses.Update
         private readonly ICourseRepository courseRepository;
         private readonly IMediator mediator;
 
-        public UpdateCourseCommandHandler(
-            ICourseRepository courseRepository,
-            IUserAuthorization userAuthorization,
-            IMediator mediator
-        ) : base(userAuthorization)
-        {
-            this.courseRepository = courseRepository;
-            this.mediator = mediator;
-        }
-
+		public UpdateCourseCommandHandler(
+			ICourseRepository courseRepository,
+			IUserAuthorization userAuthorization
+		) : base(userAuthorization)
+		{
+			this.courseRepository = courseRepository;
+		}
+        [HandlerAspect]
         public override async Task<BaseResponse<CourseDetails>> Handle(
-           UpdateCourseCommand request,
-           CancellationToken cancellationToken
-       )
-        {
-            try
-            {
-                if (!(await IsAuthorized(request.UserId)))
-                {
-                    return BaseResponse<CourseDetails>.Forbbiden();
-                }
+		   UpdateCourseCommand request,
+		   CancellationToken cancellationToken
+	   )
+		{
+			try
+			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<CourseDetails>.Forbbiden();
+				}
 
                 var course = await courseRepository.GetById(request.Id);
 

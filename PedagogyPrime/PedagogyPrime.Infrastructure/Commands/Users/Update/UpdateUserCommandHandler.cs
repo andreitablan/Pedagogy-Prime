@@ -6,6 +6,7 @@
 	using Core.IRepositories;
 	using IAuthorization;
 	using Models.User;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
 
 	public class UpdateUserCommandHandler : BaseRequestHandler<UpdateUserCommand, BaseResponse<UserDetails>>
 	{
@@ -18,8 +19,8 @@
 		{
 			this.userRepository = userRepository;
 		}
-
-		public override async Task<BaseResponse<UserDetails>> Handle(
+        [HandlerAspect]
+        public override async Task<BaseResponse<UserDetails>> Handle(
 			UpdateUserCommand request,
 			CancellationToken cancellationToken
 		)

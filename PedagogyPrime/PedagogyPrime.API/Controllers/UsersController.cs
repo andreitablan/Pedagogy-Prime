@@ -11,6 +11,7 @@ namespace PedagogyPrime.API.Controllers
 	using Infrastructure.Queries.Users.GetById;
 	using Infrastructure.Queries.UsersSubjects.GetAllForUser;
 	using MediatR;
+	using PedagogyPrime.API.AOP;
 
 	public class UsersController : BaseController
 	{
@@ -21,13 +22,15 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<UserDetails>>> GetAll()
+        [TraceApiAspect(nameof(UsersController))]
+        public async Task<ActionResult<List<UserDetails>>> GetAll()
 		{
 			return HandleResponse(await _mediator.Send(new GetAllUsersQuery()));
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<UserDetails>> GetById(
+        [TraceApiAspect(nameof(UsersController))]
+        public async Task<ActionResult<UserDetails>> GetById(
 			Guid id
 		)
 		{
@@ -35,7 +38,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<bool>> Create(
+        [TraceApiAspect(nameof(UsersController))]
+        public async Task<ActionResult<bool>> Create(
 			[FromBody] CreateUserCommand command
 		)
 		{
@@ -43,7 +47,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<ActionResult<UserDetails>> Update(
+        [TraceApiAspect(nameof(UsersController))]
+        public async Task<ActionResult<UserDetails>> Update(
 			Guid id,
 			[FromBody] UpdateUserCommand command
 		)
@@ -53,7 +58,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		public async Task<ActionResult<bool>> Delete(
+        [TraceApiAspect(nameof(UsersController))]
+        public async Task<ActionResult<bool>> Delete(
 			Guid id
 		)
 		{
@@ -61,7 +67,8 @@ namespace PedagogyPrime.API.Controllers
 		}
 
 		[HttpGet("{id}/subjects")]
-		public async Task<ActionResult<List<SubjectDetails>>> GetAllSubjectsForUser(
+        [TraceApiAspect(nameof(UsersController))]
+        public async Task<ActionResult<List<SubjectDetails>>> GetAllSubjectsForUser(
 			Guid id
 		)
 		{
