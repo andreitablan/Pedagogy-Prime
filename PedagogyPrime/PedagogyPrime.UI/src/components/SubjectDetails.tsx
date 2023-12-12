@@ -8,7 +8,7 @@ import CourseContent from "./CourseContent";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { UserContext } from "../App";
-import UpdateCourse from "./UdpateCourse";
+import UpdateCourse from "./UpdateCourse";
 
 const SubjectDetails = ({ id }) => {
   const [subject, setSubject] = useState({
@@ -65,148 +65,165 @@ const SubjectDetails = ({ id }) => {
 
     handleGetParticipants();
 
-    setSubject({ ...subject });
-  };
-
-  const handleChangeCourseVisibility = (course: Course) => {
-    course.isVisibleForStudents = !course.isVisibleForStudents;
-    axiosInstance
-      .put(`https://localhost:7136/api/v1.0/Courses/${course.id}`, course)
-      .then((result) => {
-        subject.coursesDetails.forEach((x: Course) => {
-          if (x.id === course.id) {
-            x.isVisibleForStudents = course.isVisibleForStudents;
-          }
-        });
-
         setSubject({ ...subject });
-      })
-      .catch(() => {
-        course.isVisibleForStudents = false;
-      });
-  };
 
-  const handleGenerateCourseCoverage = (course: Course) => {
-    setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
-    let coverageData: CoverageDetails;
-    let nextCourse: Course | undefined;
-    const currentIndex = subject.coursesDetails.findIndex((x: Course) => x.id === course.id);
-
-    if (currentIndex !== -1 && currentIndex < subject.coursesDetails.length - 1) {
-        nextCourse = subject.coursesDetails[currentIndex + 1];
     }
-    axiosInstance
-    .post("http://localhost:5000/check-course-v2", {
-        firebase_link: course.contentUrl,
-        description: course.description,
-        course2_link: nextCourse ? nextCourse.contentUrl : "",
-      })
-      .then((result) => {
-        console.log("In generating coverage");
-        const { coverage, good_keywords, bad_keywords } = result.data;
 
-        subject.coursesDetails.forEach((x: Course) => {
-            console.log("Course: ", x)
-          if (x.id === course.id) {
-            console.log("Found course");
-            x.coverage = {
-              percentage: coverage,
-              goodWords: good_keywords,
-              badWords: bad_keywords,
-            };
+    const handleChangeCourseVisibility = (course: Course) => {
 
-            coverageData = {
-              percentage: coverage,
-              goodWords: good_keywords,
-              badWords: bad_keywords,
-              courseId: course.id,
-            };
-          }
-        });
-
-        setSubject({ ...subject });
-
-        console.log("Updating course in API");
+        course.isVisibleForStudents = !course.isVisibleForStudents;
         axiosInstance
-          .post(`https://localhost:7136/api/v1.0/Coverage`, coverageData)
-          .then((result) => {
-            setLoadingCoverageId((prevIds) =>
-              prevIds.filter((id) => id !== course.id)
-            );
-            console.log(course.coverage);
-            console.log("Coverage was generated!");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch(() => {
-        console.log(error);
-      });
-  };
-
-  const handleGenerateAllCourseCoverages = () => {
-    subject.coursesDetails.forEach((course: Course) => {
-        setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
-        let coverageData: CoverageDetails;
-    
-        axiosInstance
-        .post("http://localhost:5000/check-course", {
-            firebase_link: course.contentUrl,
-            description: course.description,
-        })
-        .then((result) => {
-            console.log("In generating coverage");
-            const { coverage, good_keywords, bad_keywords } = result.data;
-
-            subject.coursesDetails.forEach((x: Course) => {
-                console.log("Course: ", x)
-                if (x.id === course.id) {
-                    console.log("Found course");
-                    x.coverage = {
-                        percentage: coverage,
-                        goodWords: good_keywords,
-                        badWords: bad_keywords,
-                    };
-
-                    coverageData = {
-                        percentage: coverage,
-                        goodWords: good_keywords,
-                        badWords: bad_keywords,
-                        courseId: course.id,
-                    };
-                }
-                });
-
-            setSubject({ ...subject });
-
-            console.log("Updating course in API");
-            axiosInstance
-            .post(`https://localhost:7136/api/v1.0/Coverage`, coverageData)
+            .put(
+                `https://localhost:7136/api/v1.0/Courses/${course.id}`,
+                course
+            )
             .then((result) => {
-                setLoadingCoverageId((prevIds) =>
-                prevIds.filter((id) => id !== course.id)
-                );
-                console.log(course.coverage);
-                console.log("Coverage was generated!");
+
+                setSubject({ ...subject });
             })
-            .catch((error) => {
+            .catch(() => {
+                course.isVisibleForStudents = false;
+            });
+    }
+
+    const handleGenerateAllCourseCoverages = () => {
+        subject.coursesDetails.forEach((course: Course) => {
+            setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
+            let coverageData: CoverageDetails;
+        
+            axiosInstance
+            .post("http://localhost:5000/check-course", {
+                firebase_link: course.contentUrl,
+                description: course.description,
+            })
+            .then((result) => {
+                console.log("In generating coverage");
+                const { coverage, good_keywords, bad_keywords } = result.data;
+    
+                subject.coursesDetails.forEach((x: Course) => {
+                    console.log("Course: ", x)
+                    if (x.id === course.id) {
+                        console.log("Found course");
+                        x.coverage = {
+                            percentage: coverage,
+                            goodWords: good_keywords,
+                            badWords: bad_keywords,
+                        };
+    
+                        coverageData = {
+                            percentage: coverage,
+                            goodWords: good_keywords,
+                            badWords: bad_keywords,
+                            courseId: course.id,
+                        };
+                    }
+                    });
+    
+                setSubject({ ...subject });
+    
+                console.log("Updating course in API");
+                axiosInstance
+                .post(`https://localhost:7136/api/v1.0/Coverage`, coverageData)
+                .then((result) => {
+                    setLoadingCoverageId((prevIds) =>
+                    prevIds.filter((id) => id !== course.id)
+                    );
+                    console.log(course.coverage);
+                    console.log("Coverage was generated!");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            })
+            .catch(() => {
                 console.log(error);
             });
-        })
-        .catch(() => {
-            console.log(error);
         });
-    });
-  };
+      };
+        
 
-  if (!subject) {
-    return <p>Loading...</p>;
-  }
+    const handleGenerateCourseCoverage = (course: Course) => {
+        setLoadingCoverageId((prevIds) => [...prevIds, course.id]);
+        let coverageData: CoverageDetails;
+        let nextCourse: Course | undefined;
+        const currentIndex = subject.coursesDetails.findIndex((x: Course) => x.id === course.id);
 
-  if (subject.id === "") {
-    return <p>No subject</p>;
-  }
+        if (currentIndex !== -1 && currentIndex < subject.coursesDetails.length - 1) {
+            nextCourse = subject.coursesDetails[currentIndex + 1];
+        }
+        axiosInstance
+        .post("http://localhost:5000/check-course-v2", {
+            firebase_link: course.contentUrl,
+            description: course.description,
+            course2_link: nextCourse ? nextCourse.contentUrl : "",
+        })
+            .then((result) => {
+                console.log("In generating coverage");
+                const { coverage, good_keywords, bad_keywords } = result.data;
+
+                subject.coursesDetails.forEach((x: Course) => {
+                    if (x.id === course.id) {
+                        console.log("Found course");
+                        x.coverage = {
+                            percentage: coverage,
+                            goodWords: good_keywords,
+                            badWords: bad_keywords,
+                        };
+
+                        coverageData =
+                        {
+                            percentage: coverage,
+                            goodWords: good_keywords,
+                            badWords: bad_keywords,
+                            courseId: course.id
+                        };
+                    }
+                });
+
+                setSubject({ ...subject });
+
+                console.log("Updating course in API");
+                axiosInstance
+                    .post(
+                        `https://localhost:7136/api/v1.0/Coverage`,
+                        coverageData
+                    )
+                    .then((result) => {
+                        setLoadingCoverageId((prevIds) => prevIds.filter((id) => id !== course.id));
+                        console.log(course.coverage);
+                        console.log("Coverage was generated!");
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            .catch(() => {
+                console.log(error);
+            });
+
+    };
+
+    const handleModalUpdate = (response) => {
+        const course = response.resource;
+        subject.coursesDetails.map((x: Course) => {
+            if (x.id === course.id) {
+                x.name = course.name;
+                x.description = course.description;
+                x.contentUrl = course.contentUrl;
+                x.coverage = course.coverage;
+            }
+        });
+
+        setSubject({ ...subject });
+    };
+
+    if (!subject) {
+        return <p>Loading...</p>;
+    }
+
+    if (subject.id === '') {
+        return <p>No subject</p>
+    }
 
   return (
     <div className="subject-wrapper">
@@ -365,7 +382,11 @@ const SubjectDetails = ({ id }) => {
                               : "Regenerate Coverage"}
                           </Button>
                         )}
-                        <UpdateCourse item={course}></UpdateCourse>
+                        {[
+                          Role.Admin.toString(),
+                          Role.Teacher.toString(),
+                        ].includes(user.role) && 
+                        <UpdateCourse item={course} onModalUpdate={handleModalUpdate}></UpdateCourse>}
                       </div>
                     </div>
                   </div>
