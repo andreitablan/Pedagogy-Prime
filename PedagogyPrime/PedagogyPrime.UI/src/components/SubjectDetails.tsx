@@ -8,7 +8,8 @@ import CourseContent from "./CourseContent";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { UserContext } from "../App";
-import UpdateCourse from "./UpdateCourse";
+import UpdateCourse from "./UdpateCourse";
+import AddParticipant from "./AddParticipant";
 
 const SubjectDetails = ({ id }) => {
   const [subject, setSubject] = useState({
