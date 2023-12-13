@@ -9,6 +9,7 @@
 	using Microsoft.IdentityModel.Tokens;
 	using Models.User;
 	using PedagogyPrime.Infrastructure.AOP.Handler;
+	using PedagogyPrime.Infrastructure.Common.monitor;
 	using System.IdentityModel.Tokens.Jwt;
 	using System.Security.Claims;
 	using System.Text;
@@ -17,12 +18,17 @@
 	{
 		private readonly IUserRepository userRepository;
 		private readonly IConfiguration configuration;
+        private readonly SafetyMonitor safetyMonitor;
 
-		public LoginCommandHandler(IUserRepository userRepository, IConfiguration configuration)
+        public LoginCommandHandler(IUserRepository userRepository, IConfiguration configuration)
 		{
 			this.userRepository = userRepository;
 			this.configuration = configuration;
-		}
+			this.safetyMonitor = new SafetyMonitor();
+			//subscribe to events
+            safetyMonitor.SafetyPropertyViolated += HandleSafetyViolation;
+            safetyMonitor.SafetyPropertyValidated += HandleSafetyValidation;
+        }
         [HandlerAspect]
         public async Task<BaseResponse<LoginResult>> Handle(
 			LoginCommand request,
@@ -35,12 +41,14 @@
 
 				if(usersWithSameCredentials.Count == 0)
 				{
-					return BaseResponse<LoginResult>.NotFound("User");
+                    safetyMonitor.OnSafetyPropertyViolated("No user found during login attempt"); //too many attempts? email the user or block the access
+                    return BaseResponse<LoginResult>.NotFound("User");
 				}
 
 				if(usersWithSameCredentials.Count > 1)
 				{
-					return BaseResponse<LoginResult>.InternalServerError("There was a problem with your login. Please contact the application administrator.");
+                    safetyMonitor.OnSafetyPropertyViolated("Multiple users found with the same credentials");
+                    return BaseResponse<LoginResult>.InternalServerError("There was a problem with your login. Please contact the application administrator.");
 				}
 
 				var user = usersWithSameCredentials.First();
@@ -52,12 +60,14 @@
 					UserDetails = GenericMapper<User, UserDetails>.Map(user),
 					AccessToken = tokenHandler.WriteToken(token)
 				};
+                safetyMonitor.OnSafetyPropertyValidated("Login process successfully validated");
 
-				return BaseResponse<LoginResult>.Ok(loginResult);
+                return BaseResponse<LoginResult>.Ok(loginResult);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return BaseResponse<LoginResult>.InternalServerError();
+                safetyMonitor.OnSafetyPropertyViolated($"Exception during login: {ex.Message}");
+                return BaseResponse<LoginResult>.InternalServerError();
 			}
 		}
 
@@ -87,5 +97,14 @@
 
 			token = tokenHandler.CreateToken(tokenDescriptor);
 		}
-	}
+        private static void HandleSafetyViolation(object sender, SafetyViolationEventArgs e)
+        {
+            Console.WriteLine($"HANDLING SAFETY VIOLATION: {e.Message}");
+        }
+
+        private static void HandleSafetyValidation(object sender, SafetyValidationEventArgs e)
+        {
+            Console.WriteLine($"HANDLING SAFETY VALIDATION: {e.Message}");
+        }
+    }
 }
