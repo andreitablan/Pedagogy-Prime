@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import InfoIcon from "@mui/icons-material/Info";
 import SubjectIcon from "@mui/icons-material/Subject";
-import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
+import GroupIcon from '@mui/icons-material/Group';
 
 const AppNavbar: React.FC = () => {
   const logout = () => {
@@ -60,6 +60,14 @@ const AppNavbar: React.FC = () => {
               style={{ color: "white" }}
             >
               <MenuBookIcon />
+            </Link>
+            <Link
+              className="nav-link"
+              to="/users"
+              title="Users"
+              style={{ color: "white" }}
+            >
+              <GroupIcon />
             </Link>
             <Link
               className="nav-link"

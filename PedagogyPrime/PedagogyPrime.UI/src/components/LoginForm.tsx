@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
-import mapToRole from "../models/UserDetails";
+import mapNumberToRole from "../models/UserDetails";
 function LoginForm() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +35,7 @@ function LoginForm() {
         const user = {
           loggedIn: true,
           ...userDetails,
-          role:  mapToRole(userDetails.role)
+          role:  mapNumberToRole(userDetails.role)
         };
 
         setUser(user);

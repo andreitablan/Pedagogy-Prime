@@ -1,27 +1,48 @@
-import { Button, Col, Form, Modal } from "react-bootstrap";
-import { useState } from "react";
-import { Role } from "../models/UserDetails";
-import Select from "react-select/base";
+import { Box, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import axiosInstance from "../AxiosConfig";
 
-const AddParticipant = ({ onModalUpdate }) => {
+interface Participant {
+    id: string;
+    firstName: string;
+    lastName: string;
+}
+
+
+
+const AddParticipant = ({ subjectId }) => {
+    const [selectedParticipants, setSelectedParticipants] = useState<Participant[]>([]);
     const [show, setShow] = useState(false);
-    const [formData, setFormData] = useState({
-        email: '',
-        firstName: '',
-        lastName: '',
-        role: Role.Student,
-    });
+    const [participants, setParticipants] = useState<Participant[]>([]);
 
-    const [errors, setErrors] = useState({
-        name: '',
-        description: '',
-    });
+    useEffect(() => {
+        getData();
+    }, []);
 
-    const roles = Object.values(Role).filter(role => role !== ''); // Exclude the empty string from the options
+    const getData = () => {
+        axiosInstance
+            .get(`https://localhost:7136/api/v1.0/users/notRegisteredAtSubject/${subjectId}`)
+            .then((result) => {
+                setParticipants(result.data.resource);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const handleChange = (event: SelectChangeEvent<typeof selectedParticipants>) => {
+        const {
+            target: { value },
+        } = event;
+        setSelectedParticipants(value);
+    };
+
+
+
 
     const handleClose = () => {
-        setFormData({ email: '', firstName: '', lastName: '', role: Role.Student });
+        setSelectedParticipants([]);
         setShow(false);
     };
 
@@ -29,116 +50,65 @@ const AddParticipant = ({ onModalUpdate }) => {
         setShow(true);
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-
-        const newErrors = { ...errors };
-        newErrors[name] = value.trim() === '' ? 'Field cannot be empty' : '';
-
-        setErrors(newErrors);
-
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-
     const handleSave = () => {
-        const user = {
-            username: formData.email.split('@')[0],
-            email: formData.email,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            password: formData.email.split('@')[0],
-            role: 0,
-        };
-        axiosInstance.post(`https://localhost:7136/api/v1/users`, user)
-            .then((result) => {
-                onModalUpdate({
-                    id: result.data.resource,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    role: user.role
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        const userIds = selectedParticipants.map(x => x.id);
+
         handleClose();
+
+        axiosInstance.post(`https://localhost:7136/api/v1.0/subjects/${subjectId}/users`, { userIds })
+            .then(() => { })
+            .catch((error) => console.log(error));
+
     };
 
     return (
-        <div>
-            <button type="button" className="btn btn-success" onClick={handleShow}>
+        <div className="add-participant">
+            <Button type="button" className="btn btn-success add-user" onClick={handleShow}>
                 Add Participant
-            </button>
-            <Modal show={show} onHide={handleClose} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Add Participant</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control
-                                type="email"
-                                placeholder="John@Doe.com"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                            />
-                            {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>First Name</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="John"
-                                name="firstName"
-                                value={formData.firstName}
-                                onChange={handleInputChange}
-                            />
-                            {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Last Name</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Doe"
-                                name="lastName"
-                                value={formData.lastName}
-                                onChange={handleInputChange}
-                            />
-                            {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}
-                        </Form.Group>
-                        <Form.Group controlId="formRole">
-                            <Form.Label column sm={2}>
-                                Select Role:
-                            </Form.Label>
-                            <Col sm={10}>
-                                <Form.Select
-                                    name="role"
-                                    value={formData.role}
-                                    onChange={handleInputChange}
-                                >
-                                    {roles.map((role) => (
-                                        <option key={role} value={role}>
-                                            {role}
-                                        </option>
-                                    ))}
-                                </Form.Select>
-                            </Col>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer className="d-flex justify-content-center">
-                    <Button onClick={handleSave} disabled={errors.name.length > 0 || errors.description.length > 0}>Save</Button>
-                </Modal.Footer>
-            </Modal>
+            </Button>
+            <Dialog disableEscapeKeyDown open={show} onClose={handleClose}>
+                <DialogTitle>Add Participants</DialogTitle>
+                <DialogContent>
+                    <FormControl>
+                        <Select
+                            multiple
+                            displayEmpty
+                            value={selectedParticipants}
+                            onChange={handleChange}
+                            input={<OutlinedInput />}
+                            renderValue={(selected) => {
+                                if (selected.length === 0) {
+                                    return <em>Participants</em>;
+                                }
+
+                                return (
+                                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                                        {selected.map((participant) => (
+                                            <Chip
+                                                label={`${participant.firstName} ${participant.lastName}`}
+                                            />
+                                        ))}
+                                    </Box>
+                                );
+                            }}
+                        >
+                            {participants.map((participant) => (
+                                <MenuItem key={participant.id} value={participant}>
+                                    {`${participant.firstName} ${participant.lastName}`}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} className="btn btn-secondary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleSave}>Save</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };
-
 
 export default AddParticipant;

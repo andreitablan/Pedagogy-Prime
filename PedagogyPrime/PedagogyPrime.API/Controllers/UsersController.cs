@@ -12,6 +12,7 @@ namespace PedagogyPrime.API.Controllers
     using Infrastructure.Queries.UsersSubjects.GetAllForUser;
     using MediatR;
     using PedagogyPrime.API.AOP;
+    using PedagogyPrime.Infrastructure.Queries.Users.GetAllUsersNotRegisteredAtSubject;
 
     public class UsersController : BaseController
     {
@@ -59,7 +60,7 @@ namespace PedagogyPrime.API.Controllers
 
         [HttpDelete("{id}")]
         [TraceApiAspect(nameof(UsersController))]
-        public async Task<ActionResult<bool>> Delete(
+        public async Task<ActionResult<Guid>> Delete(
             Guid id
         )
         {
@@ -73,6 +74,12 @@ namespace PedagogyPrime.API.Controllers
         )
         {
             return HandleResponse(await _mediator.Send(new GetAllSubjectsForUserQuery()));
+        }
+
+        [HttpGet("notRegisteredAtSubject/{subjectId}")]
+        public async Task<ActionResult<List<UserDetails>>> GetUsersNotRegisteredAtSubject(Guid subjectId)
+        {
+            return HandleResponse(await _mediator.Send(new GetAllUsersNotRegisteredAtSubjectQuery(subjectId)));
         }
     }
 }

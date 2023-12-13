@@ -1,0 +1,44 @@
+.content-container {
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  button {
+    width: fit-content;
+    background: linear-gradient(to right, #594cf5, #6000fc);
+    color: white;
+    border: none;
+    height: fit-content;
+  }
+}
+
+@media (min-width: 576px) {
+  .content-container {
+    width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .content-container {
+    width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .content-container {
+    width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .content-container {
+    width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .content-container {
+    width: 1320px;
+  }
+}

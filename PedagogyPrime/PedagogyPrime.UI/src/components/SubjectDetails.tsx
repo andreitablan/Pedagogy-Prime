@@ -3,12 +3,13 @@ import axiosInstance from "../AxiosConfig";
 import "../css/subjectDetails.scss";
 import { Course } from "../models/Course";
 import { CoverageDetails } from "../models/Coverage";
-import mapToRole, { Role, UserDetails } from "../models/UserDetails";
+import mapNumberToRole, { Role, UserDetails } from "../models/UserDetails";
 import CourseContent from "./CourseContent";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Spinner } from "react-bootstrap";
 import { UserContext } from "../App";
 import UpdateCourse from "./UpdateCourse";
+import AddUser from "./AddUser";
 import AddParticipant from "./AddParticipant";
 
 const SubjectDetails = ({ id }) => {
@@ -51,7 +52,7 @@ const SubjectDetails = ({ id }) => {
       .get(`https://localhost:7136/api/v1.0/subjects/${id}/users`)
       .then((result) => {
         result.data.resource.map((x) => {
-          x.role = mapToRole(x.role);
+          x.role = mapNumberToRole(x.role);
         });
 
         setParticipants(result.data.resource);
@@ -195,7 +196,7 @@ const SubjectDetails = ({ id }) => {
         {[Role.Admin.toString(), Role.Teacher.toString()].includes(
           user.role
         ) && (
-            <AddParticipant onModalUpdate={handleAddParticipant}></AddParticipant>
+            <AddParticipant subjectId={subject.id}></AddParticipant>
           )}
         <button
           className="show-students btn btn-success"
