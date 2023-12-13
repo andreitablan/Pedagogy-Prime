@@ -124,7 +124,7 @@ const CourseForm: React.FC<CourseFormProps> = ({
     );
   }
   return (
-    <div>
+    <div className="create-subject">
       <h2 className="mb-4">Course Form</h2>
       {[...Array(noOfCourses)].map((_, index) => (
         <div key={index} className="mb-3">
@@ -145,7 +145,9 @@ const CourseForm: React.FC<CourseFormProps> = ({
           />
         </div>
       ))}
-      <button type="button" className="btn btn-primary" onClick={uploadFiles}>
+      <button type="button" className="btn btn-primary" onClick={uploadFiles} style={{
+        width: '100px',
+      }}>
         Upload
       </button>
     </div>
