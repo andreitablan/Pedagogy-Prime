@@ -8,6 +8,9 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Informations from "./pages/Informations";
 import SubjectForm from "./pages/SubjectForm";
 import Subject from "./pages/Subject";
+import Users from "./pages/Users";
+import './css/global.scss';
+
 // Create a user context with initial values
 export const UserContext = React.createContext({
   user: {
@@ -20,7 +23,7 @@ export const UserContext = React.createContext({
     lastName: "",
     role: "",
   },
-  setUser: (userData: any) => {},
+  setUser: (userData: any) => { },
 });
 
 function App() {
@@ -61,6 +64,7 @@ function App() {
             </Route>
             <Route path="/courses" element={<Courses />} />
             <Route path="/info" element={<Informations />} />
+            <Route path="/users" element={<Users />} />
             <Route path="*" element={<Login />} />
           </Route>
         </Routes>

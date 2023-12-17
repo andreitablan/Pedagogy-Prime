@@ -1,48 +1,48 @@
 ﻿namespace PedagogyPrime.Infrastructure.Commands.Users.Delete
 {
-	using Common;
-	using Core.Common;
-	using Core.IRepositories;
-	using PedagogyPrime.Infrastructure.AOP.Handler;
-	using PedagogyPrime.Infrastructure.IAuthorization;
+    using Common;
+    using Core.Common;
+    using Core.IRepositories;
+    using PedagogyPrime.Infrastructure.AOP.Handler;
+    using PedagogyPrime.Infrastructure.IAuthorization;
 
-	public class DeleteUserCommandHandler : BaseRequestHandler<DeleteUserCommand, BaseResponse<bool>>
-	{
-		private readonly IUserRepository userRepository;
+    public class DeleteUserCommandHandler : BaseRequestHandler<DeleteUserCommand, BaseResponse<Guid>>
+    {
+        private readonly IUserRepository userRepository;
 
-		public DeleteUserCommandHandler(
-			IUserRepository userRepository,
-			IUserAuthorization userAuthorization
-		) : base(userAuthorization)
-		{
-			this.userRepository = userRepository;
-		}
+        public DeleteUserCommandHandler(
+            IUserRepository userRepository,
+            IUserAuthorization userAuthorization
+        ) : base(userAuthorization)
+        {
+            this.userRepository = userRepository;
+        }
         [HandlerAspect]
-        public override async Task<BaseResponse<bool>> Handle(
-			DeleteUserCommand request,
-			CancellationToken cancellationToken
-		)
-		{
-			try
-			{
-				if(!(await IsAuthorized(request.UserId)))
-				{
-					return BaseResponse<bool>.Forbbiden();
-				}
+        public override async Task<BaseResponse<Guid>> Handle(
+            DeleteUserCommand request,
+            CancellationToken cancellationToken
+        )
+        {
+            try
+            {
+                if (!(await IsAuthorized(request.UserId)))
+                {
+                    return BaseResponse<Guid>.Forbbiden();
+                }
 
-				var result = await userRepository.Delete(request.Id);
+                var result = await userRepository.Delete(request.Id);
 
-				if(result == 0)
-				{
-					return BaseResponse<bool>.NotFound("User");
-				}
+                if (result == 0)
+                {
+                    return BaseResponse<Guid>.NotFound("User");
+                }
 
-				return BaseResponse<bool>.Ok(true);
-			}
-			catch
-			{
-				return BaseResponse<bool>.InternalServerError();
-			}
-		}
-	}
+                return BaseResponse<Guid>.Ok(request.Id);
+            }
+            catch
+            {
+                return BaseResponse<Guid>.InternalServerError();
+            }
+        }
+    }
 }
