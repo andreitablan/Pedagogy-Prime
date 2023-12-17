@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import AppNavbar from "../components/AppNavbar";
 import CourseForm from "../components/CourseForm";
-import axiosInstance from "../AxiosConfig";
+import '../css/subjectForm.scss';
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router";
+
 interface SubjectFormProps {
   subjectId?: string;
 }
@@ -18,6 +21,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
   const [period, setPeriod] = useState("");
   const [noOfCourses, setNoOfCourses] = useState(0);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleNext = async () => {
     if (step === 1) {
@@ -36,11 +40,15 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
     }
   };
 
+  const handleCancel = () => {
+    navigate('/subjects');
+  }
+
   return (
     <div>
       <AppNavbar />
       {step === 1 && (
-        <form>
+        <form className="create-subject">
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               Subject Name:
@@ -81,6 +89,10 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
             type="button"
             className="btn btn-primary"
             onClick={handleNext}
+            style={{
+              width: '100px',
+              marginTop: '15px'
+            }}
           >
             Next
           </button>
@@ -97,10 +109,24 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ subjectId }) => {
         />
       )}
       {step > 1 && !loading && (
-        <button type="button" className="btn btn-primary" onClick={handleBack}>
-          Back
-        </button>
+        <div className="create-subject">
+          <button type="button" className="btn btn-primary" onClick={handleBack} style={{
+            width: '100px',
+            marginTop: '15px'
+          }}>
+            Back
+          </button>
+        </div>
       )}
+
+      <div className="create-subject">
+        <Button type="button" className="btn btn-primary" onClick={handleCancel} style={{
+          width: '100px',
+          marginTop: '15px'
+        }}>
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 };

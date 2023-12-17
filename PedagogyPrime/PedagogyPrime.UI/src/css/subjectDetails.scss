@@ -39,6 +39,7 @@
       background: linear-gradient(to right, #594cf5, #6000fc);
       color: white;
       border: none;
+      height: fit-content;
     }
   }
 
@@ -71,25 +72,23 @@
     }
   }
 
+  .good-word {
+    color: green;
+  }
 
-.good-word {
-  color: green;
-}
+  .bad-word {
+    color: red;
+  }
 
-.bad-word {
-  color: red;
-}
-
-  
   .accordion-body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    .course-actions{
+    .course-actions {
       display: flex;
       flex-direction: row;
       gap: 15px;
-      
+
       button {
         width: fit-content;
         background: linear-gradient(to right, #594cf5, #6000fc);
@@ -97,7 +96,6 @@
         border: none;
       }
     }
-    
   }
 }
 

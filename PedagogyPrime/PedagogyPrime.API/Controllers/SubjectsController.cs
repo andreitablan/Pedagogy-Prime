@@ -4,6 +4,7 @@ using PedagogyPrime.API.AOP;
 using PedagogyPrime.Infrastructure.Commands.Subjects.Create;
 using PedagogyPrime.Infrastructure.Commands.Subjects.Delete;
 using PedagogyPrime.Infrastructure.Commands.Subjects.Update;
+using PedagogyPrime.Infrastructure.Commands.UsersSubjects.AddParticipant;
 using PedagogyPrime.Infrastructure.Models.Subject;
 using PedagogyPrime.Infrastructure.Models.User;
 using PedagogyPrime.Infrastructure.Queries.Subjects.GetAll;
@@ -35,8 +36,8 @@ namespace PedagogyPrime.API.Controllers
 				Id = id
 			};
 
-			return HandleResponse(await _mediator.Send(query));
-		}
+            return HandleResponse(await _mediator.Send(query));
+        }
 
 		[HttpPost]
 		[TraceApiAspect(nameof(SubjectsController))]
@@ -80,7 +81,15 @@ namespace PedagogyPrime.API.Controllers
 				SubjectId = id
 			};
 
-			return HandleResponse(await _mediator.Send(command));
-		}
-	}
+            return HandleResponse(await _mediator.Send(command));
+        }
+
+        [HttpPost("{id}/users")]
+        [TraceApiAspect(nameof(SubjectsController))]
+        public async Task<ActionResult<bool>> AddUsers(Guid id, [FromBody] AddParticipantCommand command)
+        {
+            command.SubjectId = id;
+            return HandleResponse(await _mediator.Send(command));
+        }
+    }
 }
