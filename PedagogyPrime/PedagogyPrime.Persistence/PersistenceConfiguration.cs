@@ -30,6 +30,7 @@ namespace PedagogyPrime.Persistence
 			services.AddScoped<ISubjectRepository, SubjectRepository>();
 			services.AddScoped<ISubjectForumRepository, SubjectForumRepository>();
 			services.AddScoped<IUserSubjectRepository, UserSubjectRepository>();
+			services.AddScoped<ISubjectMessageRepository, SubjectMessageRepository>();
 		}
 	}
 }

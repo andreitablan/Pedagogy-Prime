@@ -1,5 +1,4 @@
 ﻿using PedagogyPrime.Core.Common;
-using PedagogyPrime.Core.Entities;
 using PedagogyPrime.Core.IRepositories;
 using PedagogyPrime.Infrastructure.Common;
 using PedagogyPrime.Infrastructure.Models.SubjectForum;
@@ -8,6 +7,7 @@ namespace PedagogyPrime.Infrastructure.Queries.SubjectForums.GetAll
 {
 	using IAuthorization;
 	using PedagogyPrime.Infrastructure.AOP.Handler;
+	using SubjectForum = Core.Entities.SubjectForum;
 
 	public class GetAllSubjectForumQueryHandler : BaseRequestHandler<GetAllSubjectForumQuery, BaseResponse<List<SubjectForumDetails>>>
 	{
@@ -17,9 +17,10 @@ namespace PedagogyPrime.Infrastructure.Queries.SubjectForums.GetAll
 		{
 			this.subjectForumRepository = subjectForumRepository;
 		}
-        [HandlerAspect]
-        public override async Task<BaseResponse<List<SubjectForumDetails>>> Handle(
-            GetAllSubjectForumQuery request,
+
+		[HandlerAspect]
+		public override async Task<BaseResponse<List<SubjectForumDetails>>> Handle(
+			GetAllSubjectForumQuery request,
 			CancellationToken cancellationToken
 		)
 		{

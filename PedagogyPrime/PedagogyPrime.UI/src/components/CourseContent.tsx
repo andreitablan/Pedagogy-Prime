@@ -15,7 +15,7 @@ const CourseContent = ({ contentUrl, name }) => {
     }
 
     return (
-        <div>
+        <div className="view-content-component">
             <button type="button" className="btn btn-success" onClick={handleShow}>View Content</button>
             <div className="course-content">
                 <Modal show={show} onHide={handleClose} centered>
