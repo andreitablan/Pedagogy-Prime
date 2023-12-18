@@ -5,9 +5,9 @@ using PedagogyPrime.Infrastructure.Models.SubjectForum;
 
 namespace PedagogyPrime.Infrastructure.Queries.SubjectForums.GetById
 {
+	using Core.Entities;
 	using IAuthorization;
 	using PedagogyPrime.Infrastructure.AOP.Handler;
-	using SubjectForum = Core.Entities.SubjectForum;
 
 	public class GetSubjectForumByIdQueryHandler : BaseRequestHandler<GetSubjectForumByIdQuery, BaseResponse<SubjectForumDetails>>
 	{

@@ -1,7 +1,7 @@
-﻿namespace PedagogyPrime.Infrastructure.Commands.SubjectMessage.Create
+﻿namespace PedagogyPrime.Infrastructure.Commands.SubjectMessages.Create
 {
-	using Common;
-	using Core.Common;
+	using PedagogyPrime.Core.Common;
+	using PedagogyPrime.Infrastructure.Common;
 
 	public class CreateSubjectMessageCommand : BaseRequest<BaseResponse<Guid>>
 	{

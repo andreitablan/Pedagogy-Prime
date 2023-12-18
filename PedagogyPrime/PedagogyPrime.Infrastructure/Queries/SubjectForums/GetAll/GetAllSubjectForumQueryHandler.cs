@@ -5,9 +5,9 @@ using PedagogyPrime.Infrastructure.Models.SubjectForum;
 
 namespace PedagogyPrime.Infrastructure.Queries.SubjectForums.GetAll
 {
+	using Core.Entities;
 	using IAuthorization;
 	using PedagogyPrime.Infrastructure.AOP.Handler;
-	using SubjectForum = Core.Entities.SubjectForum;
 
 	public class GetAllSubjectForumQueryHandler : BaseRequestHandler<GetAllSubjectForumQuery, BaseResponse<List<SubjectForumDetails>>>
 	{

@@ -1,10 +1,11 @@
-﻿namespace PedagogyPrime.Infrastructure.Commands.SubjectMessage.Create
+﻿namespace PedagogyPrime.Infrastructure.Commands.SubjectMessages.Create
 {
-	using Common;
-	using Core.Common;
-	using Core.Entities;
-	using Core.IRepositories;
-	using IAuthorization;
+	using PedagogyPrime.Core.Common;
+	using PedagogyPrime.Core.Entities;
+	using PedagogyPrime.Core.IRepositories;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
+	using PedagogyPrime.Infrastructure.Common;
+	using PedagogyPrime.Infrastructure.IAuthorization;
 
 	public class CreateSubjectMessageCommandHandler : BaseRequestHandler<CreateSubjectMessageCommand, BaseResponse<Guid>>
 	{
@@ -21,6 +22,7 @@
 			this.subjectMessageRepository = subjectMessageRepository;
 		}
 
+		[HandlerAspect]
 		public override async Task<BaseResponse<Guid>> Handle(
 			CreateSubjectMessageCommand request,
 			CancellationToken cancellationToken

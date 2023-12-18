@@ -2,7 +2,7 @@
 
 namespace PedagogyPrime.API.Controllers
 {
-	using Infrastructure.Commands.SubjectMessage.Create;
+	using Infrastructure.Commands.SubjectMessages.Create;
 	using Infrastructure.Queries.SubjectMessage.GetMessagesForSubject;
 	using MediatR;
 	using PedagogyPrime.Infrastructure.Models.Message;
