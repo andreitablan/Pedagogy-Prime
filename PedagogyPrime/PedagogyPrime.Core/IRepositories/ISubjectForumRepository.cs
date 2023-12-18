@@ -1,8 +1,11 @@
-﻿using PedagogyPrime.Core.Entities;
-
-namespace PedagogyPrime.Core.IRepositories
+﻿namespace PedagogyPrime.Core.IRepositories
 {
-    public interface ISubjectForumRepository : IBaseRepository<SubjectForum>
-    {
-    }
+	using PedagogyPrime.Core.Entities;
+
+	public interface ISubjectForumRepository : IBaseRepository<SubjectForum>
+	{
+		Task<SubjectForum> GetBySubjectId(
+			Guid subjectId
+		);
+	}
 }
