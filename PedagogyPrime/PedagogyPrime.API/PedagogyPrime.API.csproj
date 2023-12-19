@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -30,5 +30,9 @@
     <ProjectReference Include="..\PedagogyPrime.Infrastructure\PedagogyPrime.Infrastructure.csproj" />
     <ProjectReference Include="..\PedagogyPrime.Persistence\PedagogyPrime.Persistence.csproj" />
   </ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="PedagogyPrime.IntegrationTests"/>
+	</ItemGroup>
 
 </Project>
