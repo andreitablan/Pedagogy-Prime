@@ -5,6 +5,7 @@ import '../css/courseContent.scss';
 import { storage } from "../firebase";
 import { v4 } from "uuid";
 import axiosInstance from "../AxiosConfig";
+import '../css/updateCourse.scss';
 
 const UpdateCourse = ({ item, onModalUpdate }) => {
   const [show, setShow] = useState(false);
@@ -76,7 +77,7 @@ const UpdateCourse = ({ item, onModalUpdate }) => {
   };
 
   return (
-    <div>
+    <div className="update-course-component">
       <button type="button" className="btn btn-success" onClick={handleShow}>
         Update
       </button>

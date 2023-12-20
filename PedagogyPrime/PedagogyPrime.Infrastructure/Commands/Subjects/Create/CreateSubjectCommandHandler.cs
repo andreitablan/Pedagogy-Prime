@@ -5,61 +5,74 @@ using PedagogyPrime.Infrastructure.IAuthorization;
 
 namespace PedagogyPrime.Infrastructure.Commands.Subjects.Create
 {
-    using Common;
-    using PedagogyPrime.Infrastructure.AOP.Handler;
+	using Common;
+	using MediatR;
+	using PedagogyPrime.Infrastructure.AOP.Handler;
+	using SubjectForums.Create;
 
-    public class CreateSubjectCommandHandler : BaseRequestHandler<CreateSubjectCommand, BaseResponse<Guid>>
-    {
-        private readonly ISubjectRepository subjectRepository;
-        private readonly IUserSubjectRepository userSubjectRepository;
+	public class CreateSubjectCommandHandler : BaseRequestHandler<CreateSubjectCommand, BaseResponse<Guid>>
+	{
+		private readonly ISubjectRepository subjectRepository;
+		private readonly IUserSubjectRepository userSubjectRepository;
+		private readonly IMediator mediator;
 
-        public CreateSubjectCommandHandler(
-            ISubjectRepository subjectRepository,
-            IUserAuthorization userAuthorization,
-            IUserSubjectRepository userSubjectRepository) : base(userAuthorization)
-        {
-            this.subjectRepository = subjectRepository;
-            this.userSubjectRepository = userSubjectRepository;
-        }
-        [HandlerAspect]
-        public override async Task<BaseResponse<Guid>> Handle(
-            CreateSubjectCommand request,
-            CancellationToken cancellationToken
-        )
-        {
-            try
-            {
-                if (!(await IsAuthorized(request.UserId)))
-                {
-                    return BaseResponse<Guid>.Forbbiden();
-                }
+		public CreateSubjectCommandHandler(
+			ISubjectRepository subjectRepository,
+			IUserAuthorization userAuthorization,
+			IUserSubjectRepository userSubjectRepository,
+			IMediator mediator
+			) : base(userAuthorization)
+		{
+			this.subjectRepository = subjectRepository;
+			this.userSubjectRepository = userSubjectRepository;
+			this.mediator = mediator;
+		}
 
-                var subject = new Subject
-                {
-                    Id = Guid.NewGuid(),
-                    Name = request.Name,
-                    Period = request.Period,
-                    NoOfCourses = request.NoOfCourses,
-                };
+		[HandlerAspect]
+		public override async Task<BaseResponse<Guid>> Handle(
+			CreateSubjectCommand request,
+			CancellationToken cancellationToken
+		)
+		{
+			try
+			{
+				if(!(await IsAuthorized(request.UserId)))
+				{
+					return BaseResponse<Guid>.Forbbiden();
+				}
 
-                var userSubject = new UserSubject
-                {
-                    UserId = request.UserId,
-                    SubjectId = subject.Id,
-                };
+				var subject = new Subject
+				{
+					Id = Guid.NewGuid(),
+					Name = request.Name,
+					Period = request.Period,
+					NoOfCourses = request.NoOfCourses,
+				};
 
+				var userSubject = new UserSubject
+				{
+					UserId = request.UserId,
+					SubjectId = subject.Id,
+				};
 
-                await subjectRepository.Add(subject);
+				await subjectRepository.Add(subject);
 
-                await userSubjectRepository.Add(userSubject);
-                await subjectRepository.SaveChanges();
+				await userSubjectRepository.Add(userSubject);
+				await subjectRepository.SaveChanges();
 
-                return BaseResponse<Guid>.Created(subject.Id);
-            }
-            catch
-            {
-                return BaseResponse<Guid>.InternalServerError();
-            }
-        }
-    }
+				await mediator.Send(
+					new CreateSubjectForumCommand
+					{
+						SubjectId = subject.Id
+					}
+				);
+
+				return BaseResponse<Guid>.Created(subject.Id);
+			}
+			catch
+			{
+				return BaseResponse<Guid>.InternalServerError();
+			}
+		}
+	}
 }

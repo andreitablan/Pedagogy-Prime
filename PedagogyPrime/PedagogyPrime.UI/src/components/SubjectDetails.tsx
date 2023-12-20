@@ -11,6 +11,8 @@ import { UserContext } from "../App";
 import UpdateCourse from "./UpdateCourse";
 import AddUser from "./AddUser";
 import AddParticipant from "./AddParticipant";
+import ChatIcon from '@mui/icons-material/Chat';
+import SubjectChat from "./SubjectChat";
 
 const SubjectDetails = ({ id }) => {
   const [subject, setSubject] = useState({
@@ -275,7 +277,9 @@ const SubjectDetails = ({ id }) => {
         </div>
         <div className="right">{subject.period}</div>
       </div>
+      
       <div className="actions">
+        <SubjectChat subjectId={subject.id} subjectName={subject.name}></SubjectChat>
         {[Role.Admin.toString(), Role.Teacher.toString()].includes(
           user.role
         ) && (
@@ -292,6 +296,7 @@ const SubjectDetails = ({ id }) => {
           onClick={() => handleGenerateAllCourseCoverages()}
         >Generate All Coverages
         </button>
+        
       </div>
       <div className="accordion" id="accordionPanelsStayOpenExample">
         {subject.coursesDetails.filter((x: Course) => x.isVisibleForStudents)
