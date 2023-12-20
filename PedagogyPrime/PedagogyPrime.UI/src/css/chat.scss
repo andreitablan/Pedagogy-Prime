@@ -3,52 +3,56 @@
         height: 100%;
     }
 }
+    .content{
+        overflow: auto;
 
-    .message-details{
-        width: fit-content;
-
-        .message{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 2px;
-            .text {
-                width: fit-content;
-                padding: 8px;
-                border-radius: 8px;
-                &.left{
-                    background-color: rgb(212, 212, 212);
-                    color:black;
-                }
-                &.right{
-                    background: rgb(0, 166, 255);
-                    color: white;
-                }
-            }
-            .sent{
-                color: rgb(21, 187, 21);
-            }
-            .sending{
-                color: gray;
-            }
-            .notSent{
-                color: rgb(202, 42, 42);
-            }
-        }
-
-        .date, .user{
-            font-size: 12px;
-        }
-
-        &.left {
-            margin-right: auto;
-        }
+        .message-details{
+            width: fit-content;
     
-        &.right {
-            margin-left: auto;
-            text-align: end;
+            .message{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 2px;
+                .text {
+                    width: fit-content;
+                    padding: 8px;
+                    border-radius: 8px;
+                    &.left{
+                        background-color: rgb(212, 212, 212);
+                        color:black;
+                    }
+                    &.right{
+                        background: rgb(0, 166, 255);
+                        color: white;
+                    }
+                }
+                .sent{
+                    color: rgb(21, 187, 21);
+                }
+                .sending{
+                    color: gray;
+                }
+                .notSent{
+                    color: rgb(202, 42, 42);
+                }
+            }
+    
+            .date, .user{
+                font-size: 12px;
+            }
+    
+            &.left {
+                margin-right: auto;
+            }
+        
+            &.right {
+                margin-left: auto;
+                text-align: end;
+            }
         }
     }
+    
 
 .offcanvas-body{
     border-top: 1px solid grey;
