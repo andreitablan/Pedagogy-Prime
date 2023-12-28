@@ -33,13 +33,13 @@
     padding-bottom: 25px;
     padding-left: 0px;
     gap: 15px;
+    margin: 0;
 
     button {
       width: fit-content;
       background: linear-gradient(to right, #594cf5, #6000fc);
       color: white;
       border: none;
-      height: fit-content;
     }
   }
 
@@ -96,6 +96,27 @@
         border: none;
       }
     }
+  }
+}
+
+@media (max-width: 576px) {
+  .subject-wrapper {
+    .actions{
+      flex-direction: column;
+      button{
+        width: 100%;
+      }
+    }
+
+    .accordion-body{
+      .course-actions{
+        flex-direction: column;
+        button {
+          width: 100%;
+        }
+      }
+    }
+    
   }
 }
 

@@ -4,6 +4,7 @@ import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import mapNumberToRole from "../models/UserDetails";
 import log from "../logger";
+
 function LoginForm() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -26,33 +27,30 @@ function LoginForm() {
     console.log("loginAttempts");
   };
 
+  const handleLoginError = () => {
+    setLoginAttempts((prevAttempts) => prevAttempts + 1);
+
+    console.log(loginAttempts);
+
+    if (loginAttempts + 1 > 5) {
+      setIsBlocked(true);
+      alert("Login blocked. Please try again later.");
+    }
+
+    alert("Wrong username or password!");
+    throw new Error("Wrong username or password");
+  };
+
   const verifyLogin = (response) => {
     if (response.status === 200) {
       setLoginAttempts(0);
       return true;
     } else {
-      setLoginAttempts((prevAttempts) => prevAttempts + 1);
-
-      console.log(loginAttempts);
-      if (loginAttempts + 1 > 5) {
-        setIsBlocked(true);
-        alert("Login blocked. Please try again later.");
-      }
-
-      alert("Wrong username or password!");
-      throw new Error("Wrong username or password");
+      handleLoginError();
     }
   };
 
-  const handleSubmit = (e) => {
-    observeLoginAttempt();
-    e.preventDefault();
-
-    if (isBlocked) {
-      alert("Login blocked. Please try again later.");
-      return;
-    }
-
+  const loginUser = () => {
     const loginUser = {
       username: userName,
       password: password,
@@ -75,15 +73,15 @@ function LoginForm() {
       .then((data) => {
         localStorage.setItem("accessToken", data.resource.accessToken);
         const userDetails = data.resource.userDetails;
-        const user = {
+        const updatedUser = {
           loggedIn: true,
           ...userDetails,
-          role:  mapNumberToRole(userDetails.role)
+          role: mapNumberToRole(userDetails.role),
         };
 
-        setUser(user);
+        setUser(updatedUser);
 
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
 
         navigate("/subjects");
       })
@@ -95,6 +93,19 @@ function LoginForm() {
         }
       });
   };
+
+  const handleSubmit = (e) => {
+    observeLoginAttempt();
+    e.preventDefault();
+
+    if (isBlocked) {
+      alert("Login blocked. Please try again later.");
+      return;
+    }
+
+    loginUser();
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -164,4 +175,5 @@ function LoginForm() {
     </div>
   );
 }
+
 export default LoginForm;
