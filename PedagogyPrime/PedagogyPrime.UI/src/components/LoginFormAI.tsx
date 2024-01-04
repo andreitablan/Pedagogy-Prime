@@ -3,11 +3,11 @@ import { useNavigate } from "react-router";
 import { UserContext } from "../App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import mapNumberToRole from "../models/UserDetails";
-import log from "../logger";
-function LoginForm() {
-  const [userName, setUserName] = useState("");
+
+function LoginFormAI() {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [loginAttempts, setLoginAttempts] = useState(0);
@@ -26,7 +26,7 @@ function LoginForm() {
     console.log("loginAttempts");
   };
 
-  const verifyLogin = (response) => {
+  const verifyLogin = async (response) => {
     if (response.status === 200) {
       setLoginAttempts(0);
       return true;
@@ -44,7 +44,7 @@ function LoginForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     observeLoginAttempt();
     e.preventDefault();
 
@@ -54,25 +54,25 @@ function LoginForm() {
     }
 
     const loginUser = {
-      username: userName,
-      password: password,
+      username,
+      password,
     };
 
-    fetch("https://localhost:7136/api/v1/Authentication/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginUser),
-    })
-      .then((response) => {
-        if (verifyLogin(response)) {
-          return response.json();
-        } else {
-          throw new Error("Wrong username or password");
+    try {
+      const response = await fetch(
+        "https://localhost:7136/api/v1/Authentication/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginUser),
         }
-      })
-      .then((data) => {
+      );
+
+      if (await verifyLogin(response)) {
+        const data = await response.json();
+
         localStorage.setItem("accessToken", data.resource.accessToken);
         const userDetails = data.resource.userDetails;
         const user = {
@@ -86,76 +86,43 @@ function LoginForm() {
         localStorage.setItem("user", JSON.stringify(user));
 
         navigate("/subjects");
-      })
-      .catch((error) => {
-        console.error(error);
-        if (error.message === "Wrong username or password") {
-          setUserName("");
-          setPassword("");
-        }
-      });
+      }
+    } catch (error) {
+      console.error(error);
+      if (error.message === "Wrong username or password") {
+        setUsername("");
+        setPassword("");
+      }
+    }
   };
+
   return (
     <div className="container">
       <div className="row">
-        <div
-          className="col-sm-6 offset-sm-3"
-          style={{
-            backgroundColor: "white",
-            fontSize: "16px",
-            padding: "45px",
-            opacity: 0.9,
-            borderRadius: "10px",
-            border: "1px solid black",
-            boxShadow: "4px 4px 5px rgba(0, 0, 0, 0.5)",
-          }}
-        >
+        <div className="col-sm-6 offset-sm-3">
           <form onSubmit={handleSubmit}>
-            <div className="text-center">
-              <div
-                className="text-wrap fs-2"
-                style={{ color: "#1B3B7B", fontWeight: "bold" }}
-              >
-                Login
-              </div>
-            </div>
+            <h2 className="text-center mb-4" style={{ color: "#1B3B7B" }}>
+              Login
+            </h2>
             <div className="mb-3">
-              <label htmlFor="username" className="form-label">
-                Username
-              </label>
               <input
                 type="text"
                 className="form-control"
-                id="username"
-                value={userName}
-                placeholder="Enter your username"
-                onChange={(e) => setUserName(e.target.value)}
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
               <input
                 type="password"
                 className="form-control"
-                id="password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button
-              type="submit"
-              className="btn btn-success"
-              style={{
-                background: "linear-gradient(to right,  #594CF5, #6000FC)",
-                color: "white",
-                fontWeight: "bold",
-                display: "block",
-                margin: "auto",
-                border: "none",
-              }}
-            >
+            <button type="submit" className="btn btn-primary w-100">
               Login
             </button>
           </form>
@@ -164,4 +131,5 @@ function LoginForm() {
     </div>
   );
 }
-export default LoginForm;
+
+export default LoginFormAI;
