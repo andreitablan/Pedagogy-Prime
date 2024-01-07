@@ -13,15 +13,16 @@ const UpdateCourse = ({ item, onModalUpdate }) => {
     name: item.name,
     description: item.description,
   });
-  const [fileUpload, setFileUpload] = useState<File>();
-
+  const [fileUpload, setFileUpload] = useState<File | null>(null);
   const [errors, setErrors] = useState({
     name: '',
     description: '',
   });
 
   const handleClose = () => {
-    setFormData({ name: item.name, description: item.description, file: null });
+    setFormData({ name: item.name, description: item.description });
+    setFileUpload(null);
+    setErrors({ name: '', description: '' });
     setShow(false);
   };
 
@@ -31,17 +32,13 @@ const UpdateCourse = ({ item, onModalUpdate }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setFileUpload(file);
-    }
+    setFileUpload(file);
   }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
     const newErrors = { ...errors };
     newErrors[name] = value.trim() === '' ? 'Field cannot be empty' : '';
-
     setErrors(newErrors);
 
     setFormData({
@@ -51,29 +48,29 @@ const UpdateCourse = ({ item, onModalUpdate }) => {
   };
 
   const handleUpdate = async () => {
-    let url = item.contentUrl;
+    try {
+      let url = item.contentUrl;
 
-    if (fileUpload) {
-      const fileRef = ref(storage, `files/${fileUpload.name + v4()}`);
-      const snapshot = await uploadBytes(fileRef, fileUpload);
-      url = await getDownloadURL(snapshot.ref);
+      if (fileUpload) {
+        const fileRef = ref(storage, `files/${fileUpload.name + v4()}`);
+        const snapshot = await uploadBytes(fileRef, fileUpload);
+        url = await getDownloadURL(snapshot.ref);
+      }
+
+      const updatedCourse = {
+        name: formData.name,
+        description: formData.description,
+        contentUrl: url,
+        isVisibleForStudents: item.isVisibleForStudents
+      };
+
+      const result = await axiosInstance.put(`https://localhost:7136/api/v1/Courses/${item.id}`, updatedCourse);
+
+      onModalUpdate(result.data);
+      handleClose();
+    } catch (error) {
+      console.log(error);
     }
-
-    axiosInstance.put(`https://localhost:7136/api/v1/Courses/${item.id}`, {
-      name: formData.name,
-      description: formData.description,
-      contentUrl: url,
-      isVisibleForStudents: item.isVisibleForStudents
-    })
-      .then((result) => {
-        onModalUpdate(result.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-
-    handleClose();
   };
 
   return (
@@ -117,12 +114,18 @@ const UpdateCourse = ({ item, onModalUpdate }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-center">
-          <button type="button" className="btn btn-success" onClick={handleUpdate} disabled={errors.name.length > 0 || errors.description.length > 0}>Update</button>
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={handleUpdate}
+            disabled={errors.name.length > 0 || errors.description.length > 0}
+          >
+            Update
+          </button>
         </Modal.Footer>
       </Modal>
     </div>
   );
 };
-
 
 export default UpdateCourse;

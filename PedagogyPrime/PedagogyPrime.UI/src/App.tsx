@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Subjects from "./pages/Subjects";
 import Login from "./pages/Login";
-import Courses from "./pages/Courses";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Informations from "./pages/Informations";
 import SubjectForm from "./pages/SubjectForm";
@@ -62,7 +61,6 @@ function App() {
               <Route path="create" element={<SubjectForm />} />
               <Route path=":id/edit" element={<SubjectForm />} />
             </Route>
-            <Route path="/courses" element={<Courses />} />
             <Route path="/info" element={<Informations />} />
             <Route path="/users" element={<Users />} />
             <Route path="*" element={<Login />} />

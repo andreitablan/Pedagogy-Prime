@@ -5,7 +5,7 @@ export enum Role {
   Student = "Student",
 }
 
-const mapNumberToRole = (role: number): Role => {
+export const  mapNumberToRole = (role: number): Role => {
   switch (role) {
     case 0:
       return Role.Admin;
