@@ -21,10 +21,6 @@ const SubjectChat = ({subjectId, subjectName}) => {
         message: '',
       });
 
-    useEffect(() => {
-    getData();
-    }, []);
-
     const getData = () => {
         axiosInstance.get(`https://localhost:7136/api/v1.0/subjectMessages/${subjectId}`)
         .then((response) => {
@@ -45,6 +41,7 @@ const SubjectChat = ({subjectId, subjectName}) => {
     };
 
     const handleShow = () => {
+        getData();
         setShow(true);
     }
 
