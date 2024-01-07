@@ -21,23 +21,31 @@ const SubjectChat = ({ subjectId, subjectName }) => {
     getData();
   }, []);
 
-  const getData = async () => {
-    try {
-      const response = await axiosInstance.get(`https://localhost:7136/api/v1.0/subjectMessages/${subjectId}`);
-      const messages = response.data.resource.map(x => ({
-        messageText: x.messageText,
-        username: x.username,
-        userId: x.userId,
-        date: new Date(x.date),
-        state: MessageState.Sent
-      })).sort((a, b) => a.date - b.date);
-      setMessages(messages);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const getData = () => {
+        axiosInstance.get(`https://localhost:7136/api/v1.0/subjectMessages/${subjectId}`)
+        .then((response) => {
+            const messages = response.data.resource.map(x => {
+                return {
+                    messageText: x.messageText,
+                    username: x.username,
+                    userId: x.userId,
+                    date: new Date(x.date),
+                    state: MessageState.Sent
+                };
+            }).sort((a, b) => a.date - b.date);
+            setMessages(messages);
+        })
+        .catch((error) => {
+            console.log(error);
+          });
+    };
 
-  const handleShow = () => setShow(true);
+    const handleShow = () => {
+        getData();
+        setShow(true);
+
+    }
+
   const handleClose = () => setShow(false);
 
   const handleInputChange = (e) => {
