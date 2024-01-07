@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PedagogyPrime.API", "PedagogyPrime.API\PedagogyPrime.API.csproj", "{DFF67D32-CF51-49D4-A016-707ADF21D8E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PedagogyPrime.API", "PedagogyPrime.API\PedagogyPrime.API.csproj", "{DFF67D32-CF51-49D4-A016-707ADF21D8E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PedagogyPrime.Core", "PedagogyPrime.Core\PedagogyPrime.Core.csproj", "{5D424C7A-5E15-414E-902F-F64AC233CF31}"
 EndProject
@@ -11,7 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PedagogyPrime.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PedagogyPrime.Persistence", "PedagogyPrime.Persistence\PedagogyPrime.Persistence.csproj", "{3101B02D-FF6D-4A42-9EE7-F5215996BFF6}"
 EndProject
-
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{092DB7DA-ECB9-431E-AD3A-CF5192DC9BB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PedagogyPrime.IntegrationTests", "PedagogyPrime.IntegrationTests\PedagogyPrime.IntegrationTests.csproj", "{E5DABB83-5F2E-4152-A1DF-616B9A630973}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,13 +37,16 @@ Global
 		{3101B02D-FF6D-4A42-9EE7-F5215996BFF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3101B02D-FF6D-4A42-9EE7-F5215996BFF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3101B02D-FF6D-4A42-9EE7-F5215996BFF6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{446E716A-05FE-4106-ACD7-166C635DA482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{446E716A-05FE-4106-ACD7-166C635DA482}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{446E716A-05FE-4106-ACD7-166C635DA482}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{446E716A-05FE-4106-ACD7-166C635DA482}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5DABB83-5F2E-4152-A1DF-616B9A630973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5DABB83-5F2E-4152-A1DF-616B9A630973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5DABB83-5F2E-4152-A1DF-616B9A630973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5DABB83-5F2E-4152-A1DF-616B9A630973}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5DABB83-5F2E-4152-A1DF-616B9A630973} = {092DB7DA-ECB9-431E-AD3A-CF5192DC9BB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A02123F2-1610-4318-AEB4-655BF78B24F6}
