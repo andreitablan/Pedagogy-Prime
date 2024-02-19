@@ -44,8 +44,9 @@ Refactoring, Integration
 - https://iopscience.iop.org/article/10.1088/1742-6596/1387/1/012035/pdf 
 - https://gheorghemariana.wordpress.com/documente-curriculare/
 - https://trello.com/b/HcLIIuT6
-## Research Coordinator
+## Research Coordinators
 ###### [Iftene Adrian](https://profs.info.uaic.ro/~adiftene/)
+###### [Istrimschi Adrian](https://ro.linkedin.com/in/petruadrianistrimschi)
 ## Authors
 ###### [Fânaru Victor](https://github.com/FanaruVictor)
 ###### [Opariuc Rareș](https://github.com/OpariucRares)
